@@ -188,7 +188,7 @@ class Cf7_GoogleMap_Admin {
   **/
   public function maps_api_validation($input){
 
-      if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $string)){
+      if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $input)){
           add_settings_error( '', '', __('API KEY INVALID','cf7-google-map'), 'error' );
           return '1';
       }else{
