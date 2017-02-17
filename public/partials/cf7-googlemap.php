@@ -1,4 +1,5 @@
 <?php
+//TODO add a button to allow user to fill address based on location
 $validation_error = wpcf7_get_validation_error( $tag->name );
 $class = wpcf7_form_controls_class( $tag->type, 'cf7-googleMap' );
 if ( $validation_error ) {
@@ -8,7 +9,6 @@ if ( 'map*' === $tag->type ) {
     $class .= ' wpcf7-validates-as-required';
 }
 $value = (string) reset( $tag->values );
-//determine how many slides we have and which one this is
 $map_values = explode( ';',$value );
 
 //error_log("GoogleMap: ".$value."\n".print_r($slide_values,true));

@@ -68,18 +68,6 @@ class Cf7_GoogleMap_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Cf7_Polylang_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Cf7_Polylang_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cf7-googlemap.css', array(), $this->version, 'all' );
 
 	}
@@ -91,18 +79,8 @@ class Cf7_GoogleMap_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Cf7_GoogleMap_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Cf7_GoogleMap_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-     $google_map_api_key = 'AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E';
+     $google_map_api_key = get_option('cf7_googleMap_api_key');
+     //  AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E
      wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
      wp_enqueue_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/admin/js/gmap3.min.js', array( 'jquery' ), $this->version, true );
   }

@@ -154,7 +154,8 @@ class Cf7_GoogleMap {
 		/* WP Hooks */
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
+    $this->loader->add_action('admin_menu', $plugin_admin, 'add_settings_submenu');
+    $this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 
 		//CF7 Hooks
     $this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_cf7_tag_generator_googleMap' );

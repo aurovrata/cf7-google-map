@@ -11,6 +11,7 @@
  * @package    Cf7_GoogleMap
  * @subpackage Cf7_GoogleMap/admin/partials
  */
+ //TODO: add a check box to include or not address fields
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->

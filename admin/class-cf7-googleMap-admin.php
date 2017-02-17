@@ -96,6 +96,7 @@ class Cf7_GoogleMap_Admin {
 		 * class.
 		 */
      $plugin_dir = plugin_dir_url( __FILE__ );
+     //TODO: setup google map api in settings section of general page
      $google_map_api_key = 'AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E';
   	wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
     wp_enqueue_script( 'gmap3-admin', $plugin_dir . '/js/gmap3.min.js', array( 'jquery' ), $this->version, true );
@@ -123,7 +124,7 @@ class Cf7_GoogleMap_Admin {
 	        $tag_generator->add( 'map', __( 'Google map', 'cf7-google-map' ), array($this,'googleMap_tag_generator') );
 	    }
 	}
-	
+
 	/**
 	 * GoogleMap tag help screen.
 	 *
@@ -135,9 +136,63 @@ class Cf7_GoogleMap_Admin {
 	 */
 	function googleMap_tag_generator( $contact_form, $args = '' ) {
     $args = wp_parse_args( $args, array() );
-  	$type = 'date';
 		include( plugin_dir_path( __FILE__ ) . '/partials/cf7-tag-display.php');
 	}
+  /**
+   * Register a settings sub-menu
+   * hooked on 'admin_menu'
+   * @since 1.0.0
+  **/
+  public function add_settings_submenu(){
+    //create new sub menu
+    add_options_page('Google Map extension for Contact Form 7', 'CF7 Google Map', 'administrator','cf7-googleMap-settings', array($this,'show_settings_page') );
+  }
+  /**
+   * Display the settings page
+   * called by the function 'add_options_page'
+   * @since 1.0.0
+   *
+  **/
+  public function show_settings_page(){
+    ?>
+    <div class="wrap">
+      <form method="post" action="options.php">
+        <?php settings_fields( 'cf7-google-map-settings-group' ); ?>
+        <?php do_settings_sections( 'cf7-google-map-settings-group' ); ?>
+        <h2>Contact form 7 Google Map Extension Settings</h2>
 
+        <label for="cf7_googleMap_api_key">Get an API Key from <a href="https://developers.google.com/maps/documentation/javascript/get-api-key#key" target="_blank">Google</a></label><br />
+        <input type="text" name="cf7_googleMap_api_key" value="<?php echo esc_attr( get_option('cf7_googleMap_api_key') ); ?>" />
+        <style>input[name="cf7_googleMap_api_key"]{width:100%; max-width:350px;}</style>
+        <?php submit_button();?>
+      </form>
+    </div>
+    <?php
+  }
+  /**
+   * Register settings options
+   * hooked on 'admin_init'
+   * @since 1.0.0
+   *
+  **/
+  public function register_settings(){
+    // Default API KEY Google Maps
+    register_setting( 'cf7-google-map-settings-group', 'cf7_googleMap_api_key', array($this,'maps_api_validation') );
+  }
+  /**
+   * Validates a google API key
+   *
+   * @since 1.0.0
+   * @param      string    $input     API key to check.
+   * @return     string    validated API key   .
+  **/
+  public function maps_api_validation($input){
 
+      if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $string)){
+          add_settings_error( '', '', __('API KEY INVALID','cf7-google-map'), 'error' );
+          return '1';
+      }else{
+          return $input;
+      }
+  }
 }
