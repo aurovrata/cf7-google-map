@@ -84,17 +84,6 @@ class Cf7_GoogleMap_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Cf7_GoogleMap_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Cf7_GoogleMap_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
      $plugin_dir = plugin_dir_url( __FILE__ );
      //TODO: setup google map api in settings section of general page
      $google_map_api_key = 'AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E';
@@ -188,11 +177,34 @@ class Cf7_GoogleMap_Admin {
   **/
   public function maps_api_validation($input){
 
-      if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $input)){
+      if (strlen($input) < 20 ){
           add_settings_error( '', '', __('API KEY INVALID','cf7-google-map'), 'error' );
-          return '1';
+          return '';
       }else{
           return $input;
       }
+  }
+  /**
+   * Set up email tags
+   * hooked on cf7 filter 'wpcf7_collect_mail_tags'
+   * @since 1.0.0
+   * @param      Array    $mailtags     tag-name.
+   * @return     string    $p2     .
+  **/
+  public function email_tags( $mailtags = array() ) {
+    $contact_form = WPCF7_ContactForm::get_current();
+    $tags = $contact_form->scan_form_tags();
+
+		foreach ( (array) $tags as $tag ) {
+			if ( !empty($tag['name']) && 'map' == $tag['basetype'] ) {
+        $mailtags[] = 'lng-'.$tag['name'];
+        $mailtags[] = 'lat-'.$tag['name'];
+        if( false !== ($key = array_search($tag['name'], $mailtags)) ){
+          unset($mailtags[$key]);
+        }
+      }
+    }
+
+    return $mailtags;
   }
 }

@@ -159,6 +159,7 @@ class Cf7_GoogleMap {
 
 		//CF7 Hooks
     $this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_cf7_tag_generator_googleMap' );
+    $this->loader->add_filter( 'wpcf7_collect_mail_tags', $plugin_admin, 'email_tags');
 
 	}
   /**
@@ -180,6 +181,7 @@ class Cf7_GoogleMap {
     //validate the data
     $this->loader->add_filter( 'wpcf7_validate_map', $plugin_public, 'validate_data',10,2 );
     $this->loader->add_filter( 'wpcf7_validate_map*', $plugin_public, 'validate_data',10,2 );
+    $this->loader->add_filter( 'wpcf7_posted_data', $plugin_public, 'setup_data',5,1 );
 	}
 		/**
 	 * Run the loader to execute all of the hooks with WordPress.

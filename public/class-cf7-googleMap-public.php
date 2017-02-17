@@ -68,7 +68,7 @@ class Cf7_GoogleMap_Public {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cf7-googlemap.css', array(), $this->version, 'all' );
+		wp_register_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cf7-googlemap.css', array(), $this->version, 'all' );
 
 	}
 
@@ -81,8 +81,8 @@ class Cf7_GoogleMap_Public {
 
      $google_map_api_key = get_option('cf7_googleMap_api_key');
      //  AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E
-     wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
-     wp_enqueue_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/admin/js/gmap3.min.js', array( 'jquery' ), $this->version, true );
+     wp_register_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
+     wp_register_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/admin/js/gmap3.min.js', array( 'jquery' ), $this->version, true );
   }
   /**
 	 * Register a [googleMap] shortcode with CF7.
@@ -111,8 +111,9 @@ class Cf7_GoogleMap_Public {
 	 */
 	public function googleMap_shortcode_handler( $tag ) {
       //enqueue required scripts and styles
-      $this->enqueue_scripts();
-      $this->enqueue_styles();
+      wp_enqueue_script( 'google-maps-api-admin');
+      wp_enqueue_script( 'gmap3-admin');
+      wp_enqueue_style( $this->plugin_name);
 
 	    $tag = new WPCF7_FormTag( $tag );
       if ( empty( $tag->name ) ) {
@@ -138,8 +139,55 @@ class Cf7_GoogleMap_Public {
    * @return     array    $result     results of validation.
   **/
   public function validate_data($result, $tag ) {
-    //debug_msg($tag, 'validation... ');
-    //let's add our own filter here so a user can customise the result for the zoom and location
+    // Backward Comp
+    if(WPCF7_VERSION >= '4.6') {
+        $tag = new WPCF7_FormTag($tag);
+    }else{
+        $tag = new WPCF7_Shortcode($tag);
+    }
+
+    $type = $tag->type;
+
+    $name = $tag->name;
+
+    // Get POST Value
+    $posted_lat = isset( $_POST['lat-'.$name] ) ? (string) $_POST['lat-'.$name] : '';
+    //TODO need to identify how to show error msg on form
+    // Check if required field
+    if ($tag->is_required() && empty($posted_lat)) {
+        $result->invalidate( $tag, __('Please select a location on the map','cf7-google-map') );
+    }
     return $result;
   }
+  /**
+   *Setup location data
+   * hooked on cf7 filter 'wpcf7_posted_data'
+   * @since 1.0.0
+   * @param      Array    $posted_data     an array of field-name=>value pairs.
+   * @return     Array    filtered $posted_data     .
+  **/
+  public function setup_data($posted_data){
+    //get the corresponding cf7 form
+    if( !isset($_POST['_wpcf7'])){
+      return $posted_data;
+    }
+    $contact_form = WPCF7_ContactForm::get_instance($_POST['_wpcf7']);
+    $tags = $contact_form->scan_form_tags();
+
+		foreach ( (array) $tags as $tag ) {
+			if ( empty( $tag['name'] || 'map' != $tag['type']) ) {
+				continue;
+			}
+      $field = 'lat-'.$tag['name'];
+      if(isset($_POST[$field])){
+        $posted_data[$field] = $_POST[$field];
+      }
+      $field = 'lng-'.$tag['name'];
+      if(isset($_POST[$field])){
+        $posted_data[$field] = $_POST[$field];
+      }
+    }
+    return $posted_data;
+  }
+
 }

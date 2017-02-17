@@ -44,7 +44,7 @@ $lng = explode(':',$map_values[4]); //lng:
       draggable : true
     }).on('dragend', function(marker, e){
       $('input#lat-<?php echo $tag->name?>', $('form') ).val(marker.getPosition().lat());
-      $('input#lat-<?php echo $tag->name?>', $('form') ).val( marker.getPosition().lng());
+      $('input#lng-<?php echo $tag->name?>', $('form') ).val( marker.getPosition().lng());
       $('input#<?php echo $tag->name?>', $('form') ).val( marker.getPosition().lat() + "," + marker.getPosition().lng() );
 		}).then(function(result){
       googleMap = this.get(0);
