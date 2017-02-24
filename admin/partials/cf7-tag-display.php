@@ -26,8 +26,8 @@
       	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
       	</tr>
         <tr>
-      	<th scope="row">Field type</th>
-      	<td><input name="required" type="checkbox"> Required field<br /></td>
+        	<th scope="row">Field type</th>
+        	<td><input name="required" type="checkbox"> Required field<br /></td>
       	</tr>
           <tr>
             <th>
@@ -47,15 +47,33 @@
             </th>
             <td>
               <div class="listings">
-                <input type="text" name="cf7_listing_lat" id="cf7_listing_lat" class="regular-text cf7-googleMap-values" value="12.007089" />,<br />
-                <small><?php esc_html_e( 'e.g.', 'cf7-google-map' ); ?> <code>12.007089</code></small>
+                <input type="text" name="cf7_listing_lat" id="cf7_listing_lat" class="regular-text cf7-googleMap-values" value="12.007089" />,
               </div>
               <div class="listings">
-                <input type="text" name="cf7_listing_lng" id="cf7_listing_lng" class="regular-text cf7-googleMap-values" value="79.810600" /><br />
-                <small><?php esc_html_e( 'e.g.', 'cf7-google-map' ); ?> <code>79.810600</code></small>
+                <input type="text" name="cf7_listing_lng" id="cf7_listing_lng" class="regular-text cf7-googleMap-values" value="79.810600" />
               </div>
             </td>
           </tr>
+          <tr>
+            <th>
+              <label for="tag-generator-panel-number-id">Id attribute</label>
+            </th>
+            <td>
+              <input name="id" class="idvalue oneline option" id="tag-generator-panel-map-id" type="text">
+            </td>
+          </tr>
+          <tr>
+            <th>
+              <label for="tag-generator-panel-number-class">Class attribute</label>
+            </th>
+            <td>
+              <input name="class" class="classvalue oneline option" id="tag-generator-panel-map-class" type="text">
+            </td>
+          </tr>
+          <tr>
+        	<th scope="row">Address fields</th>
+        	<td><input name="show_address" id="cf7-google-map-show-address" type="checkbox"> Show address fields (auto populated line / city / state / country fields)<br /></td>
+        	</tr>
       </tbody>
     </table>
   </fieldset>

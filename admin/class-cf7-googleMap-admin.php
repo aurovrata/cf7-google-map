@@ -84,13 +84,13 @@ class Cf7_GoogleMap_Admin {
 	 */
 	public function enqueue_scripts() {
 
-     $plugin_dir = plugin_dir_url( __FILE__ );
+     $plugin_dir = plugin_dir_url( __DIR__ );
      //TODO: setup google map api in settings section of general page
-     $google_map_api_key = 'AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E';
+     $google_map_api_key = get_option('cf7_googleMap_api_key');
   	wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
-    wp_enqueue_script( 'gmap3-admin', $plugin_dir . '/js/gmap3.min.js', array( 'jquery' ), $this->version, true );
-  	wp_enqueue_script( 'arrive-js', $plugin_dir . '/js/arrive.min.js', array( 'jquery' ), $this->version, true );
-  	wp_enqueue_script( $this->plugin_name, $plugin_dir . '/js/admin_settings_map.js', array( 'jquery' ), $this->version, true );
+    wp_enqueue_script( 'gmap3-admin', $plugin_dir . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin' ), $this->version, true );
+  	wp_enqueue_script( 'arrive-js', $plugin_dir . '/assets/arrive/arrive.min.js', array( 'jquery' ), $this->version, true );
+  	wp_enqueue_script( $this->plugin_name, $plugin_dir . '/admin/js/admin_settings_map.js', array( 'jquery' ), $this->version, true );
     wp_localize_script( $this->plugin_name, 'cf7_map_admin_settings', array(
   		'theme_dir' 			=> plugin_dir_url( __DIR__ ),
       'marker_lat'   => '12.007089',

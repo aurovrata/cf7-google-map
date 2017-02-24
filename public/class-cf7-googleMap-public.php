@@ -81,8 +81,9 @@ class Cf7_GoogleMap_Public {
 
      $google_map_api_key = get_option('cf7_googleMap_api_key');
      //  AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E
-     wp_register_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
-     wp_register_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/admin/js/gmap3.min.js', array( 'jquery' ), $this->version, true );
+     wp_register_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key=' . $google_map_api_key . '&libraries=places', array( 'jquery' ), '1.0', true );
+     wp_register_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin'), $this->version, true );
+     wp_register_script( 'js-resize', plugin_dir_url( __DIR__ ) . '/assets/js-resize/jquery.resize.js', array( 'jquery'), $this->version, true );
   }
   /**
 	 * Register a [googleMap] shortcode with CF7.
@@ -113,6 +114,8 @@ class Cf7_GoogleMap_Public {
       //enqueue required scripts and styles
       wp_enqueue_script( 'google-maps-api-admin');
       wp_enqueue_script( 'gmap3-admin');
+      wp_enqueue_script( 'js-resize');
+      wp_enqueue_style( 'dashicons' );
       wp_enqueue_style( $this->plugin_name);
 
 	    $tag = new WPCF7_FormTag( $tag );

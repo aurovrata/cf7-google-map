@@ -3,15 +3,17 @@
  * included in this file.
  */
  /* small fix to not show scrollbars, make insert section taller */
- .tag-generator-panel .insert-box {
+ .tag-generator-panel .control-box.cf7-googleMap + .insert-box {
      padding-left: 15px;
      padding-right: 15px;
-     height: 90px;
+     height: 45px;
  }
+ .tag-generator-panel .control-box.cf7-googleMap {
+    height: calc(100% - 45px);
+}
  #cf7_admin_map {
     width: 90%;
     height: 210px;
-    margin-bottom: 12px;
     margin-left: 0;
     display: block;
 }

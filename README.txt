@@ -25,19 +25,24 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 * [Post My CF7 Form](https://wordpress.org/plugins/post-my-contact-form-7/) - this plugin allows you to save you cf7 form submissions to a custom post, map your fields to meta fields or taxonomy.  It also allows you to pre-fill fields before your form  is displayed.
 
+* [CF7 Google Map](https://wordpress.org/plugins/cf7-google-map/) - allows google maps to be inserted into a Contact Form 7.  Unlike other plugins, this one allows map settings to be done at the form level, enabling diverse maps to be configured for each forms.
+
 == Installation ==
 
 1. Unpack `cf7-google-map.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Create a new form in the CF7 editor.  Select the [Google Map] tag, and configure your map.
+3. Get a [Google Map API key](https://developers.google.com/maps/documentation/javascript/get-api-key#key) and insert it in the plugin Settings->CF7 Google Map page.
+4. Create a new form in the CF7 editor.  Select the [Google Map] tag, and configure your map.
+5. The plugin creates 2 email tags for submitted location, the `lat-<field-name' and `lng-<field-name>`.  This allows you to include multiple maps in a single form if needed.
 
 
 == Frequently Asked Questions ==
 
-
-
 == Screenshots ==
-
+1. Save your Google API key in the settings, else your map will not function
+2. Insert a Google Map tag into your cf7 form
+3. You can set the default parameters for your map, this will be used to display the default zoom level as well as pin location in the form
+4. The map is by default set to take up 100% width in the form, and a height of 120px.  Override this in your child css stylesheet to size up your map.
 
 
 == Changelog ==
