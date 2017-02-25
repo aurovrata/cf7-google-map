@@ -309,6 +309,7 @@ if(!$exists){ //reset the marker
     et_map.resize(function(){
       map_width =  $(this).css('width');
       $('div.cf7-google-map-search', map_container).css('width','calc(' + map_width + ' - 10px)');
+      google.maps.event.trigger(googleMap, 'resize');
     });
     //search button
     $('.cf7-google-map-search .dashicons-search', map_container).on('click', function(){
