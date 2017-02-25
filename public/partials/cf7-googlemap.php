@@ -92,6 +92,8 @@ if(!$exists){ //reset the marker
     var geocoder = new google.maps.Geocoder;
     var form = et_map.closest('form.wpcf7-form');
     var address = $('input#address-<?php echo $tag->name?>', map_container );
+    var manual = $('input#manual-address-<?php echo $tag->name?>', map_container );
+    var autoLine =''; //track automated values of line address
 
 		et_map.gmap3({
       center : [<?php echo $clat[1]?>, <?php echo $clng[1]?>],
@@ -111,8 +113,7 @@ if(!$exists){ //reset the marker
       $('input#<?php echo $tag->name?>', map_container ).val( marker.getPosition().lat() + "," + marker.getPosition().lng() );
 
       //reverse lookup the address
-      var manual = $('input#manual-address-<?php echo $tag->name?>', map_container ).val();
-      if('' != address.val() && true == manual){
+      if("true" == manual.val()){
         return;
       }
       var latlng = {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()};
@@ -277,12 +278,19 @@ if(!$exists){ //reset the marker
         state = state + " " + pin;
       }
       //set address fields
+      autoLine = line;
       countryField.val(country);
       stateField.val(state);
       cityField.val(city);
       lineField.val(line);
-    }
 
+    }
+    //if address line is manually changed, freeze the automated address
+    lineField.on('change', function(){
+      if($(this).val() != autoLine){
+        manual.val(true);
+      }
+    });
     //if the form contains jquery tabs, let's refresh the map
     form.on( "tabsactivate", function( event ){
       if( $.contains($(event.trigger),et_map) ){
