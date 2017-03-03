@@ -67,10 +67,10 @@ class Cf7_GoogleMap {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct($version) {
 
 		$this->plugin_name = 'cf7-googlemap';
-		$this->version = '1.0.0';
+		$this->version = $version;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -102,6 +102,7 @@ class Cf7_GoogleMap {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cf7-googleMap-loader.php';
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wordpress-gurus-debug-api.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality

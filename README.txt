@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=64EDYAVB7EGTJ
-Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location
+Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode
 Requires at least: 4.4
 Tested up to: 4.7.2
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,6 +16,9 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 * the zoom and default location to be configured in the form edit page itself, thus different forms can have different default map zoom levels and pin location
 * the front end form displays the configured map and registers the location change of the pin which can be included in the email notification.
 * play nice with the [Post My CF7 Form](https://wordpress.org/plugins/post-my-contact-form-7/) plugin
+* a search field is available to lookup addresses
+* an optional set of address fields can be enabled from the cf7 tag to display reverse-geocode text address
+* if a user changes manually the first line of the (optional) address field, the reverse-geocode is frozen.  This allows for address corrections.
 
 = Checkout our other CF7 plugin extensions =
 
@@ -46,7 +49,9 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 
 == Changelog ==
-
+= 1.1 =
+* added search field
+* added optional address fields with reverse-geocoding
 = 1.0 =
 * first version, only in english locale
 
