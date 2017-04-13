@@ -5,7 +5,7 @@
 
   		  var et_admin_map = $( '#cf7_admin_map' ),
   			   markerLatField, markerLngField, map_zoom, googleMap, googleMarker;
-        var tagForm = et_admin_map.closes('form.tag-generator-panel');
+        var tagForm = et_admin_map.closest('form.tag-generator-panel');
     		markerLatField = $( '#cf7_listing_lat',tagForm );
     		markerLngField = $( '#cf7_listing_lng',tagForm );
 

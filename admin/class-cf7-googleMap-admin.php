@@ -82,22 +82,27 @@ class Cf7_GoogleMap_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts($hook) {
+    $screen = get_current_screen();
+    switch(true){
+      case ('wpcf7_contact_form' == $screen->post_type && 'post' == $screen->base):
+      case ('toplevel_page_wpcf7' == $hook || 'contact_page_wpcf7-new' == $hook):
 
-     $plugin_dir = plugin_dir_url( __DIR__ );
-     //TODO: setup google map api in settings section of general page
-     $google_map_api_key = get_option('cf7_googleMap_api_key');
-  	wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
-    wp_enqueue_script( 'gmap3-admin', $plugin_dir . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin' ), $this->version, true );
-  	wp_enqueue_script( 'arrive-js', $plugin_dir . '/assets/arrive/arrive.min.js', array( 'jquery' ), $this->version, true );
-  	wp_enqueue_script( $this->plugin_name, $plugin_dir . '/admin/js/admin_settings_map.js', array( 'jquery' ), $this->version, true );
-    wp_localize_script( $this->plugin_name, 'cf7_map_admin_settings', array(
-  		'theme_dir' 			=> plugin_dir_url( __DIR__ ),
-      'marker_lat'   => '12.007089',
-      'marker_lng'   => '79.810600',
-      'map_zoom'         => '3',
-  	) );
-
+         $plugin_dir = plugin_dir_url( __DIR__ );
+         //TODO: setup google map api in settings section of general page
+         $google_map_api_key = get_option('cf7_googleMap_api_key');
+      	wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='.$google_map_api_key, array( 'jquery' ), '1.0', true );
+        wp_enqueue_script( 'gmap3-admin', $plugin_dir . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin' ), $this->version, true );
+      	wp_enqueue_script( 'arrive-js', $plugin_dir . '/assets/arrive/arrive.min.js', array( 'jquery' ), $this->version, true );
+      	wp_enqueue_script( $this->plugin_name, $plugin_dir . '/admin/js/admin_settings_map.js', array( 'jquery' ), $this->version, true );
+        wp_localize_script( $this->plugin_name, 'cf7_map_admin_settings', array(
+      		'theme_dir' 			=> plugin_dir_url( __DIR__ ),
+          'marker_lat'   => '12.007089',
+          'marker_lng'   => '79.810600',
+          'map_zoom'         => '3',
+      	) );
+      break;
+    }
 	}
 
 

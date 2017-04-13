@@ -46,6 +46,8 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 2. Insert a Google Map tag into your cf7 form
 3. You can set the default parameters for your map, this will be used to display the default zoom level as well as pin location in the form
 4. The map is by default set to take up 100% width in the form, and a height of 120px.  Override this in your child css stylesheet to size up your map.
+5. Optional address fields get auto-filled by the reverse-geocode lookup.  The map as contains a search field to locate an address.
+
 
 
 == Changelog ==
