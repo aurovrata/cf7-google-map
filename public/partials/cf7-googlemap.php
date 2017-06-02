@@ -36,9 +36,13 @@ $navigation_control = apply_filters('cf7_google_map_navigation_controls',true, $
 $scrollwheel = apply_filters('cf7_google_map_scrollwheel',true, $tag->name);
 $street_view = apply_filters('cf7_google_map_navigation_controls',true, $tag->name);
 $marker_icon_path = apply_filters('cf7_google_map_marker_icon_url_path', $plugin_url .'assets/red-marker.png', $tag->name);
+if($plugin_url .'assets/red-marker.png' !== $marker_icon_path && !@getimagesize($marker_icon_path) ){ //reset the marker
+  debug_msg("unable to locate marker icon url: ".$marker_icon_path);
+  $marker_icon_path = $plugin_url .'assets/red-marker.png';
+}
 //check that the file actually exists
-$exists   = false;
-if (!$exists && in_array('curl', get_loaded_extensions())) {
+$exists = false;
+if ( in_array('curl', get_loaded_extensions()) ) {
 	$ch = curl_init($marker_icon_path);
 	curl_setopt($ch, CURLOPT_NOBODY, true);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -55,10 +59,7 @@ if (!$exists && function_exists('get_headers')) {
 		}
 	}
 }
-if(!$exists){ //reset the marker
-  debug_msg("unable to locate marker icon url:".$marker_icon_path);
-  $marker_icon_path = $plugin_url .'assets/red-marker.png';
-}
+
 //HTML cf7 form
 ?>
 <div class="wpcf7-form-control-wrap cf7-google-map-container <?php echo $tag->name?> <?php echo $show_address;?>">
