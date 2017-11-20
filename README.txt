@@ -1,10 +1,10 @@
-=== Plugin Name ===
+=== Google Map for Contact Form 7 ===
 Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=64EDYAVB7EGTJ
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode
 Requires at least: 4.4
-Tested up to: 4.7.2
-Stable tag: 1.1
+Tested up to: 4.9
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,10 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 
 == Changelog ==
+= 1.2 =
+* enable loading map coordinates in saved draft forms.
+* map inputs not cleared when draft form saved using Post My CF7 Form plugin.
+* bug fix saving map details using Post My CF7 Form plugin.
 = 1.1 =
 * added search field
 * added optional address fields with reverse-geocoding

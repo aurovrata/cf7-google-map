@@ -200,10 +200,11 @@ class Cf7_GoogleMap_Admin {
     $contact_form = WPCF7_ContactForm::get_current();
     $tags = $contact_form->scan_form_tags();
 
-		foreach ( (array) $tags as $tag ) {
-			if ( !empty($tag['name']) && 'map' == $tag['basetype'] ) {
-        $mailtags[] = 'lng-'.$tag['name'];
+	foreach ( (array) $tags as $tag ) {
+	  if ( !empty($tag['name']) && 'map' == $tag['basetype'] ) {
         $mailtags[] = 'lat-'.$tag['name'];
+        $mailtags[] = 'lng-'.$tag['name'];
+        //remove teh default tag.
         if( false !== ($key = array_search($tag['name'], $mailtags)) ){
           unset($mailtags[$key]);
         }

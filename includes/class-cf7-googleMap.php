@@ -183,6 +183,14 @@ class Cf7_GoogleMap {
     $this->loader->add_filter( 'wpcf7_validate_map', $plugin_public, 'validate_data',10,2 );
     $this->loader->add_filter( 'wpcf7_validate_map*', $plugin_public, 'validate_data',10,2 );
     $this->loader->add_filter( 'wpcf7_posted_data', $plugin_public, 'setup_data',5,1 );
+    //mail tag
+    //$this->loader->add_filter('wpcf7_mail_tag_replaced', $plugin_public, 'setup_mailtag',10,3 );
+    /*cf72post hooks*/
+		//save submission to db.
+    $this->loader->add_action( 'cf7_2_post_saving_tag_map', $plugin_public, 'save_map',10,2 );
+		//echo script for mapping values to form.
+		$this->loader->add_filter( 'cf7_2_post_field_mapping_tag_map', $plugin_public, 'load_map', 10, 5);
+
 	}
 		/**
 	 * Run the loader to execute all of the hooks with WordPress.

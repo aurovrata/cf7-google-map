@@ -13,10 +13,10 @@
  * @package           Cf7_GoogleMap
  *
  * @wordpress-plugin
- * Plugin Name:       Contact Form 7 Google Map Module
+ * Plugin Name:       Google Map for Contact Form 7
  * Plugin URI:        http://wordpress.syllogic.in
  * Description:       Allows a map field to be included in a Contact Form 7 for use to drag and drop their location
- * Version:           1.1.0
+ * Version:           1.2.0
  * Author:            Aurovrata V.
  * Author URI:        http://syllogic.in
  * License:           GPL-2.0+
@@ -29,7 +29,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define( 'CF7_GOOGLE_MAP_VERSION', '1.1.0' );
+define( 'CF7_GOOGLE_MAP_VERSION', '1.2.0' );
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-cf7-googleMap-activator.php

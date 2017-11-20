@@ -9,7 +9,18 @@
    display: inline-block;
    align-items: stretch;
 }
-
+.cf7-smart-grid.has-grid .cf7-googlemap-address-show div.cf7-googlemap{
+  height: 250px;
+}
+.cf7-smart-grid.has-grid .cf7-googlemap-address-show .cf7-googlemap-address-fields {
+    min-width: unset;
+    margin: 0;
+    width: unset;
+}
+.cf7-smart-grid.has-grid .cf7-googlemap-address-show .cf7-googlemap-address-fields label {
+    display: inline-block;
+    width: calc(50% - 5px);
+}
 .cf7-googlemap-address-show .cf7-googlemap-address-fields {
     display: inline-block;
     min-width: 200px;
@@ -45,8 +56,8 @@ input.cf7-googlemap-address {
 .cf7-google-map-search .dashicons.dashicons-search,
 .cf7-google-map-search .dashicons.dashicons-no-alt {
     position: absolute;
-    right: 5px;
-    top: 2px;
+    right:40px;
+    top: 3px;
     background-color: white;
     width: 30px;
     height: 30px;
@@ -54,6 +65,9 @@ input.cf7-googlemap-address {
     padding-top: 5px;
     color: dimgray;
     z-index:10;
+}
+.cf7-google-map-search .dashicons.dashicons-no-alt {
+  right:3px;
 }
 @media only screen and (max-width:450px){
   .cf7-google-map-container{

@@ -192,5 +192,59 @@ class Cf7_GoogleMap_Public {
     }
     return $posted_data;
   }
-
+  /**
+   * Function to filter custom options values added to tagged map fields.
+   * Hooks action 'cf7_2_post_saving_tag_map'
+   * @since 1.2.0
+   * @param mixed $submitted_value  submitted value for the field
+   * @param string $field_name  the field name
+   * @return mixed value to store for the field.
+  **/
+  public function save_map($submitted_value, $field_name){
+    if( isset($_POST['zoom-'.$field_name]) ){
+      $submitted_value = array(
+        'zoom'=>(int) $_POST['zoom-'.$field_name],
+        'clat'=>$_POST['clat-'.$field_name]*1.0,
+        'lat'=>$_POST['lat-'.$field_name]*1.0,
+        'clng'=>$_POST['clng-'.$field_name]*1.0,
+        'lng'=>$_POST['lng-'.$field_name]*1.0
+      );
+      if(isset($_POST['line-'.$field_name])) {
+        $submitted_value['line'] = sanitize_text_field($_POST['line-'.$field_name]);
+        $submitted_value['city']= sanitize_text_field($_POST['city-'.$field_name]);
+        $submitted_value['state']= sanitize_text_field($_POST['state-'.$field_name]);
+        $submitted_value['country']= sanitize_text_field($_POST['country-'.$field_name]);
+      }
+    }
+    return $submitted_value;
+  }
+  /**
+  * Function to build js script for loading values into map field.
+  * Hooked to 'cf7_2_post_field_mapping_tag_map'.
+  *
+  *@since 1.2.0
+  *@param string $script text_description
+  *@param string $field text_description
+  *@param string $form_id text_description
+  *@param string $json_value text_description
+  *@param string $js_form text_description
+  *@return string js script.
+  */
+  public function load_map($script, $field, $form_id, $json_value, $js_form){
+    $sufix = array("zoom", "clat", "clng", "lat", "lng");
+    $script = 'var $map="";';
+    $script .= 'if("undefined" != typeof '.$json_value.'.zoom){' . PHP_EOL;
+    $script .= '  $map=$(\'.wpcf7-form-control-wrap.' . $field . '\', '.$js_form.');'. PHP_EOL;
+    foreach($sufix as $s){
+      $script .= '  $(\'input[name="'. $s .'-'. $field .'"]\', $map).val('. $json_value .'.'. $s .');' . PHP_EOL;
+    }
+    $script .= "}". PHP_EOL;
+    $sufix = array("line", "city", "state", "country");
+    $script .= 'if("undefined" != typeof '.$json_value.'.line){' . PHP_EOL;
+    foreach($sufix as $s){
+      $script .= '  $(\'input[name="'. $s .'-'. $field .'"]\', $map).val('. $json_value .'.'. $s .');' . PHP_EOL;
+    }
+    $script .= "}". PHP_EOL;
+    return $script;
+  }
 }

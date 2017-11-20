@@ -62,114 +62,133 @@ if (!$exists && function_exists('get_headers')) {
 
 //HTML cf7 form
 ?>
-<div class="wpcf7-form-control-wrap cf7-google-map-container <?php echo $tag->name?> <?php echo $show_address;?>">
-  <div id="cf7-googlemap-<?php echo $tag->name?>" class="cf7-googlemap <?php echo $class?>"></div>
+<div class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?> <?= $show_address;?>">
+  <div id="cf7-googlemap-<?= $tag->name?>" class="cf7-googlemap <?= $class?>"></div>
   <div class="cf7-google-map-search">
     <span class="dashicons dashicons-search"></span><span class="dashicons dashicons-no-alt"></span>
-    <input name="address-<?php echo $tag->name?>" id="address-<?php echo $tag->name?>" value="" class="cf7marker-address" type="text">
-    <input name="lat-<?php echo $tag->name?>" id="lat-<?php echo $tag->name?>" value="" class="cf7marker-lat" type="hidden">
-    <input name="lng-<?php echo $tag->name?>" id="lng-<?php echo $tag->name?>" value="" class="cf7marker-lng" type="hidden">
-    <input name="<?php echo $tag->name?>" id="<?php echo $tag->name?>" value="" class="cf7marker-ll" type="hidden">
-    <input name="manual-address-<?php echo $tag->name?>" id="manual-address-<?php echo $tag->name?>" value="false" type="hidden">
+    <input name="address-<?= $tag->name?>" id="address-<?= $tag->name?>" value="" class="cf7marker-address" type="text">
+    <input name="zoom-<?= $tag->name?>" id="zoom-<?= $tag->name?>" value="<?= $zoom[1]?>" type="hidden">
+    <input name="clat-<?= $tag->name?>" id="clat-<?= $tag->name?>" value="<?= $clat[1]?>" type="hidden">
+    <input name="clng-<?= $tag->name?>" id="clng-<?= $tag->name?>" value="<?= $clng[1]?>" type="hidden">
+    <input name="lat-<?= $tag->name?>" id="lat-<?= $tag->name?>" value="<?= $lat[1]?>" type="hidden">
+    <input name="lng-<?= $tag->name?>" id="lng-<?= $tag->name?>" value="<?= $lng[1]?>" type="hidden">
+    <input name="<?= $tag->name?>" id="<?= $tag->name?>" value="" type="hidden">
+    <input name="manual-address-<?= $tag->name?>" id="manual-address-<?= $tag->name?>" value="false" type="hidden">
   </div>
   <div class="cf7-googlemap-address-fields">
-    <label for="line-<?php echo $tag->name?>"><?php echo apply_filters('cf7_google_map_address_label','Address', $tag->name);?><br />
-    <input name="line-<?php echo $tag->name?>" id="line-<?php echo $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
-    <label for="city-<?php echo $tag->name?>"><?php echo apply_filters('cf7_google_map_city_label','City',$tag->name);?><br />
-    <input name="city-<?php echo $tag->name?>" id="city-<?php echo $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
-    <label for="state-<?php echo $tag->name?>"><?php echo apply_filters('cf7_google_map_pincode_label','State &amp; Pincode',$tag->name);?><br />
-    <input name="state-<?php echo $tag->name?>" id="state-<?php echo $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
-    <label for="country-<?php echo $tag->name?>"><?php echo apply_filters('cf7_google_map_country_label','Country',$tag->name);?><br />
-    <input name="country-<?php echo $tag->name?>" id="country-<?php echo $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
+    <label for="line-<?= $tag->name?>"><?= apply_filters('cf7_google_map_address_label','Address', $tag->name);?><br />
+    <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
+    <label for="city-<?= $tag->name?>"><?= apply_filters('cf7_google_map_city_label','City',$tag->name);?><br />
+    <input name="city-<?= $tag->name?>" id="city-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
+    <label for="state-<?= $tag->name?>"><?= apply_filters('cf7_google_map_pincode_label','State &amp; Pincode',$tag->name);?><br />
+    <input name="state-<?= $tag->name?>" id="state-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
+    <label for="country-<?= $tag->name?>"><?= apply_filters('cf7_google_map_country_label','Country',$tag->name);?><br />
+    <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
   </div>
 </div>
-<?php echo $validation_error;?>
+<?= $validation_error;?>
 <script type="text/javascript">
 (function($){
 	$(document).ready( function(){
-		var et_map = $( '#cf7-googlemap-<?php echo $tag->name?>' ),
+		var et_map = $( '#cf7-googlemap-<?= $tag->name?>' ),
 			googleMap, googleMarker;
     var map_container = et_map.closest('.cf7-google-map-container');
     var geocoder = new google.maps.Geocoder;
     var form = et_map.closest('form.wpcf7-form');
-    var address = $('input#address-<?php echo $tag->name?>', map_container );
-    var manual = $('input#manual-address-<?php echo $tag->name?>', map_container );
+    var address = $('input#address-<?= $tag->name?>', map_container );
+    var manual = $('input#manual-address-<?= $tag->name?>', map_container );
     var autoLine =''; //track automated values of line address
+    var $location_lat = $('#lat-<?= $tag->name?>', map_container);
+    var $location_lng = $('#lng-<?= $tag->name?>', map_container);
+    var $location_clat = $('#clat-<?= $tag->name?>', map_container);
+    var $location_clng = $('#clng-<?= $tag->name?>', map_container);
+    var $location_zoom = $('#zoom-<?= $tag->name?>', map_container);
+    var $location = $('input#<?= $tag->name?>', map_container );
+    //address fields
+    var countryField = $('input#country-<?= $tag->name?>', map_container );
+    var stateField = $('input#state-<?= $tag->name?>', map_container );
+    var cityField = $('input#city-<?= $tag->name?>', map_container );
+    var lineField = $('input#line-<?= $tag->name?>', map_container );
+    //var link = ' https://www.google.com/maps/search/?api=1&query=';
 
-		et_map.gmap3({
-      center : [<?php echo $clat[1]?>, <?php echo $clng[1]?>],
-	    zoom: <?php echo $zoom[1] ?>,
-	    mapTypeId: google.maps.MapTypeId.ROADMAP,
-      mapTypeControl: <?php echo ($map_control) ? 'true':'false';?>,
-      navigationControl: <?php echo ($navigation_control) ? 'true':'false';?>,
-      scrollwheel: <?php echo ($scrollwheel) ? 'true':'false';?>,
-      streetViewControl: <?php echo ($street_view) ? 'true':'false';?>
-    }).marker({
-			position : [<?php echo $lat[1]?>, <?php echo $lng[1]?>],
-			icon : "<?php echo $marker_icon_path ?>",
-      draggable : true
-    }).on('dragend', function(marker, e){
-      $('input#lat-<?php echo $tag->name?>', map_container ).val(marker.getPosition().lat());
-      $('input#lng-<?php echo $tag->name?>', map_container ).val( marker.getPosition().lng());
-      $('input#<?php echo $tag->name?>', map_container ).val( marker.getPosition().lat() + "," + marker.getPosition().lng() );
-
-      //reverse lookup the address
-      if("true" == manual.val()){
-        return;
-      }
-      var latlng = {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()};
-      geocoder.geocode({'location': latlng}, function(results, status) {
-        if (status === 'OK') {
-          if (results[1]) {
-            console.log(results);
-            var geoAddress = results[1].formatted_address;
-            address.val(geoAddress);
-            setAddressFields('', results[1].address_components);
-          } else {
-            address.val('Unknown location');
-          }
-        } else {
-          window.alert('Google Geocoder failed due to: ' + status);
+    function init(){
+  		et_map.gmap3({
+        center : [$location_clat.val(), $location_clng.val()],
+  	    zoom: parseInt($location_zoom.val()),
+  	    mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: <?= ($map_control) ? 'true':'false';?>,
+        navigationControl: <?= ($navigation_control) ? 'true':'false';?>,
+        scrollwheel: <?= ($scrollwheel) ? 'true':'false';?>,
+        streetViewControl: <?= ($street_view) ? 'true':'false';?>
+      }).marker({
+  			position : [$location_lat.val(), $location_lng.val()],
+  			icon : "<?= $marker_icon_path ?>",
+        draggable : true
+      }).on('dragend', function(marker, e){
+        $location_lat.val(marker.getPosition().lat());
+        $location_lng.val( marker.getPosition().lng());
+        $location.val( marker.getPosition().lat() + "," + marker.getPosition().lng() );
+        //console.log(marker);
+        $location_zoom.val( marker.getMap().zoom);
+        $location_lat.val( marker.getMap().getCenter().lat() );
+        $location_lng.val( marker.getMap().getCenter().lng() );
+        //reverse lookup the address
+        if("true" == manual.val()){
+          return;
         }
+        var latlng = {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[1]) {
+              //console.log(results);
+              var geoAddress = results[1].formatted_address;
+              address.val(geoAddress);
+              setAddressFields('', results[1].address_components);
+            } else {
+              address.val('Unknown location');
+            }
+          } else {
+            window.alert('Google Geocoder failed due to: ' + status);
+          }
+        });
+  		}).then(function(result){
+        googleMap = this.get(0);
+        googleMarker = this.get(1);
       });
-		}).then(function(result){
-      googleMap = this.get(0);
-      googleMarker = this.get(1);
-    });
-    //locate the searched address
-    var autocomplete = new google.maps.places.Autocomplete(address.get(0),{types:["geocode"]});
-    autocomplete.bindTo('bounds', googleMap);
+      //locate the searched address
+      var autocomplete = new google.maps.places.Autocomplete(address.get(0),{types:["geocode"]});
+      autocomplete.bindTo('bounds', googleMap);
 
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
-      //marker.setVisible(false);
-      //input.className = '';
-      var place = autocomplete.getPlace();
-      console.log(place);
-      if (!place.geometry) {
-        // Inform the user that the place was not found and return.
-        console.log('No locations found for '+place.name);
-        return;
-      }
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        //input.className = '';
+        var place = autocomplete.getPlace();
+        //console.log(place);
+        if (!place.geometry) {
+          // Inform the user that the place was not found and return.
+          console.log('No locations found for '+place.name);
+          return;
+        }
 
-      // If the place has a geometry, then present it on a map.
-      if (place.geometry.viewport) {
-        googleMap.fitBounds(place.geometry.viewport);
-      } else {
-        googleMap.setCenter(place.geometry.location);
-        googleMap.setZoom(17);  // Why 17? Because it looks good.
-      }
-      //place markert to position
-      googleMarker.setPosition(place.geometry.location);
-      //console.log(place);
-      //update the address fields
-      setAddressFields(place.name, place.address_components);
-    });
-
-    var countryField = $('input#country-<?php echo $tag->name?>', map_container );
-    var stateField = $('input#state-<?php echo $tag->name?>', map_container );
-    var cityField = $('input#city-<?php echo $tag->name?>', map_container );
-    var lineField = $('input#line-<?php echo $tag->name?>', map_container );
-
+        // If the place has a geometry, then present it on a map.
+        if (place.geometry.viewport) {
+          googleMap.fitBounds(place.geometry.viewport);
+        } else {
+          googleMap.setCenter(place.geometry.location);
+          googleMap.setZoom(17);  // Why 17? Because it looks good.
+        }
+        //place markert to position
+        googleMarker.setPosition(place.geometry.location);
+        $location_lat.val(place.geometry.location.lat());
+        $location_lng.val( place.geometry.location.lng());
+        $location.val( place.geometry.location.lat() + "," + place.geometry.location.lng() );
+        $location_zoom.val(17);
+        $location_clat.val( place.geometry.location.lat() );
+        $location_clng.val( place.geometry.location.lng() );
+        //update the address fields
+        setAddressFields(place.name, place.address_components);
+        $('.cf7-google-map-search .dashicons-no-alt', map_container).closeCF7gmapSearchField();
+      });
+    }
     //find the address from the marker position
     function setAddressFields(name, addressComponents) {
       var idx, jdx, lineObj;
@@ -250,7 +269,7 @@ if (!$exists && function_exists('get_headers')) {
               country = lineObj.long_name;
             case 'postal_code':
               pin = lineObj.long_name;
-              console.log("pin: "+pin);
+              //console.log("pin: "+pin);
               break;
 
           }
@@ -306,7 +325,7 @@ if (!$exists && function_exists('get_headers')) {
     });
     if(et_map.is('.wpcf7-validates-as-required')){
       form.on('submit', function(event){
-        if('' == $('input#lat-<?php echo $tag->name?>', form ).val() ){
+        if('' == $('input#lat-<?= $tag->name?>', form ).val() ){
           et_map.after('<span role="alert" class="wpcf7-not-valid-tip">The location is required.</span>');
         }
       });
@@ -314,6 +333,16 @@ if (!$exists && function_exists('get_headers')) {
     //set the width of the search field
     var map_width =  et_map.css('width');
     $('div.cf7-google-map-search', map_container).css('width','calc(' + map_width + ' - 10px)');
+    /*@since 1.2.0 init map once Post My CF7 Form has loaded.*/
+    var $cf7Form = et_map.closest('form.wpcf7-form');
+    if($cf7Form.is('.cf7_2_post form.wpcf7-form')){
+      var id = $cf7Form.closest('.cf7_2_post').attr('id');
+      $cf7Form.on(id, function(event){
+        init();
+      });
+    }else{
+      init();
+    }
     //on map resize
     et_map.resize(function(){
       map_width =  $(this).css('width');
@@ -322,15 +351,18 @@ if (!$exists && function_exists('get_headers')) {
     });
     //search button
     $('.cf7-google-map-search .dashicons-search', map_container).on('click', function(){
-      $(this).siblings('.cf7marker-address').show();
+      $(this).siblings('.cf7marker-address').show().val('').focus();
       $(this).hide();
       $(this).siblings('.dashicons-no-alt').show();
     });
     $('.cf7-google-map-search .dashicons-no-alt', map_container).on('click', function(){
-      $(this).siblings('.cf7marker-address').hide();
-      $(this).hide();
-      $(this).siblings('.dashicons-search').show();
+      $(this).closeCF7gmapSearchField();
     });
 	});
+  $.fn.closeCF7gmapSearchField = function(){
+    $(this).siblings('.cf7marker-address').hide();
+    $(this).hide();
+    $(this).siblings('.dashicons-search').show();
+  }
 })(jQuery)
 </script>
