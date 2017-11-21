@@ -51,6 +51,8 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 
 == Changelog ==
+=1.2.2=
+* bug fix: map centre on drag.
 =1.2.1=
 * bug fix for loading existing draft form maps.
 = 1.2 =

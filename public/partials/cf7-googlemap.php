@@ -130,8 +130,8 @@ if (!$exists && function_exists('get_headers')) {
         $location.val( marker.getPosition().lat() + "," + marker.getPosition().lng() );
         //console.log(marker);
         $location_zoom.val( marker.getMap().zoom);
-        $location_lat.val( marker.getMap().getCenter().lat() );
-        $location_lng.val( marker.getMap().getCenter().lng() );
+        $location_clat.val( marker.getMap().getCenter().lat() );
+        $location_clng.val( marker.getMap().getCenter().lng() );
         //reverse lookup the address
         if("true" == manual.val()){
           return;
