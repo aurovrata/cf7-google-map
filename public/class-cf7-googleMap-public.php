@@ -154,10 +154,10 @@ class Cf7_GoogleMap_Public {
     $name = $tag->name;
 
     // Get POST Value
-    $posted_lat = isset( $_POST['lat-'.$name] ) ? (string) $_POST['lat-'.$name] : '';
+    //$posted_lat = isset( $_POST['lat-'.$name] ) ? (string) $_POST['lat-'.$name] : '';
     //TODO need to identify how to show error msg on form
     // Check if required field
-    if ($tag->is_required() && empty($posted_lat)) {
+    if ($tag->is_required() && isset( $_POST[$name] ) && empty($_POST[$name]) ) {
         $result->invalidate( $tag, __('Please select a location on the map','cf7-google-map') );
     }
     return $result;

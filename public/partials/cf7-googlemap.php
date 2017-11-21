@@ -62,7 +62,7 @@ if (!$exists && function_exists('get_headers')) {
 
 //HTML cf7 form
 ?>
-<div class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?> <?= $show_address;?>">
+<span class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?> <?= $show_address;?>">
   <div id="cf7-googlemap-<?= $tag->name?>" class="cf7-googlemap <?= $class?>"></div>
   <div class="cf7-google-map-search">
     <span class="dashicons dashicons-search"></span><span class="dashicons dashicons-no-alt"></span>
@@ -85,7 +85,7 @@ if (!$exists && function_exists('get_headers')) {
     <label for="country-<?= $tag->name?>"><?= apply_filters('cf7_google_map_country_label','Country',$tag->name);?><br />
     <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
   </div>
-</div>
+</span>
 <?= $validation_error;?>
 <script type="text/javascript">
 (function($){
