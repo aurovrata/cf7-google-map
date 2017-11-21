@@ -51,6 +51,8 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 
 == Changelog ==
+=1.2.1=
+* bug fix for loading existing draft form maps.
 = 1.2 =
 * enable loading map coordinates in saved draft forms.
 * map inputs not cleared when draft form saved using Post My CF7 Form plugin.

@@ -232,18 +232,20 @@ class Cf7_GoogleMap_Public {
   */
   public function load_map($script, $field, $form_id, $json_value, $js_form){
     $sufix = array("zoom", "clat", "clng", "lat", "lng");
-    $script = 'var $map="";';
-    $script .= 'if("undefined" != typeof '.$json_value.'.zoom){' . PHP_EOL;
-    $script .= '  $map=$(\'.wpcf7-form-control-wrap.' . $field . '\', '.$js_form.');'. PHP_EOL;
+    $script .= 'if("undefined" != typeof '.$json_value.'){' . PHP_EOL;
+    $script .= '  var $map="";';
+    $script .= '  if("undefined" != typeof '.$json_value.'.zoom){' . PHP_EOL;
+    $script .= '    $map=$(\'.wpcf7-form-control-wrap.' . $field . '\', '.$js_form.');'. PHP_EOL;
     foreach($sufix as $s){
-      $script .= '  $(\'input[name="'. $s .'-'. $field .'"]\', $map).val('. $json_value .'.'. $s .');' . PHP_EOL;
+      $script .= '    $(\'input[name="'. $s .'-'. $field .'"]\', $map).val('. $json_value .'.'. $s .');' . PHP_EOL;
     }
-    $script .= "}". PHP_EOL;
+    $script .= "  }". PHP_EOL;
     $sufix = array("line", "city", "state", "country");
-    $script .= 'if("undefined" != typeof '.$json_value.'.line){' . PHP_EOL;
+    $script .= '  if("undefined" != typeof '.$json_value.'.line){' . PHP_EOL;
     foreach($sufix as $s){
-      $script .= '  $(\'input[name="'. $s .'-'. $field .'"]\', $map).val('. $json_value .'.'. $s .');' . PHP_EOL;
+      $script .= '    $(\'input[name="'. $s .'-'. $field .'"]\', $map).val('. $json_value .'.'. $s .');' . PHP_EOL;
     }
+    $script .= "  }". PHP_EOL;
     $script .= "}". PHP_EOL;
     return $script;
   }
