@@ -81,7 +81,9 @@ class Cf7_GoogleMap_Public {
 
      $google_map_api_key = get_option('cf7_googleMap_api_key');
      //  AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E
-     wp_register_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key=' . $google_map_api_key . '&libraries=places', array( 'jquery' ), '1.0', true );
+     if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()){
+       wp_register_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key=' . $google_map_api_key . '&libraries=places', array( 'jquery' ), '1.0', true );
+     }
      wp_register_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin'), $this->version, true );
      wp_register_script( 'js-resize', plugin_dir_url( __DIR__ ) . '/assets/js-resize/jquery.resize.js', array( 'jquery'), $this->version, true );
   }
@@ -155,8 +157,7 @@ class Cf7_GoogleMap_Public {
 
     // Get POST Value
     //$posted_lat = isset( $_POST['lat-'.$name] ) ? (string) $_POST['lat-'.$name] : '';
-    //TODO need to identify how to show error msg on form
-    // Check if required field
+    /*TODO better validation for address checkbox fields*/
     if ($tag->is_required() && isset( $_POST[$name] ) && empty($_POST[$name]) ) {
         $result->invalidate( $tag, __('Please select a location on the map','cf7-google-map') );
     }

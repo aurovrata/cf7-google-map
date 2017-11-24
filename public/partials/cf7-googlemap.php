@@ -93,7 +93,9 @@ if (!$exists && function_exists('get_headers')) {
 		var et_map = $( '#cf7-googlemap-<?= $tag->name?>' ),
 			googleMap, googleMarker;
     var map_container = et_map.closest('.cf7-google-map-container');
+    <?php if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()):?>
     var geocoder = new google.maps.Geocoder;
+    <?php endif;?>
     var form = et_map.closest('form.wpcf7-form');
     var address = $('input#address-<?= $tag->name?>', map_container );
     var manual = $('input#manual-address-<?= $tag->name?>', map_container );
@@ -335,6 +337,7 @@ if (!$exists && function_exists('get_headers')) {
     $('div.cf7-google-map-search', map_container).css('width','calc(' + map_width + ' - 10px)');
     /*@since 1.2.0 init map once Post My CF7 Form has loaded.*/
     var $cf7Form = et_map.closest('form.wpcf7-form');
+  <?php if(! class_exists( 'Airplane_Mode_Core' ) || ! Airplane_Mode_Core::getInstance()->enabled()):?>
     if($cf7Form.is('.cf7_2_post form.wpcf7-form')){
       var id = $cf7Form.closest('.cf7_2_post').attr('id');
       $cf7Form.on(id, function(event){
@@ -343,6 +346,7 @@ if (!$exists && function_exists('get_headers')) {
     }else{
       init();
     }
+  <?php endif;?>
     //on map resize
     et_map.resize(function(){
       map_width =  $(this).css('width');
