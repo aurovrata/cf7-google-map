@@ -19,7 +19,7 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 * a search field is available to lookup addresses
 * an optional set of address fields can be enabled from the cf7 tag to display reverse-geocode text address
 * if a user changes manually the first line of the (optional) address field, the reverse-geocode is frozen.  This allows for address corrections.
-* google map disabled for Airplane Mode plugin activation to allow you to develop without an Internet connection.
+* google map is disabled for [Airplane Mode plugin](https://github.com/norcross/airplane-mode/releases) activation to allow you to develop without an Internet connection.
 
 = Checkout our other CF7 plugin extensions =
 
