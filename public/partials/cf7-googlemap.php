@@ -346,6 +346,8 @@ if (!$exists && function_exists('get_headers')) {
     }else{
       init();
     }
+  <?php else:?>
+    et_map.append('<p style="text-align: center;padding: 93px 0;border: solid 1px;"><em>airplane mode</em></p>');
   <?php endif;?>
     //on map resize
     et_map.resize(function(){

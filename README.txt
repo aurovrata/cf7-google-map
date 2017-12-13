@@ -52,6 +52,8 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 
 == Changelog ==
+=1.2.5=
+* fix WP_GURUS_DEBUG constant warning.
 =1.2.4=
 * airplane-mode plugin compatible.
 =1.2.3=
