@@ -16,7 +16,7 @@
  * Plugin Name:       Google Map for Contact Form 7
  * Plugin URI:        http://wordpress.syllogic.in
  * Description:       Allows a map field to be included in a Contact Form 7 for use to drag and drop their location
- * Version:           1.2.5
+ * Version:           1.2.6
  * Author:            Aurovrata V.
  * Author URI:        http://syllogic.in
  * License:           GPL-2.0+

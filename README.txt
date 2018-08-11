@@ -3,7 +3,7 @@ Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=64EDYAVB7EGTJ
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
-Tested up to: 4.9
+Tested up to: 4.9.8
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,9 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 
 == Changelog ==
+=1.2.6=
+* fix optional address field bug.
+* fix map not being displayed for std cf7 forms.
 =1.2.5=
 * fix WP_GURUS_DEBUG constant warning.
 =1.2.4=

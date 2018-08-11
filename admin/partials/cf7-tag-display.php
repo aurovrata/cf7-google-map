@@ -21,6 +21,21 @@
     <legend>Google Map field for contact form 7</legend>
     <table id="googleMap-tag-generator" class="form-table">
       <tbody>
+        <?php
+        /**
+        * Check/warn for google api.
+        * @since 1.2.6
+        */
+        $google_map_api_key = get_option('cf7_googleMap_api_key', '');
+        if(empty($google_map_api_key)){
+          ?>
+          <tr style="background:#ffc9c9;border: 3px solid red;">
+          <th scope="row" style="padding:3px;">WARNING</th>
+          <td>You need to <a href="<?= admin_url('options-general.php?page=cf7-googleMap-settings')?>">set an API key</a> from Google to use and display maps on your site.</td>
+          </tr>
+          <?php
+        }
+        ?>
         <tr>
       	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
       	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>

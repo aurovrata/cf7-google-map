@@ -8,10 +8,12 @@ if ( $validation_error ) {
 if ( 'map*' === $tag->type ) {
     $class .= ' wpcf7-validates-as-required';
 }
+$show_address = false;
+if(!empty($tag->options) && 'show_address'==$tag->options[0]) $show_address = true;
+//debug_msg($tag->options, $show_address);
 $value = (string) reset( $tag->values );
 $map_values = explode( ';',$value );
-$show_address = 'cf7-googlemap-address-hide';
-$show_address = 'cf7-googlemap-address-show';
+
 //error_log("GoogleMap: ".$value."\n".print_r($slide_values,true));
 $zoom = explode(':',$map_values[0]); //zoom:
 $clat = explode(':',$map_values[1]); //lat:
@@ -62,7 +64,7 @@ if (!$exists && function_exists('get_headers')) {
 
 //HTML cf7 form
 ?>
-<span class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?> <?= $show_address;?>">
+<div class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?>">
   <div id="cf7-googlemap-<?= $tag->name?>" class="cf7-googlemap <?= $class?>"></div>
   <div class="cf7-google-map-search">
     <span class="dashicons dashicons-search"></span><span class="dashicons dashicons-no-alt"></span>
@@ -75,6 +77,7 @@ if (!$exists && function_exists('get_headers')) {
     <input name="<?= $tag->name?>" id="<?= $tag->name?>" value="" type="hidden">
     <input name="manual-address-<?= $tag->name?>" id="manual-address-<?= $tag->name?>" value="false" type="hidden">
   </div>
+<?php if($show_address):?>
   <div class="cf7-googlemap-address-fields">
     <label for="line-<?= $tag->name?>"><?= apply_filters('cf7_google_map_address_label','Address', $tag->name);?><br />
     <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
@@ -85,6 +88,7 @@ if (!$exists && function_exists('get_headers')) {
     <label for="country-<?= $tag->name?>"><?= apply_filters('cf7_google_map_country_label','Country',$tag->name);?><br />
     <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
   </div>
+<?php endif;?>
 </span>
 <?= $validation_error;?>
 <script type="text/javascript">
@@ -95,6 +99,7 @@ if (!$exists && function_exists('get_headers')) {
     var map_container = et_map.closest('.cf7-google-map-container');
     <?php if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()):?>
     var geocoder = new google.maps.Geocoder;
+    var hasAddress = $('div.cf7-googlemap-address-fields', map_container).length>0;
     <?php endif;?>
     var form = et_map.closest('form.wpcf7-form');
     var address = $('input#address-<?= $tag->name?>', map_container );
@@ -145,7 +150,7 @@ if (!$exists && function_exists('get_headers')) {
               //console.log(results);
               var geoAddress = results[1].formatted_address;
               address.val(geoAddress);
-              setAddressFields('', results[1].address_components);
+              if(hasAddress) setAddressFields('', results[1].address_components);
             } else {
               address.val('Unknown location');
             }
@@ -187,7 +192,7 @@ if (!$exists && function_exists('get_headers')) {
         $location_clat.val( place.geometry.location.lat() );
         $location_clng.val( place.geometry.location.lng() );
         //update the address fields
-        setAddressFields(place.name, place.address_components);
+        if(hasAddress) setAddressFields(place.name, place.address_components);
         $('.cf7-google-map-search .dashicons-no-alt', map_container).closeCF7gmapSearchField();
       });
     }

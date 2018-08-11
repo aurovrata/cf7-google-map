@@ -89,11 +89,10 @@ class Cf7_GoogleMap_Admin {
       case ('toplevel_page_wpcf7' == $hook || 'contact_page_wpcf7-new' == $hook):
 
         $plugin_dir = plugin_dir_url( __DIR__ );
-        //TODO: setup google map api in settings section of general page
-        $google_map_api_key = get_option('cf7_googleMap_api_key');
+        $google_map_api_key = get_option('cf7_googleMap_api_key','');
         $airplane_mode = true;
         if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()){
-          wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='. $google_map_api_key, array( 'jquery' ), '1.0', true );
+          wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='. $google_map_api_key, array( 'jquery' ), null, true );
           $airplane_mode = false;
         }
         wp_enqueue_script( 'gmap3-admin', $plugin_dir . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin' ), $this->version, true );

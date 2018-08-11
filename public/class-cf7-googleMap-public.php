@@ -179,7 +179,7 @@ class Cf7_GoogleMap_Public {
     $tags = $contact_form->scan_form_tags();
 
 		foreach ( (array) $tags as $tag ) {
-			if ( empty( $tag['name'] || 'map' != $tag['type']) ) {
+			if ( empty( $tag['name'] ) || 'map' != $tag['type'] ) {
 				continue;
 			}
       $field = 'lat-'.$tag['name'];

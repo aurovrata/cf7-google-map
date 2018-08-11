@@ -27,7 +27,7 @@
             $( '#cf7_centre_lng' ,tagForm).val( map.getCenter().lng() );
             updateTag();
           }).marker({
-			position : [marker_lat, marker_lng],
+			position : [cf7_map_admin_settings.marker_lat, cf7_map_admin_settings.marker_lng],
 			icon : cf7_map_admin_settings.theme_dir + "/assets/red-marker.png",
             draggable : true
           }).on('dragend', function(marker, e){
@@ -48,12 +48,15 @@
           googleMarker.setPosition( new google.maps.LatLng( lat, lng ) );
           googleMap.panTo( new google.maps.LatLng( lat, lng ) );
         });
+        //on checkbox change, update.
+        $('#cf7-google-map-show-address').change(updateTag);
         function updateTag(){
             var required = $('input[name="required"]', tagForm).is(':checked');
             var name = $('#tag-generator-panel-map-name', tagForm ).val();
             var id = $('#tag-generator-panel-map-id', tagForm ).val();
             var classes = $('#tag-generator-panel-map-class', tagForm ).val();
-            var show = $('cf7-google-map-show-address', tagForm).is(':checked') ? ' show_address ' : '';
+            var show ='';
+            if( $('#cf7-google-map-show-address', tagForm).is(':checked') ) show = ' show_address ';
             var lat = markerLatField.val();
             var lng = markerLngField.val();
             var clat = $('input[name="cf7_centre_lat"]', tagForm).val();

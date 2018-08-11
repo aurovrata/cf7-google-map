@@ -1,11 +1,8 @@
+.cf7-googlemap.wpcf7-form-control {
+    min-height: 300px;
+}
 .cf7-smart-grid.has-grid div.field .cf7-google-map-container span.wpcf7-not-valid-tip {
     top: 100%;
-}
-.cf7-googlemap-address-hide div.cf7-googlemap {
-   width: 100%;
-   height: 210px;
-   margin-bottom: 12px;
-   display: block;
 }
 .cf7-googlemap-address-show div.cf7-googlemap {
    width: 60%;
@@ -47,6 +44,9 @@ input.cf7-googlemap-address {
     top: 5px;
     left: 5px;
     width: calc(60% - 10px);
+}
+.wpcf7-form-control-wrap.cf7-google-map-container{
+  display: inline-block;
 }
 .cf7-google-map-search .cf7marker-address,
 .cf7-google-map-search .dashicons.dashicons-no-alt {
