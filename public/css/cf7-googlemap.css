@@ -1,4 +1,5 @@
-.cf7-googlemap.wpcf7-form-control {
+.cf7-googlemap.wpcf7-form-control,
+.cf7-smart-grid.has-grid .cf7-googlemap.wpcf7-form-control {
     min-height: 300px;
 }
 .cf7-smart-grid.has-grid div.field .cf7-google-map-container span.wpcf7-not-valid-tip {
