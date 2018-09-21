@@ -82,7 +82,7 @@ class Cf7_GoogleMap_Public {
      $google_map_api_key = get_option('cf7_googleMap_api_key');
      //  AIzaSyBAuTD7ld6g6nEKfrb-AdEh6eq5MLQ1g-E
      if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()){
-       wp_register_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key=' . $google_map_api_key . '&libraries=places', array( 'jquery' ), '1.0', true );
+       wp_register_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key=' . $google_map_api_key . '&libraries=places', array( 'jquery' ), null, true );
      }
      wp_register_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin'), $this->version, true );
      wp_register_script( 'js-resize', plugin_dir_url( __DIR__ ) . '/assets/js-resize/jquery.resize.js', array( 'jquery'), $this->version, true );

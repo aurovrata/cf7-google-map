@@ -104,7 +104,7 @@ if (!$exists && function_exists('get_headers')) {
     var form = et_map.closest('form.wpcf7-form');
     var address = $('input#address-<?= $tag->name?>', map_container );
     var manual = $('input#manual-address-<?= $tag->name?>', map_container );
-    var autoLine =''; //track automated values of line address
+    var autoLine =''; /*track automated values of line address*/
     var $location_lat = $('#lat-<?= $tag->name?>', map_container);
     var $location_lng = $('#lng-<?= $tag->name?>', map_container);
     var $location_clat = $('#clat-<?= $tag->name?>', map_container);
@@ -119,13 +119,13 @@ if (!$exists && function_exists('get_headers')) {
     //var link = ' https://www.google.com/maps/search/?api=1&query=';
 
     function init(){
+      //scrollwheel: <?= ($scrollwheel) ? 'true':'false';?>,
   		et_map.gmap3({
         center : [$location_clat.val(), $location_clng.val()],
   	    zoom: parseInt($location_zoom.val()),
   	    mapTypeId: google.maps.MapTypeId.ROADMAP,
         mapTypeControl: <?= ($map_control) ? 'true':'false';?>,
         navigationControl: <?= ($navigation_control) ? 'true':'false';?>,
-        scrollwheel: <?= ($scrollwheel) ? 'true':'false';?>,
         streetViewControl: <?= ($street_view) ? 'true':'false';?>
       }).marker({
   			position : [$location_lat.val(), $location_lng.val()],
@@ -163,6 +163,7 @@ if (!$exists && function_exists('get_headers')) {
         googleMarker = this.get(1);
       });
       //locate the searched address
+      /*
       var autocomplete = new google.maps.places.Autocomplete(address.get(0),{types:["geocode"]});
       autocomplete.bindTo('bounds', googleMap);
 
@@ -195,7 +196,66 @@ if (!$exists && function_exists('get_headers')) {
         if(hasAddress) setAddressFields(place.name, place.address_components);
         $('.cf7-google-map-search .dashicons-no-alt', map_container).closeCF7gmapSearchField();
       });
+      */
+      var searchBox = new google.maps.places.SearchBox(address.get(0));
+      //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+      // Bias the SearchBox results towards current map's viewport.
+      googleMap.addListener('bounds_changed', function() {
+        searchBox.setBounds(googleMap.getBounds());
+      });
+
+      var markers = [];
+      // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+
+        // Clear out the old markers.
+        markers.forEach(function(marker) {
+          marker.setMap(null);
+        });
+        markers = [];
+
+        // For each place, get the icon, name and location.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+          if (!place.geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+          }
+          var icon = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+
+          // Create a marker for each place.
+          markers.push(new google.maps.Marker({
+            map: googleMap,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location
+          }));
+
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        });
+        googleMap.fitBounds(bounds);
+      });
     }
+
+
     //find the address from the marker position
     function setAddressFields(name, addressComponents) {
       var idx, jdx, lineObj;
