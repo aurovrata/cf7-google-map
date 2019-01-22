@@ -158,9 +158,37 @@ class Cf7_GoogleMap_Admin {
         <?php settings_fields( 'cf7-google-map-settings-group' ); ?>
         <?php do_settings_sections( 'cf7-google-map-settings-group' ); ?>
         <h2>Contact form 7 Google Map Extension Settings</h2>
-
-        <label for="cf7_googleMap_api_key">Get an API Key from <a href="https://developers.google.com/maps/documentation/javascript/get-api-key#key" target="_blank">Google</a></label><br />
-        <input type="text" name="cf7_googleMap_api_key" value="<?php echo esc_attr( get_option('cf7_googleMap_api_key') ); ?>" />
+        <table class="form-table">
+          <tbody>
+              <tr>
+                <th scope="row">
+                  <label for="cf7_googleMap_api_key"><?=__('Google Maps API Key','cf7-google-map')?></label>
+                </th>
+                <td>
+                  <input type="text" name="cf7_googleMap_api_key" value="<?php echo esc_attr( get_option('cf7_googleMap_api_key') ); ?>" />
+                  <p class="description"><?=__('Get an API Key from <a href="https://developers.google.com/maps/documentation/javascript/get-api-key#key" target="_blank">Google</a>','cf7-google-map')?></p>
+                </td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <label for="cf7_googleMap_enable_geocode"><?=__('Enable address field option','cf7-google-map')?> </label>
+              </th>
+              <td>
+                <input type="checkbox" name="cf7_googleMap_enable_geocode" value="1" <?= checked(1, get_option('cf7_googleMap_enable_geocode'), false ); ?> /><?= __('Enable this option to add address fields to your maps.','cf7-google-map')?>
+                <p class="description"><?=__('You will also need to enable <a href=""https://developers.google.com/maps/documentation/geocoding/get-api-key">Geocoding API</a> to retrieve physical addresses for locations.','cf7-google-map')?></p>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              <label for="cf7_googleMap_enable_places"><?=__('Enable google search box','cf7-google-map')?> </label>
+            </th>
+            <td>
+              <input type="checkbox" name="cf7_googleMap_enable_places" value="1" <?= checked(1, get_option('cf7_googleMap_enable_places'), false ); ?> /><?= __('This adds a <a href="https://developers.google.com/maps/documentation/javascript/examples/places-searchbox">search box</a> to your maps.','cf7-google-map')?>
+              <p class="description"><?=__('You will also need to enable <a href=""https://developers.google.com/places/web-service/get-api-key">Google Places API</a> to search place names on a map.','cf7-google-map')?></p>
+            </td>
+          </tr>
+        </tbody>
+        </table>
         <style>input[name="cf7_googleMap_api_key"]{width:100%; max-width:350px;}</style>
         <?php submit_button();?>
       </form>
@@ -176,6 +204,8 @@ class Cf7_GoogleMap_Admin {
   public function register_settings(){
     // Default API KEY Google Maps
     register_setting( 'cf7-google-map-settings-group', 'cf7_googleMap_api_key', array($this,'maps_api_validation') );
+    register_setting( 'cf7-google-map-settings-group', 'cf7_googleMap_enable_geocode', array('type'=>'boolean') );
+    register_setting( 'cf7-google-map-settings-group', 'cf7_googleMap_enable_places', array('type'=>'boolean') );
   }
   /**
    * Validates a google API key
@@ -203,18 +233,79 @@ class Cf7_GoogleMap_Admin {
   public function email_tags( $mailtags = array() ) {
     $contact_form = WPCF7_ContactForm::get_current();
     $tags = $contact_form->scan_form_tags();
-
-	foreach ( (array) $tags as $tag ) {
-	  if ( !empty($tag['name']) && 'map' == $tag['basetype'] ) {
+  	foreach ( (array) $tags as $tag ) {
+  	  if ( !empty($tag['name']) && 'map' == $tag['basetype'] ) {
         $mailtags[] = 'lat-'.$tag['name'];
         $mailtags[] = 'lng-'.$tag['name'];
+        if(get_option('cf7_googleMap_enable_geocode',0)) $mailtags[] = 'address-'.$tag['name'];
         //remove teh default tag.
         if( false !== ($key = array_search($tag['name'], $mailtags)) ){
           unset($mailtags[$key]);
         }
       }
     }
-
     return $mailtags;
+  }
+  /**
+  * This function runs when WordPress completes its upgrade process
+  * It iterates through each plugin updated to see if ours is included
+  * @param $upgrader_object Array
+  * @param $options Array
+  */
+  public function upgrade_completed( $upgrader_object, $options ) {
+    // If an update has taken place and the updated type is plugins and the plugins element exists
+    if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ){
+      // Iterate through the plugins being updated and check if ours is there
+      foreach( $options['plugins'] as $plugin ) {
+        if( $plugin != $this->plugin_name ) continue;
+      /**
+      *@since 1.3.0
+      */
+      if(version_compare($this->version, '1.3.0', '>')) return;
+      set_option('cf7_googleMap_enable_geocode',1);
+      set_option('cf7_googleMap_enable_places',1);
+      $notices = get_option('cf7-google-map-notices', array());
+      $nonce = wp_create_nonce( 'cf7_gmap_update_notice' );
+      $notice = array(
+          'nonce'=>$nonce,
+          'type'=>'uprade-warning',
+          'msg'=> sprintf(__('Google Maps APIs policy has changed, and now requires API keys to be setup and the required APIs enabled. The settings for this plugin has therefore been updated to reflect these changes.  Please review your <a href="%s">settings</a> and ensure you have the correct APIs enabled for your key.', 'cf7-polylang'), admin_url('/options-general.php?page=cf7-googleMap-settings'))
+      );
+      $notices['admin.php']['page=wpcf7']=$notice;
+      $notices['plugins.php']['any']=$notice;
+      update_option('cf7-google-map-notices', $notices);
+
+      }
+    }
+  }
+
+  /**
+  * Show a notice to anyone who has just updated this plugin
+  * This notice shouldn't display to anyone who has just installed the plugin for the first time
+  */
+  public function admin_notices() {
+    global $pagenow;
+    // Check the transient to see if we've just updated the plugin
+    $notices = get_option('cf7-google-map-notices', array());
+    if(empty($notices)) return;
+    if(!isset($notices[$pagenow])) return;
+
+    foreach($notices[$pagenow] as $key=>$notice){
+    switch(true){
+        case strpos($key, 'page=') !== false && $_GET['page'] === str_replace('page=','',$key):
+        case strpos($key, 'post_type=') !== false && $_GET['post_type'] === str_replace('post_type=','',$key):
+        case $key==='any':
+            $dismiss = $notice['nonce'].'-forever';
+            if ( ! PAnD::is_admin_notice_active( $dismiss ) ) {
+                unset($notices[$pagenow]);
+                update_option('cf7-polylang-admin-notices', $notices);
+                continue;
+            }
+            ?>
+            <div data-dismissible="<?=$dismiss?>" class="updated notice <?=$notice['type']?> is-dismissible"><p><?=$notice['msg']?></p></div>
+            <?php
+            break;
+        }
+    }
   }
 }

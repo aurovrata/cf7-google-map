@@ -34,6 +34,21 @@ class Cf7_GoogleMap_Activator {
     if(!is_plugin_active( 'contact-form-7/wp-contact-form-7.php' )){
       exit('This plugin requires the Contact Form 7 plugin to be installed first');
     }
+    /** @since 1.3.0 */
+    set_option('cf7_googleMap_enable_geocode',0);
+    set_option('cf7_googleMap_enable_places',0);
+    set_option('cf7_googleMap_enable_geocode',1);
+    set_option('cf7_googleMap_enable_places',1);
+    $notices = get_option('cf7-google-map-notices', array());
+    $nonce = wp_create_nonce( 'cf7_gmap_install_notice' );
+    $notice = array(
+     'nonce'=>$nonce,
+     'type'=>'install-info',
+     'msg'=> sprintf(__('Google Maps APIs policy has changed, and now requires API keys to be setup and the required APIs enabled. Before you start using maps in your forms, please review your <a href="%s">settings</a> and ensure you have a key and the correct APIs enabled for it.', 'cf7-polylang'), admin_url('/options-general.php?page=cf7-googleMap-settings'))
+    );
+    $notices['admin.php']['page=wpcf7']=$notice;
+    $notices['plugins.php']['any']=$notice;
+    update_option('cf7-google-map-notices', $notices);
 	}
 
 }

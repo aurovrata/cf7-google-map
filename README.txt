@@ -3,7 +3,7 @@ Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=64EDYAVB7EGTJ
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
-Tested up to: 4.9.8
+Tested up to: 5.0.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,23 +35,35 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 
 1. Unpack `cf7-google-map.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Get a [Google Map API key](https://developers.google.com/maps/documentation/javascript/get-api-key#key) and insert it in the plugin Settings->CF7 Google Map page.
+3. Get a [Google Map API key](https://developers.google.com/maps/documentation/javascript/get-api-key#key) and insert it in the plugin Settings->CF7 Google Map page. Make sure you enable the required APIs (see faq #).
 4. Create a new form in the CF7 editor.  Select the [Google Map] tag, and configure your map.
 5. The plugin creates 2 email tags for submitted location, the `lat-<field-name' and `lng-<field-name>`.  This allows you to include multiple maps in a single form if needed.
 
 
 == Frequently Asked Questions ==
 
+= 1. My map is darkened , or 'negative' and is watermarked with the text "for development purposes only". =
+This is an issue with your Google API key not having the APIs enabled.  You need to ensure several things.  If you have enabled both Geocode API option and Google Places in the plugin settings, then you need to make sure those APIs are enabled on your key.  To enalbe the APIs, log into your Google [dashboard](https://console.cloud.google.com/projectselector/home/dashboard), select your project (or create a new one) and navigate to the **APIs & Services** section.  You can then enable/add APIs and search for the Geocoding API and the Google Places API and enable the ones you need.  If you are still facing this issue, check Google's other steps in this [FAQ](https://developers.google.com/maps/faq#api-key-billing-errors) on this issue.
+
+= 2. I am based in Brazil/Canada/India and my maps is not working. =
+
+If you are facing the issue described in faq#1 above, and you have enabled all the required APIS but your map is still not functioning, then likely the issue you are facing is related to billing.  Request from Brazil/Canada/India need to have API Keys for projects that are linked to a billing-enabled account. See this [issue](https://developers.google.com/maps/faq#api-key-billing-errors) on Google's faq.
+
 == Screenshots ==
 1. Save your Google API key in the settings, else your map will not function
 2. Insert a Google Map tag into your cf7 form
 3. You can set the default parameters for your map, this will be used to display the default zoom level as well as pin location in the form
 4. The map is by default set to take up 100% width in the form, and a height of 120px.  Override this in your child css stylesheet to size up your map.
-5. Optional address fields get auto-filled by the reverse-geocode lookup.  The map as contains a search field to locate an address.
+5. Optional address fields get auto-filled by the reverse-geocode lookup.  The map as contains a search field to locate an address (you will need to enable the appropriate Google APIs).
 
 
 
 == Changelog ==
+=1.3.0=
+* settings for Geocoding API and Google Places API.
+* faq updated with more info.
+* searchbox places marker are now draggable.
+* searchbox places marker delete default marker location.
 =1.2.6=
 * fix optional address field bug.
 * fix map not being displayed for std cf7 forms.

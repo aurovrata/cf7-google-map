@@ -120,6 +120,11 @@ class Cf7_GoogleMap {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cf7-googleMap-public.php';
 
+		/**
+    * Persist admin notices:
+		* @since 1.3.0.
+    */
+    require_once  plugin_dir_path( dirname( __FILE__ ) ) . '/assets/persist-admin-notices/persist-admin-notices-dismissal.php';
 
 		$this->loader = new Cf7_GoogleMap_Loader();
 
@@ -157,6 +162,9 @@ class Cf7_GoogleMap {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
     $this->loader->add_action('admin_menu', $plugin_admin, 'add_settings_submenu');
     $this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+    /** @since 1.3.0 update and notices */
+    $this->loader->add_action( 'admin_notices', $plugin_admin, 'admin_notices' );
+    $this->loader->add_action( 'upgrader_process_complete', $plugin_admin,'upgrade_completed', 10, 2 );
 
 		//CF7 Hooks
     $this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_cf7_tag_generator_googleMap' );

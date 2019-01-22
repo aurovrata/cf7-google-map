@@ -18,7 +18,7 @@
 
 <div class="control-box cf7-googleMap">
   <fieldset>
-    <legend>Google Map field for contact form 7</legend>
+    <legend><?= __('Google Map field for contact form 7','cf7-google-map');?></legend>
     <table id="googleMap-tag-generator" class="form-table">
       <tbody>
         <?php
@@ -30,8 +30,8 @@
         if(empty($google_map_api_key)){
           ?>
           <tr style="background:#ffc9c9;border: 3px solid red;">
-          <th scope="row" style="padding:3px;">WARNING</th>
-          <td>You need to <a href="<?= admin_url('options-general.php?page=cf7-googleMap-settings')?>">set an API key</a> from Google to use and display maps on your site.</td>
+          <th scope="row" style="padding:3px;"><?= __('WARNING','cf7-google-map')?></th>
+          <td><?= sprintf(__('You need to <a href="%s">set an API key</a> from Google to use and display maps on your site.','cf7-google-map'), admin_url('options-general.php?page=cf7-googleMap-settings'))?></td>
           </tr>
           <?php
         }
@@ -41,8 +41,8 @@
       	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
       	</tr>
         <tr>
-        	<th scope="row">Field type</th>
-        	<td><input name="required" type="checkbox"> Required field<br /></td>
+        	<th scope="row"><?=__( 'Field type', 'contact-form-7' )?></th>
+        	<td><input name="required" type="checkbox"><?= __( 'Required field', 'contact-form-7' ) ?><br /></td>
       	</tr>
           <tr>
             <th>
@@ -71,7 +71,7 @@
           </tr>
           <tr>
             <th>
-              <label for="tag-generator-panel-number-id">Id attribute</label>
+              <label for="tag-generator-panel-number-id"><?=__( 'Id attribute', 'contact-form-7' )?></label>
             </th>
             <td>
               <input name="id" class="idvalue oneline option" id="tag-generator-panel-map-id" type="text">
@@ -79,16 +79,18 @@
           </tr>
           <tr>
             <th>
-              <label for="tag-generator-panel-number-class">Class attribute</label>
+              <label for="tag-generator-panel-number-class"><?=__( 'Class attribute', 'contact-form-7' )?></label>
             </th>
             <td>
               <input name="class" class="classvalue oneline option" id="tag-generator-panel-map-class" type="text">
             </td>
           </tr>
+          <?php if( get_option('cf7_googleMap_enable_geocode',0)):?>
           <tr>
-        	<th scope="row">Address fields</th>
-        	<td><input name="show_address" id="cf7-google-map-show-address" type="checkbox"> Show address fields (auto populated line / city / state / country fields)<br /></td>
+        	<th scope="row"><?php esc_html_e( 'Address fields', 'cf7-google-map' ); ?></th>
+        	<td><input name="show_address" id="cf7-google-map-show-address" type="checkbox"> <?php esc_html_e( 'Show address fields (auto populated line / city / state / country fields)', 'cf7-google-map' ); ?><br /></td>
         	</tr>
+        <?php endif;?>
       </tbody>
     </table>
   </fieldset>
