@@ -272,6 +272,7 @@ class Cf7_GoogleMap_Admin {
           'msg'=> sprintf(__('Google Maps APIs policy has changed, and now requires API keys to be setup and the required APIs enabled. The settings for this plugin has therefore been updated to reflect these changes.  Please review your <a href="%s">settings</a> and ensure you have the correct APIs enabled for your key.', 'cf7-polylang'), admin_url('/options-general.php?page=cf7-googleMap-settings'))
       );
       $notices['admin.php']['page=wpcf7']=$notice;
+      $notices['edit.php']['post_type=wpcf7_contact_form']=$notice;
       $notices['plugins.php']['any']=$notice;
       update_option('cf7-google-map-notices', $notices);
 

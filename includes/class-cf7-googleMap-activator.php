@@ -45,6 +45,7 @@ class Cf7_GoogleMap_Activator {
      'msg'=> sprintf(__('Google Maps APIs policy has changed, and now requires API keys to be setup and the required APIs enabled. Before you start using maps in your forms, please review your <a href="%s">settings</a> and ensure you have a key and the correct APIs enabled for it.', 'cf7-polylang'), admin_url('/options-general.php?page=cf7-googleMap-settings'))
     );
     $notices['admin.php']['page=wpcf7']=$notice;
+    $notices['edit.php']['post_type=wpcf7_contact_form']=$notice;
     $notices['plugins.php']['any']=$notice;
     update_option('cf7-google-map-notices', $notices);
 	}
