@@ -35,10 +35,8 @@ class Cf7_GoogleMap_Activator {
       exit('This plugin requires the Contact Form 7 plugin to be installed first');
     }
     /** @since 1.3.0 */
-    set_option('cf7_googleMap_enable_geocode',0);
-    set_option('cf7_googleMap_enable_places',0);
-    set_option('cf7_googleMap_enable_geocode',1);
-    set_option('cf7_googleMap_enable_places',1);
+    add_option('cf7_googleMap_enable_geocode',0);
+    add_option('cf7_googleMap_enable_places',0);
     $notices = get_option('cf7-google-map-notices', array());
     $nonce = wp_create_nonce( 'cf7_gmap_install_notice' );
     $notice = array(
