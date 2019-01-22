@@ -258,23 +258,23 @@ class Cf7_GoogleMap_Admin {
       // Iterate through the plugins being updated and check if ours is there
       foreach( $options['plugins'] as $plugin ) {
         if( $plugin != $this->plugin_name ) continue;
-      /**
-      *@since 1.3.0
-      */
-      if(version_compare($this->version, '1.3.0', '>')) return;
-      add_option('cf7_googleMap_enable_geocode',1);
-      add_option('cf7_googleMap_enable_places',1);
-      $notices = get_option('cf7-google-map-notices', array());
-      $nonce = wp_create_nonce( 'cf7_gmap_update_notice' );
-      $notice = array(
-          'nonce'=>$nonce,
-          'type'=>'uprade-warning',
-          'msg'=> sprintf(__('Google Maps APIs policy has changed, and now requires API keys to be setup and the required APIs enabled. The settings for this plugin has therefore been updated to reflect these changes.  Please review your <a href="%s">settings</a> and ensure you have the correct APIs enabled for your key.', 'cf7-polylang'), admin_url('/options-general.php?page=cf7-googleMap-settings'))
-      );
-      $notices['admin.php']['page=wpcf7']=$notice;
-      $notices['edit.php']['post_type=wpcf7_contact_form']=$notice;
-      $notices['plugins.php']['any']=$notice;
-      update_option('cf7-google-map-notices', $notices);
+          /**
+          *@since 1.3.0
+          */
+          if(version_compare($this->version, '1.3.0', '>')) return;
+          add_option('cf7_googleMap_enable_geocode',1);
+          add_option('cf7_googleMap_enable_places',1);
+          $notices = get_option('cf7-google-map-notices', array());
+          $nonce = wp_create_nonce( 'cf7_gmap_update_notice' );
+          $notice = array(
+              'nonce'=>$nonce,
+              'type'=>'uprade-warning',
+              'msg'=> sprintf(__('Google Maps APIs policy has changed, and now requires API keys to be setup and the required APIs enabled. The settings for this plugin has therefore been updated to reflect these changes.  Please review your <a href="%s">settings</a> and ensure you have the correct APIs enabled for your key.', 'cf7-polylang'), admin_url('/options-general.php?page=cf7-googleMap-settings'))
+          );
+          $notices['admin.php']['page=wpcf7']=$notice;
+          $notices['edit.php']['post_type=wpcf7_contact_form']=$notice;
+          $notices['plugins.php']['any']=$notice;
+          update_option('cf7-google-map-notices', $notices);
 
       }
     }
@@ -292,20 +292,20 @@ class Cf7_GoogleMap_Admin {
     if(!isset($notices[$pagenow])) return;
 
     foreach($notices[$pagenow] as $key=>$notice){
-    switch(true){
-        case strpos($key, 'page=') !== false && $_GET['page'] === str_replace('page=','',$key):
-        case strpos($key, 'post_type=') !== false && $_GET['post_type'] === str_replace('post_type=','',$key):
-        case $key==='any':
-            $dismiss = $notice['nonce'].'-forever';
-            if ( ! PAnD::is_admin_notice_active( $dismiss ) ) {
-                unset($notices[$pagenow]);
-                update_option('cf7-polylang-admin-notices', $notices);
-                continue;
-            }
-            ?>
-            <div data-dismissible="<?=$dismiss?>" class="updated notice <?=$notice['type']?> is-dismissible"><p><?=$notice['msg']?></p></div>
-            <?php
-            break;
+        switch(true){
+            case strpos($key, 'page=') !== false && $_GET['page'] === str_replace('page=','',$key):
+            case strpos($key, 'post_type=') !== false && $_GET['post_type'] === str_replace('post_type=','',$key):
+            case $key==='any':
+                $dismiss = $notice['nonce'].'-forever';
+                if ( ! PAnD::is_admin_notice_active( $dismiss ) ) {
+                    unset($notices[$pagenow]);
+                    update_option('cf7-polylang-admin-notices', $notices);
+                    break;
+                }
+                ?>
+                <div data-dismissible="<?=$dismiss?>" class="updated notice <?=$notice['type']?> is-dismissible"><p><?=$notice['msg']?></p></div>
+                <?php
+                break;
         }
     }
   }
