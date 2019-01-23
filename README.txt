@@ -20,7 +20,7 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 * an optional set of address fields can be enabled from the cf7 tag to display reverse-geocode text address
 * if a user changes manually the first line of the (optional) address field, the reverse-geocode is frozen.  This allows for address corrections.
 * google map is disabled for [Airplane Mode plugin](https://github.com/norcross/airplane-mode/releases) activation to allow you to develop without an Internet connection.
-* the plugin makes use of [JQuery Google Maps (gmpa3) plugin](https://gmap3.net/).
+* the plugin makes use of [JQuery Google Maps (gmap3) plugin](https://gmap3.net/).
 
 = Checkout our other CF7 plugin extensions =
 

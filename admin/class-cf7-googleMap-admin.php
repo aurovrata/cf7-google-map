@@ -261,7 +261,7 @@ class Cf7_GoogleMap_Admin {
           /**
           *@since 1.3.0
           */
-          if(version_compare($this->version, '1.3.0', '>')) return;
+          if(version_compare($this->version, '1.3.1', '!=')) return;
           add_option('cf7_googleMap_enable_geocode',1);
           add_option('cf7_googleMap_enable_places',1);
           $notices = get_option('cf7-google-map-notices', array());
