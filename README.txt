@@ -46,9 +46,9 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 = 1. My map is darkened , or 'negative' and is watermarked with the text "for development purposes only". =
 This is an issue with your Google API key not having the APIs enabled.  You need to ensure several things.  If you have enabled both Geocode API option and Google Places in the plugin settings, then you need to make sure those APIs are enabled on your key.  To enalbe the APIs, log into your Google [dashboard](https://console.cloud.google.com/projectselector/home/dashboard), select your project (or create a new one) and navigate to the **APIs & Services** section.  You can then enable/add APIs and search for the Geocoding API and the Google Places API and enable the ones you need.  If you are still facing this issue, check Google's other steps in this [FAQ](https://developers.google.com/maps/faq#api-key-billing-errors) on this issue.
 
-= 2. I am based in Brazil/Canada/India and my maps is not working. =
+= 2. I am based in Brazil/Canada/India and my map is not working. =
 
-If you are facing the issue described in faq#1 above, and you have enabled all the required APIS but your map is still not functioning, then likely the issue you are facing is related to billing.  Request from Brazil/Canada/India need to have API Keys for projects that are linked to a billing-enabled account. See this [issue](https://developers.google.com/maps/faq#api-key-billing-errors) on Google's faq.
+If you are facing the issue described in faq#1 above, and you have enabled all the required APIs but your map is still not functioning, then likely the issue you are facing is related to billing.  Request from Brazil/Canada/India need to have API Keys for projects that are linked to a billing-enabled account. See this [issue](https://developers.google.com/maps/faq#api-key-billing-errors) on Google's faq.
 
 == Screenshots ==
 1. Save your Google API key in the settings, else your map will not function
