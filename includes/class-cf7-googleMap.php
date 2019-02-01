@@ -169,7 +169,8 @@ class Cf7_GoogleMap {
 		//CF7 Hooks
     $this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_cf7_tag_generator_googleMap' );
     $this->loader->add_filter( 'wpcf7_collect_mail_tags', $plugin_admin, 'email_tags');
-
+    /** @since 1.3.1 */
+    $this->loader->add_action( 'admin_init',  'PAnD', 'init' );
 	}
   /**
 	 * Register all of the hooks related to the public-facing functionality
