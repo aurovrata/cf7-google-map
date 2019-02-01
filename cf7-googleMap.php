@@ -23,6 +23,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       cf7-google-map
  * Domain Path:       /languages
+ * GitHub Plugin URI: https://github.com/aurovrata/cf7-google-map
  */
 
 // If this file is called directly, abort.
