@@ -92,7 +92,9 @@ class Cf7_GoogleMap_Admin {
         $google_map_api_key = get_option('cf7_googleMap_api_key','');
         $airplane_mode = true;
         if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()){
-          wp_enqueue_script( 'google-maps-api-admin', 'http://maps.google.com/maps/api/js?key='. $google_map_api_key, array( 'jquery' ), null, true );
+          $scheme = 'http';
+          if(is_ssl()) $scheme = 'https';
+          wp_enqueue_script( 'google-maps-api-admin', $scheme.'://maps.google.com/maps/api/js?key='. $google_map_api_key, array( 'jquery' ), null, true );
           $airplane_mode = false;
         }
         wp_enqueue_script( 'gmap3-admin', $plugin_dir . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin' ), $this->version, true );

@@ -60,6 +60,8 @@ If you are facing the issue described in faq#1 above, and you have enabled all t
 
 
 == Changelog ==
+=1.3.1=
+* url scheme bug fix.
 =1.3.0=
 * settings for Geocoding API and Google Places API.
 * faq updated with more info.
