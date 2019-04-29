@@ -216,6 +216,9 @@ if (!$exists && function_exists('get_headers')) {
             }).on('dragend', fireMarkerUpdate).then(function(result){
               markers.push(result);
             });
+            /** @since 1.3.2 fix search box results. */
+            $location.val(place.geometry.location.lat()+","+place.geometry.location.lng());
+            if(hasAddress) setAddressFields('', place.address_components);
             //google.maps.event.addListener(marker, 'dragend', fireMarkerUpdate);
             //markers.push(marker);
 
