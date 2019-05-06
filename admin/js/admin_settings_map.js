@@ -21,6 +21,8 @@
             streetViewControl: true
           }).on('zoom_changed', function(map, e) {
             $( '#cf7_zoom' ,tagForm).val( map.getZoom() );
+            $( '#cf7_centre_lat' ,tagForm).val( map.getCenter().lat() );
+            $( '#cf7_centre_lng' ,tagForm).val( map.getCenter().lng() );
             updateTag();
           }).on('center_changed', function(map, e) {
             $( '#cf7_centre_lat' ,tagForm).val( map.getCenter().lat() );
@@ -50,20 +52,22 @@
         });
         //on checkbox change, update.
         $('#cf7-google-map-show-address').change(updateTag);
+        $('.cf7-gmap-address-fields input').change(updateTag);
         function updateTag(){
-            var required = $('input[name="required"]', tagForm).is(':checked');
-            var name = $('#tag-generator-panel-map-name', tagForm ).val();
-            var id = $('#tag-generator-panel-map-id', tagForm ).val();
-            var classes = $('#tag-generator-panel-map-class', tagForm ).val();
-            var show ='';
-            if( $('#cf7-google-map-show-address', tagForm).is(':checked') ) show = ' show_address ';
-            var lat = markerLatField.val();
-            var lng = markerLngField.val();
-            var clat = $('input[name="cf7_centre_lat"]', tagForm).val();
-            var clng = $('input[name="cf7_centre_lng"]', tagForm).val();
-            var zoom = $('input[name="cf7_zoom"]', tagForm).val();
-            var value = 'zoom:' + zoom + ';clat:' + clat + ';clng:' + clng+ ';lat:' + lat + ';lng:' + lng;
-            var tag = 'map';
+            var required = $('input[name="required"]', tagForm).is(':checked'),
+              name = $('#tag-generator-panel-map-name', tagForm ).val(),
+              id = $('#tag-generator-panel-map-id', tagForm ).val(),
+              classes = $('#tag-generator-panel-map-class', tagForm ).val(),
+              show ='';
+            if( $('#cf7-google-map-show-address').is(':checked') ) show = ' '+$('.cf7-gmap-address-fields input:checked').val()+'_address';
+
+            var lat = markerLatField.val(),
+             lng = markerLngField.val(),
+             clat = $('input[name="cf7_centre_lat"]', tagForm).val(),
+             clng = $('input[name="cf7_centre_lng"]', tagForm).val(),
+             zoom = $('input[name="cf7_zoom"]', tagForm).val(),
+             value = 'zoom:' + zoom + ';clat:' + clat + ';clng:' + clng+ ';lat:' + lat + ';lng:' + lng,
+             tag = 'map';
             if(required){
               tag = 'map*';
             }

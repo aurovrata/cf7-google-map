@@ -9,7 +9,17 @@ if ( 'map*' === $tag->type ) {
     $class .= ' wpcf7-validates-as-required';
 }
 $show_address = false;
-if(!empty($tag->options) && 'show_address'==$tag->options[0]) $show_address = true;
+$set_address = false;
+if(!empty($tag->options)){
+  $show_address = true;
+  switch($tag->options[0]){
+    case 'show_address':
+      $set_address = true;
+      break;
+    case 'custom_address':
+      break;
+  }
+}
 //debug_msg($tag->options, $show_address);
 $value = (string) reset( $tag->values );
 $map_values = explode( ';',$value );
@@ -79,16 +89,32 @@ if (!$exists && function_exists('get_headers')) {
     <input name="<?= $tag->name?>" id="<?= $tag->name?>" value="" type="hidden">
     <input name="manual-address-<?= $tag->name?>" id="manual-address-<?= $tag->name?>" value="false" type="hidden">
   </div>
-<?php if($show_address):?>
+<?php if($set_address):?>
   <div class="cf7-googlemap-address-fields">
-    <label for="line-<?= $tag->name?>"><?= apply_filters('cf7_google_map_address_label','Address', $tag->name);?><br />
-    <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
-    <label for="city-<?= $tag->name?>"><?= apply_filters('cf7_google_map_city_label','City',$tag->name);?><br />
-    <input name="city-<?= $tag->name?>" id="city-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
-    <label for="state-<?= $tag->name?>"><?= apply_filters('cf7_google_map_pincode_label','State &amp; Pincode',$tag->name);?><br />
-    <input name="state-<?= $tag->name?>" id="state-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
-    <label for="country-<?= $tag->name?>"><?= apply_filters('cf7_google_map_country_label','Country',$tag->name);?><br />
-    <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text"></label>
+    <label for="line-<?= $tag->name?>">
+      <span class="cf7-googlemap-address-field cf7-googlemap-address">
+        <?= apply_filters('cf7_google_map_address_label','Address', $tag->name);?>
+      </span><br />
+      <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+    </label>
+    <label for="city-<?= $tag->name?>">
+      <span class="cf7-googlemap-address-field cf7-googlemap-city">
+        <?= apply_filters('cf7_google_map_city_label','City',$tag->name);?>
+      </span><br />
+      <input name="city-<?= $tag->name?>" id="city-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+    </label>
+    <label for="state-<?= $tag->name?>">
+      <span class="cf7-googlemap-address-field cf7-googlemap-pin">
+        <?= apply_filters('cf7_google_map_pincode_label','State &amp; Pincode',$tag->name);?>
+      </span><br />
+      <input name="state-<?= $tag->name?>" id="state-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+    </label>
+    <label for="country-<?= $tag->name?>">
+      <span class="cf7-googlemap-address-field cf7-googlemap-country">
+        <?= apply_filters('cf7_google_map_country_label','Country',$tag->name);?>
+      </span><br />
+      <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+    </label>
   </div>
 <?php endif;?>
 </span>
@@ -104,7 +130,7 @@ if (!$exists && function_exists('get_headers')) {
     <?php if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()):?>
     var geocoder = null;
     if(hasGeocode) geocoder = new google.maps.Geocoder;
-    var hasAddress = $('div.cf7-googlemap-address-fields', map_container).length>0;
+    var hasAddress = $('div.cf7-googlemap-address-fields', map_container).length>0, showAddress = <?=$show_address?>;
     <?php endif;?>
     var form = et_map.closest('form.wpcf7-form');
     var address = $('input#address-<?= $tag->name?>', map_container );
@@ -145,7 +171,7 @@ if (!$exists && function_exists('get_headers')) {
                 //console.log(results);
                 var geoAddress = results[1].formatted_address;
                 address.val(geoAddress);
-                if(hasAddress) setAddressFields('', results[1].address_components);
+                if(showAddress) setAddressFields('', results[1].address_components);
               } else {
                 address.val('Unknown location');
               }
@@ -218,7 +244,7 @@ if (!$exists && function_exists('get_headers')) {
             });
             /** @since 1.3.2 fix search box results. */
             $location.val(place.geometry.location.lat()+","+place.geometry.location.lng());
-            if(hasAddress) setAddressFields('', place.address_components);
+            if(showAddress) setAddressFields('', place.address_components);
             //google.maps.event.addListener(marker, 'dragend', fireMarkerUpdate);
             //markers.push(marker);
 
@@ -340,16 +366,31 @@ if (!$exists && function_exists('get_headers')) {
           state += stateArr[idx]+", ";
         }
       }
-      if(''!=pin){
-        state = state + " " + pin;
+      /** @since 1.4.0 trigger address event */
+      var event = $.Event("update.cf7-google-map", {
+      		'address': {
+      			'line': line,
+      			'city':city,
+            'state':state,
+            'pin':pin,
+            'country':country
+      		},
+      		bubbles: true,
+      		cancelable: true
+      	}
+      );
+      map_container.trigger(event);
+      if(hasAddress){
+        if(''!=pin){
+          state = state + " " + pin;
+        }
+        //set address fields
+        autoLine = line;
+        countryField.val(country);
+        stateField.val(state);
+        cityField.val(city);
+        lineField.val(line);
       }
-      //set address fields
-      autoLine = line;
-      countryField.val(country);
-      stateField.val(state);
-      cityField.val(city);
-      lineField.val(line);
-
     }
     //if address line is manually changed, freeze the automated address
     lineField.on('change', function(){

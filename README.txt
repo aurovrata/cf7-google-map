@@ -50,6 +50,54 @@ This is an issue with your Google API key not having the APIs enabled.  You need
 
 If you are facing the issue described in faq#1 above, and you have enabled all the required APIs but your map is still not functioning, then likely the issue you are facing is related to billing.  Request from Brazil/Canada/India need to have API Keys for projects that are linked to a billing-enabled account. See this [issue](https://developers.google.com/maps/faq#api-key-billing-errors) on Google's faq.
 
+= 3. How do I retrieve a lat/lng value when my form is submitted? =
+
+The forms submits a `$_POST['lat-<map-field-name>']` and a `$_POST['lng-<map-field-name>']` which you can access by hooking the cf7 action hook `wpcf7_mail_sent` as well as `wpcf7_mail_failed` just in case the mail failed but the form still submitted successfully,
+
+`
+add_action('wpcf7_mail_sent', 'get_lat_lng_values');
+add_action('wpcf7_mail_failed', 'get_lat_lng_values');
+function get_lat_lng_values(){
+  //assuming your map field is named your-location,
+  if(!isset($_POST['lat-your-location'])) return;
+  $lat = $_POST['lat-your-location'];
+  $lng = $_POST['lng-your-location'];
+}
+`
+
+= 4. How can I display a link to a google map location in the notification mail? =
+Assuming you created a map field called 'your-location', the mail tag [your-location]`, will by default display the 'lat,lng' coordinates of the location your user selected.
+You can build a google map link such as,
+`
+<a href="http://maps.google.com/maps?q=[lat-your-location],[lng-your-location]&ll=[lat-your-location],[lng-your-location]&z=8">Location map</a>
+`
+this will create a link to a map centered on the coordinates with a location pin at the coordinates.  You can also change the zoom `z` value to the desied level.
+
+= 5. How to setup custom address fields ?
+ In some countries (Japan, Germany, Spain...) the order of address fields change and so it may be desirable to design a form with address fields in the order in which the user would naturally write a postal address.  For this purpose, v1.4 of this plugin introduces custom field functionality.  It is up to your to create/add additional text fields in your form that will be populated using javascript events.
+
+ Here is an example of a form with a map tag and additional address fields, along with some custom javascript to ensure your fields are correctly populated when a user interacts with the map.
+ `
+ <p>[map your-location custom_address "zoom:7;clat:12.044014700107471;clng:79.32083256126546;lat:12.007089;lng:79.810600"]
+<p id="line">Your address (street) [text your-address-line]</p>
+<p id="city">Your address (city) [text your-address-city]</p>
+<p id="pincode">Your address (pin) [text your-address-pin]</p>
+[submit "Send"]
+<script type="text/javascript">
+  (function($){
+    $(document).ready( function(){
+      $('.cf7-google-map-container.your-location').on('update.cf7-google-map', function(e){
+        //the event has 5 address fields, e.address.line, e.address.city, e.address.pin, e.address.state, e.address.country.
+        //some fields may be empty.
+        $('p#line input').val(e.address.line);
+        $('p#city input').val(e.address.city);
+        $('p#pincode input').val(e.address.pin);
+      })
+    })
+  })(jQuery)
+</script>
+`
+
 == Screenshots ==
 1. Save your Google API key in the settings, else your map will not function
 2. Insert a Google Map tag into your cf7 form
@@ -60,6 +108,12 @@ If you are facing the issue described in faq#1 above, and you have enabled all t
 
 
 == Changelog ==
+=1.4.0=
+* add custom address fields.
+* capture map centre on zoom change in admin page.
+* check on admin page if post_type is set.
+* added FAQ to retrieve lat/lng.
+* added FAQ to populate custom address fields.
 =1.3.2=
 * fix search box results bug.
 =1.3.1=

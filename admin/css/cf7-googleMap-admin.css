@@ -3,6 +3,16 @@
  * included in this file.
  */
  /* small fix to not show scrollbars, make insert section taller */
+ #TB_ajaxContent {
+    min-height: 550px;
+}
+.cf7-gmap-address-fields > div {
+    margin: 5px 0 0 10px;
+}
+ form.tag-generator-panel {
+    height: 100%;
+    min-height: 500px;
+}
  .tag-generator-panel .control-box.cf7-googleMap + .insert-box {
      padding-left: 15px;
      padding-right: 15px;
@@ -43,3 +53,4 @@ div.listings {
 div.listings input {
     max-width: 130px;
 }
+.cf7-gmap-address-fields{display: none;} #cf7-google-map-show-address:checked + .cf7-gmap-address-fields{display: block;}

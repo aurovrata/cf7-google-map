@@ -88,7 +88,17 @@
           <?php if( get_option('cf7_googleMap_enable_geocode',0)):?>
           <tr>
         	<th scope="row"><?php esc_html_e( 'Address fields', 'cf7-google-map' ); ?></th>
-        	<td><input name="show_address" id="cf7-google-map-show-address" type="checkbox"> <?php esc_html_e( 'Show address fields (auto populated line / city / state / country fields)', 'cf7-google-map' ); ?><br /></td>
+        	<td>
+            <input name="show_address" id="cf7-google-map-show-address" type="checkbox"> <?php esc_html_e( 'Show address fields (auto populated line / city / state / country fields)', 'cf7-google-map' ); ?>
+            <div class="cf7-gmap-address-fields">
+              <div>
+                <input type="radio" name="address_fields" value="show" checked="true"/> <span><?php esc_html_e( 'show 4 fields (address line/city/state &amp; pin/country)', 'cf7-google-map' ); ?></span>
+              </div>
+              <div>
+                <input type="radio" name="address_fields" value="custom" /> <span><?= __( 'Custom (populate your own fields with a javascript event, read <a href="https://wordpress.org/plugins/cf7-google-map/#faq" target="_blank">FAQ</a> #5 for more info)', 'cf7-google-map' ); ?></span>
+              </div>
+            </div>
+          </td>
         	</tr>
         <?php endif;?>
       </tbody>
