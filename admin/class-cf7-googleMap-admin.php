@@ -296,7 +296,6 @@ class Cf7_GoogleMap_Admin {
     foreach($notices[$pagenow] as $key=>$notice){
         switch(true){
             case strpos($key, 'page=') !== false && $_GET['page'] === str_replace('page=','',$key):
-            /** @since 1.3.3 check is post_type is set*/
             case strpos($key, 'post_type=') !== false && isset($_GET['post_type']) && $_GET['post_type'] === str_replace('post_type=','',$key):
             case $key==='any':
                 $dismiss = $notice['nonce'].'-forever';
