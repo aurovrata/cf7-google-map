@@ -3,7 +3,7 @@ Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=64EDYAVB7EGTJ
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
-Tested up to: 5.0.3
+Tested up to: 5.1.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -108,6 +108,8 @@ this will create a link to a map centered on the coordinates with a location pin
 
 
 == Changelog ==
+=1.4.1=
+* fix boolean flag bug on maps with not address fields.
 =1.4.0=
 * add custom address fields.
 * capture map centre on zoom change in admin page.

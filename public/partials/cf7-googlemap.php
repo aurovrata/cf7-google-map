@@ -130,7 +130,8 @@ if (!$exists && function_exists('get_headers')) {
     <?php if(! class_exists( 'Airplane_Mode_Core' ) || !Airplane_Mode_Core::getInstance()->enabled()):?>
     var geocoder = null;
     if(hasGeocode) geocoder = new google.maps.Geocoder;
-    var hasAddress = $('div.cf7-googlemap-address-fields', map_container).length>0, showAddress = <?=$show_address?>;
+    var hasAddress = $('div.cf7-googlemap-address-fields', map_container).length>0,
+      showAddress = <?=$show_address?'true':'false'?>;
     <?php endif;?>
     var form = et_map.closest('form.wpcf7-form');
     var address = $('input#address-<?= $tag->name?>', map_container );
