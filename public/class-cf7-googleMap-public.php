@@ -192,6 +192,12 @@ class Cf7_GoogleMap_Public {
       if(isset($_POST[$field])){
         $posted_data[$field] = $_POST[$field];
       }
+      if(get_option('cf7_googleMap_enable_geocode',0)){
+        $field = 'address-'.$tag['name'];
+        if(isset($_POST[$field])){
+          $posted_data[$field] = $_POST[$field];
+        }
+      }
     }
     return $posted_data;
   }
