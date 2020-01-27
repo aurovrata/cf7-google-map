@@ -1,6 +1,6 @@
 === Google Map for Contact Form 7 ===
 Contributors: aurovrata
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=64EDYAVB7EGTJ
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UZ9CQN6KYBMQ8
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
 Tested up to: 5.2.0
@@ -108,6 +108,8 @@ this will create a link to a map centered on the coordinates with a location pin
 
 
 == Changelog ==
+=1.4.3=
+*fix mail tag bugs.
 =1.4.2=
 * setup submitted address field to cf7 posted data.
 =1.4.1=

@@ -86,6 +86,7 @@ if (!$exists && function_exists('get_headers')) {
     <input name="clng-<?= $tag->name?>" id="clng-<?= $tag->name?>" value="<?= $clng[1]?>" type="hidden">
     <input name="lat-<?= $tag->name?>" id="lat-<?= $tag->name?>" value="<?= $lat[1]?>" type="hidden">
     <input name="lng-<?= $tag->name?>" id="lng-<?= $tag->name?>" value="<?= $lng[1]?>" type="hidden">
+    <input name="address-<?= $tag->name?>" id="address-<?= $tag->name?>" value="" type="hidden">
     <input name="<?= $tag->name?>" id="<?= $tag->name?>" value="" type="hidden">
     <input name="manual-address-<?= $tag->name?>" id="manual-address-<?= $tag->name?>" value="false" type="hidden">
   </div>
@@ -142,6 +143,7 @@ if (!$exists && function_exists('get_headers')) {
     var $location_clat = $('#clat-<?= $tag->name?>', map_container);
     var $location_clng = $('#clng-<?= $tag->name?>', map_container);
     var $location_zoom = $('#zoom-<?= $tag->name?>', map_container);
+    var $location_address = $('#address-<?= $tag->name?>', map_container);
     var $location = $('input#<?= $tag->name?>', map_container );
     //address fields
     var countryField = $('input#country-<?= $tag->name?>', map_container );
@@ -246,6 +248,9 @@ if (!$exists && function_exists('get_headers')) {
             /** @since 1.3.2 fix search box results. */
             $location.val(place.geometry.location.lat()+","+place.geometry.location.lng());
             if(showAddress) setAddressFields('', place.address_components);
+            /** @since 1.4.3 set mail tags bug fix */
+            $location_lat.val(place.geometry.location.lat());
+            $location_lng.val(place.geometry.location.lng());
             //google.maps.event.addListener(marker, 'dragend', fireMarkerUpdate);
             //markers.push(marker);
 
@@ -392,6 +397,8 @@ if (!$exists && function_exists('get_headers')) {
         cityField.val(city);
         lineField.val(line);
       }
+      /** @since 1.4.3*/
+      $location_address.val(JSON.stringify([line,city,state,pin,country]));
     }
     //if address line is manually changed, freeze the automated address
     lineField.on('change', function(){
