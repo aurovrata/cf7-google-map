@@ -1,6 +1,7 @@
 <?php
-/*
-HTML for settings page.
+/**
+* HTML for settings page.
+* @since 1.4.3.
 */
 ?>
 <style>

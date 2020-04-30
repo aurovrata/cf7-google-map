@@ -31,7 +31,7 @@ $clng = explode(':',$map_values[2]); //lng:
 $lat = explode(':',$map_values[3]); //lat:
 $lng = explode(':',$map_values[4]); //lng:
 
-$map_type = apply_filters('cf7_google_map_default_type','ROADMAP');
+$map_type = apply_filters('cf7_google_map_default_type','ROADMAP', $tag->name);
 $map_type = strtoupper($map_type);
 switch($map_type){
   case 'ROADMAP':
@@ -80,7 +80,7 @@ if (!$exists && function_exists('get_headers')) {
     <?php if( get_option('cf7_googleMap_enable_places',0)):?>
       <span class="dashicons dashicons-search"></span><span class="dashicons dashicons-no-alt"></span>
     <?php endif;?>
-    <input name="address-<?= $tag->name?>" id="address-<?= $tag->name?>" value="" class="cf7marker-address" type="text">
+    <input name="search-<?= $tag->name?>" id="search-<?= $tag->name?>" value="" class="cf7marker-address" type="text">
     <input name="zoom-<?= $tag->name?>" id="zoom-<?= $tag->name?>" value="<?= $zoom[1]?>" type="hidden">
     <input name="clat-<?= $tag->name?>" id="clat-<?= $tag->name?>" value="<?= $clat[1]?>" type="hidden">
     <input name="clng-<?= $tag->name?>" id="clng-<?= $tag->name?>" value="<?= $clng[1]?>" type="hidden">
@@ -134,7 +134,7 @@ if (!$exists && function_exists('get_headers')) {
         showAddress = <?=$show_address?'true':'false'?>;
       <?php endif;?>
       var form = et_map.closest('form.wpcf7-form');
-      var address = $('input#address-<?= $tag->name?>', map_container );
+      // var address = $('input#address-<?= $tag->name?>', map_container );
       var manual = $('input#manual-address-<?= $tag->name?>', map_container );
       var autoLine =''; /*track automated values of line address*/
       var $location_lat = $('#lat-<?= $tag->name?>', map_container);
@@ -143,6 +143,7 @@ if (!$exists && function_exists('get_headers')) {
       var $location_clng = $('#clng-<?= $tag->name?>', map_container);
       var $location_zoom = $('#zoom-<?= $tag->name?>', map_container);
       var $location_address = $('#address-<?= $tag->name?>', map_container);
+
       var $location = $('input#<?= $tag->name?>', map_container );
       //address fields
       var countryField = $('input#country-<?= $tag->name?>', map_container );
@@ -151,8 +152,10 @@ if (!$exists && function_exists('get_headers')) {
       var lineField = $('input#line-<?= $tag->name?>', map_container );
       //var link = ' https://www.google.com/maps/search/?api=1&query=';
 
+      map_container.on('update.cf7-google-map', function(event){
+        if(showAddress) $location_address.val(JSON.stringify( Object.values(event.address) ));
+      });
       function init(){
-        //scrollwheel: <?= ($scrollwheel) ? 'true':'false';?>,
         function fireMarkerUpdate(marker, e){
           $location_lat.val(marker.getPosition().lat());
           $location_lng.val( marker.getPosition().lng());
@@ -166,17 +169,11 @@ if (!$exists && function_exists('get_headers')) {
             return;
           }
           var latlng = {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()};
+          var address='';
           if(hasGeocode){
             geocoder.geocode({'location': latlng}, function(results, status) {
               if (status === 'OK') {
-                if (results[1]) {
-                  //console.log(results);
-                  var geoAddress = results[1].formatted_address;
-                  address.val(geoAddress);
-                  if(showAddress) setAddressFields('', results[1].address_components);
-                } else {
-                  address.val('Unknown location');
-                }
+                if (results[1] && showAddress) setAddressFields('', results[1].address_components);
               } else {
                 window.alert('Google Geocoder failed due to: ' + status);
               }
@@ -186,7 +183,7 @@ if (!$exists && function_exists('get_headers')) {
     		var $map3 = et_map.gmap3({
           center : [$location_clat.val(), $location_clng.val()],
     	    zoom: parseInt($location_zoom.val()),
-    	    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    	    mapTypeId: google.maps.MapTypeId.<?=$map_type?>,
           mapTypeControl: <?= ($map_control) ? 'true':'false';?>,
           navigationControl: <?= ($navigation_control) ? 'true':'false';?>,
           streetViewControl: <?= ($street_view) ? 'true':'false';?>
@@ -396,15 +393,27 @@ if (!$exists && function_exists('get_headers')) {
           cityField.val(city);
           lineField.val(line);
         }
-        /** @since 1.4.3*/
-        $location_address.val(JSON.stringify([line,city,state,pin,country]));
       }
       //if address line is manually changed, freeze the automated address
-      lineField.on('change', function(){
+      $('.cf7-googlemap-address-fields').on('change', manualAddress);
+
+       function manualAddress(){
         if($(this).val() != autoLine){
           manual.val(true);
         }
-      });
+        var event = $.Event("update.cf7-google-map", {
+        		'address': {
+        			'line': lineField.val(),
+        			'city':cityField.val(),
+              'state':stateField.val(),
+              'country':countryField.val()
+        		},
+        		bubbles: true,
+        		cancelable: true
+        	}
+        );
+        map_container.trigger(event);
+      }
       //if the form contains jquery tabs, let's refresh the map
       form.on( "tabsactivate", function( event ){
         if( $.contains($(event.trigger),et_map) ){
@@ -462,6 +471,7 @@ if (!$exists && function_exists('get_headers')) {
       $(this).hide();
       $(this).siblings('.dashicons-search').show();
     }
+
   })(jQuery)
   </script>
 </div>

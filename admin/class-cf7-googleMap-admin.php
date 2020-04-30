@@ -154,6 +154,7 @@ class Cf7_GoogleMap_Admin {
    *
   **/
   public function show_settings_page(){
+    /** @since 1.4.3 */
     require_once  plugin_dir_path( __FILE__ ) . 'partials/cf7-google-map-settings.php';
   }
   /**
