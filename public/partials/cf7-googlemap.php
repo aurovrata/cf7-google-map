@@ -169,7 +169,7 @@ if (!$exists && function_exists('get_headers')) {
             return;
           }
           var latlng = {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()};
-          var address='';
+          // var address='';
           if(hasGeocode){
             geocoder.geocode({'location': latlng}, function(results, status) {
               if (status === 'OK') {

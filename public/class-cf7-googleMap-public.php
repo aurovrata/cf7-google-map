@@ -199,9 +199,8 @@ class Cf7_GoogleMap_Public {
           $address = json_decode(stripslashes($_POST[$field]));
           if(empty($address)) $address = array();
           if(!is_array($address)) $address = array($address);
-          $address_text = '';
-          foreach($address as $line) $address_text=$line.PHP_EOL;
-          $address_text =apply_filters('cf7_google_map_mailtag_addres',$address_text, $address,$tag['name'] );
+          $address_text = implode(",".PHP_EOL, $address);
+          $address_text =apply_filters('cf7_google_map_mailtag_address',$address_text, $address, $tag['name'] );
           $posted_data[$field] = $address_text;
         }
       }
