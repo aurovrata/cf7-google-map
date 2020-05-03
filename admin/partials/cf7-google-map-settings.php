@@ -34,7 +34,7 @@
           </th>
           <td>
             <input type="checkbox" name="cf7_googleMap_enable_geocode" value="1" <?= checked(1, get_option('cf7_googleMap_enable_geocode'), false ); ?> /><?= __('Enable this option to add address fields to your maps.','cf7-google-map')?>
-            <p class="description"><?=__('You will also need to enable <a href=""https://developers.google.com/maps/documentation/geocoding/get-api-key">Geocoding API</a> to retrieve physical addresses for locations.','cf7-google-map')?></p>
+            <p class="description"><?=__('You will also need to enable <a href="https://developers.google.com/maps/documentation/geocoding/get-api-key">Geocoding API</a> to retrieve physical addresses for locations.','cf7-google-map')?></p>
         </td>
       </tr>
       <tr>
@@ -43,7 +43,7 @@
         </th>
         <td>
           <input type="checkbox" name="cf7_googleMap_enable_places" value="1" <?= checked(1, get_option('cf7_googleMap_enable_places'), false ); ?> /><?= __('This adds a <a href="https://developers.google.com/maps/documentation/javascript/examples/places-searchbox">search box</a> to your maps.','cf7-google-map')?>
-          <p class="description"><?=__('You will also need to enable <a href=""https://developers.google.com/places/web-service/get-api-key">Google Places API</a> to search place names on a map.','cf7-google-map')?></p>
+          <p class="description"><?=__('You will also need to enable <a href="https://developers.google.com/places/web-service/get-api-key">Google Places API</a> to search place names on a map.','cf7-google-map')?></p>
         </td>
       </tr>
     </tbody>

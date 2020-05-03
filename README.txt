@@ -145,6 +145,10 @@ function change_map_type($type, $field){
 
 
 == Changelog ==
+=1.4.5=
+* fix search.
+* fix settings links.
+* fix search button position.
 =1.4.4=
 * fix ROADMAP filter.
 =1.4.3=
