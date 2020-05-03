@@ -134,7 +134,7 @@ if (!$exists && function_exists('get_headers')) {
         showAddress = <?=$show_address?'true':'false'?>;
       <?php endif;?>
       var form = et_map.closest('form.wpcf7-form');
-      // var address = $('input#address-<?= $tag->name?>', map_container );
+      var search = $('input#search-<?= $tag->name?>', map_container );
       var manual = $('input#manual-address-<?= $tag->name?>', map_container );
       var autoLine =''; /*track automated values of line address*/
       var $location_lat = $('#lat-<?= $tag->name?>', map_container);
@@ -199,7 +199,7 @@ if (!$exists && function_exists('get_headers')) {
         //locate the searched address
         var searchBox = null;
         if(hasPlaces){
-          searchBox = new google.maps.places.SearchBox(address.get(0));
+          searchBox = new google.maps.places.SearchBox(search.get(0));
           // Bias the SearchBox results towards current map's viewport.
           googleMap.addListener('bounds_changed', function() {
             searchBox.setBounds(googleMap.getBounds());
