@@ -88,6 +88,7 @@ class Cf7_GoogleMap_Public {
      }
      wp_register_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin'), $this->version, true );
      wp_register_script( 'js-resize', plugin_dir_url( __DIR__ ) . '/assets/js-resize/jquery.resize.js', array( 'jquery'), $this->version, true );
+     wp_register_script('cf7-googlemap',plugin_dir_url( __DIR__ ) . 'public/js/cf7-googlemap.js', array( 'gmap3-admin'), $this->version, true );
   }
   /**
 	 * Register a [googleMap] shortcode with CF7.
@@ -115,26 +116,68 @@ class Cf7_GoogleMap_Public {
 	 * @return string a set of html fields to capture the googleMap information
 	 */
 	public function googleMap_shortcode_handler( $tag ) {
-      //enqueue required scripts and styles
-      wp_enqueue_script( 'google-maps-api-admin');
-      wp_enqueue_script( 'gmap3-admin');
-      wp_enqueue_script( 'js-resize');
-      wp_enqueue_style( 'dashicons' );
-      wp_enqueue_style( $this->plugin_name);
+    $plugin_url = plugin_dir_url( __DIR__ );
+    //enqueue required scripts and styles
+    wp_enqueue_script( 'google-maps-api-admin');
+    wp_enqueue_script( 'gmap3-admin');
+    wp_enqueue_script( 'js-resize');
+    wp_enqueue_style( 'dashicons' );
+    wp_enqueue_style( $this->plugin_name);
+    wp_enqueue_script('cf7-googlemap');
+    $map_type = apply_filters('cf7_google_map_default_type','ROADMAP', $tag->name);
+    $map_type = strtoupper($map_type);
+    switch($map_type){
+      case 'ROADMAP':
+      case 'SATELLITE';
+      case 'HYBRID':
+      case 'TERRAIN':
+        break;
+      default:
+        $map_type = 'ROADMAP';
+        break;
+    }
+    $marker_settings = array(
+      'icon'=> apply_filters('cf7_google_map_marker_icon_url_path', $plugin_url .'assets/red-marker.png', $tag->name),
+      'draggable' => true
+    );
+    $marker_settings = apply_filters('cf7_google_map_marker_settings', $marker_settings, $tag->name);
+    if(!isset($marker_settings['icon']) || ($plugin_url .'assets/red-marker.png' !== $marker_settings['icon'] && !@getimagesize( $marker_settings['icon'] )) ){ //reset the marker
+      debug_msg("unable to locate marker icon url: ".$marker_settings['icon']);
+      $marker_settings['icon'] = $plugin_url .'assets/red-marker.png';
+    }
+    $gmap3_settings = array(
+      'mapTypeControl'=> true,
+      'navigationControl'=> true,
+      'streetViewControl'=> true,
+      'zoomControl'=>true,
+      'rotateControl'=>false,
+      'fullscreenControl'=>false,
+      'rotateControl'=>false,
+    );
+    $gmap3_settings = apply_filters('cf7_google_map_settings', $gmap3_settings, $tag->name);
 
-	    $tag = new WPCF7_FormTag( $tag );
-      if ( empty( $tag->name ) ) {
-    		return '';
-    	}
-      if(!in_array($tag->name, $this->maps)){
-        $this->maps[] = $tag->name;
-      }
-      $plugin_url = plugin_dir_url( __DIR__ );
-      ob_start();
-	    include( plugin_dir_path( __FILE__ ) . '/partials/cf7-googlemap.php');
-      $html = ob_get_contents ();
-      ob_end_clean();
-	    return $html;
+    wp_localize_script('cf7-googlemap', 'cf7GoogleMap', array(
+      'plane_mode'=> (class_exists( 'Airplane_Mode_Core' ) && Airplane_Mode_Core::getInstance()->enabled()),
+      'geocode'=>get_option('cf7_googleMap_enable_geocode')?'1':'0',
+      'places'=>get_option('cf7_googleMap_enable_places')?'1':'0',
+      'field'=>$tag->name,
+      'gmap3_settings'=>$gmap3_settings,
+      'map_type'=>$map_type,
+      'marker_settings'=>$marker_settings
+    ));
+
+    $tag = new WPCF7_FormTag( $tag );
+    if ( empty( $tag->name ) ) {
+  		return '';
+  	}
+    if(!in_array($tag->name, $this->maps)){
+      $this->maps[] = $tag->name;
+    }
+    ob_start();
+    include( plugin_dir_path( __FILE__ ) . '/partials/cf7-googlemap.php');
+    $html = ob_get_contents ();
+    ob_end_clean();
+    return $html;
 	}
 
   /**

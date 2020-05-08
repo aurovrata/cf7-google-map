@@ -124,9 +124,9 @@ function change_address_format($formatted_address, $address, $field){
   return $formatted_address;
 }
 `
-= 7. Can I change the default map type ROADMAP ? =
+= 7. Can I change the default map settings ? =
 
-yes, you can using the filter provided,
+yes, you can using the following hook you can filter the map type (set to ROADMAP by default),
 
 `add_filter('cf7_google_map_default_type', 'change_map_type', 10,2);
 function change_map_type($type, $field){
@@ -134,6 +134,44 @@ function change_map_type($type, $field){
   if('your-location' ==$field) $type = 'SATELLITE';
   return $type;
 }`
+
+you can disable/enable map controls,
+
+`add_filter('cf7_google_map_settings', 'use_custom_map_settings',10,2);
+function use_custom_map_icon($settings, $field_name){
+  if( 'your-location' == $field_name ){
+    $settings['mapTypeControl']= false; //hide (true by default).
+    $settings['navigationControl']= false; //hide (true by default).
+    $settings['streetViewControl']= false; //hide (true by default).
+    $settings['zoomControl']=false; //hide (false by default).
+    $settings['rotateControl']=true; //show (false by default).
+    $settings['fullscreenControl']=true; //show (false by default).
+    $settings['rotateControl']= true; //show (false by default).
+    $settings['zoom']= 12; //set by default to the value initialised at the time of creating the form tag.
+    $settings['center'] = array('11.936825', '79.834278'); //set by default to the value initialised at the time of creating the form tag.
+
+  }
+  return $settings;
+}`
+
+you can filter the map marker's settings,
+
+`add_filter('cf7_google_map_marker_settings', 'use_custom_marker_settings',10,2);
+function use_custom_marker_settings($settings, $field_name){
+  if( 'your-location' == $field_name ){
+    $settings['icon'] = ... //set your image url here.
+    $settings['draggable'] = false; //true by default.
+    $settings['position'] = array('11.936825', '79.834278'); //set by default to the value initialised at the time of creating the form tag.
+
+  }
+  return $settings;
+}`
+
+
+= 9. Can I translate my address field labels ? =
+
+If you are using the built-in address fields provided by the plugin, you can change the labels of the fields usig the following hooks,
+
 
 == Screenshots ==
 1. Save your Google API key in the settings, else your map will not function
@@ -145,6 +183,11 @@ function change_map_type($type, $field){
 
 
 == Changelog ==
+=1.5.0=
+* move main google js script into separate file.
+* upgrade js to ES6.
+* add cf7_google_map_marker_settings filter.
+* add cf7_google_map_settings filter.
 =1.4.5=
 * fix search.
 * fix settings links.
