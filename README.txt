@@ -171,8 +171,36 @@ function use_custom_marker_settings($settings, $field_name){
 = 9. Can I translate my address field labels ? =
 
 If you are using the built-in address fields provided by the plugin, you can change the labels of the fields usig the following hooks,
-
-
+`
+add_filter('cf7_google_map_address_label', 'change_address_label',10,2)
+function change_address_label($label, $field_name){
+  if('your-location'==$field_name){
+    $label = 'Adresse';
+  }
+  return $label;
+}
+add_filter('cf7_google_map_city_label', 'change_city_label',10,2)
+function change_city_label($label, $field_name){
+  if('your-location'==$field_name){
+    $label = 'Ville';
+  }
+  return $label;
+}
+add_filter('cf7_google_map_pincode_label', 'change_pincode_label',10,2)
+function change_pincode_label($label, $field_name){
+  if('your-location'==$field_name){
+    $label = 'Code postal';
+  }
+  return $label;
+}
+add_filter('cf7_google_map_country_label', 'change_country_label',10,2)
+function change_country_label($label, $field_name){
+  if('your-location'==$field_name){
+    $label = 'Pays'
+  }
+  return $label;
+}
+`
 == Screenshots ==
 1. Save your Google API key in the settings, else your map will not function
 2. Insert a Google Map tag into your cf7 form
