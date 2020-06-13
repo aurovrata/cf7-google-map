@@ -85,25 +85,45 @@ if (!$exists && function_exists('get_headers')) {
   <div class="cf7-googlemap-address-fields">
     <label for="line-<?= $tag->name?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-address">
-        <?= apply_filters('cf7_google_map_address_label','Address', $tag->name);?>
+        <?php
+        $label = 'Address';
+        $label = apply_filters('cf7_google_map_address_label', $label, $tag->name);
+        $label = apply_filters('cf7_google_map_address_field_label', $label, 'adresse', $tag->name);
+        echo $label;
+        ?>
       </span><br />
       <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
     </label>
     <label for="city-<?= $tag->name?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-city">
-        <?= apply_filters('cf7_google_map_city_label','City',$tag->name);?>
+        <?php
+        $label = 'City';
+        $label =  apply_filters('cf7_google_map_city_label',$label,$tag->name);
+        $label = apply_filters('cf7_google_map_address_field_label', $label, 'ville', $tag->name);
+        echo $label;
+         ?>
       </span><br />
       <input name="city-<?= $tag->name?>" id="city-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
     </label>
     <label for="state-<?= $tag->name?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-pin">
-        <?= apply_filters('cf7_google_map_pincode_label','State &amp; Pincode',$tag->name);?>
+        <?php
+        $label= 'State &amp; Pincode';
+        $label= apply_filters('cf7_google_map_pincode_label',$label,$tag->name);
+        $label = apply_filters('cf7_google_map_address_field_label', $label, 'code', $tag->name);
+        echo $label;
+        ?>
       </span><br />
       <input name="state-<?= $tag->name?>" id="state-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
     </label>
     <label for="country-<?= $tag->name?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-country">
-        <?= apply_filters('cf7_google_map_country_label','Country',$tag->name);?>
+        <?php
+        $label= 'Country';
+        $label= apply_filters('cf7_google_map_country_label',$label ,$tag->name);
+        $label = apply_filters('cf7_google_map_address_field_label', $label, 'pays', $tag->name);
+        echo $label;
+        ?>
       </span><br />
       <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
     </label>

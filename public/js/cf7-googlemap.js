@@ -1,34 +1,26 @@
 (function($){
   $(document).ready( function(){
     let et_map = $( '#cf7-googlemap-'+cf7GoogleMap.field ),
-      googleMap, googleMarker;
-    let map_container = et_map.closest('.cf7-google-map-container');
-    let show_address = map_container.data('show-address');
-    let has_address = $('div.cf7-googlemap-address-fields', map_container).length>0;
-
-    /** @since 1.5.0. move script into own file, and use localisation */
-    let geocoder = null;
-    if(!cf7GoogleMap.plane_mode){
-      if(cf7GoogleMap.geocode) geocoder = new google.maps.Geocoder;
-    }
-    let form = et_map.closest('form.wpcf7-form');
-    let search = $('input#search-'+cf7GoogleMap.field, map_container );
-    let manual = $('input#manual-address-'+cf7GoogleMap.field, map_container );
-    let autoLine =''; /*track automated values of line address*/
-    let $location_lat = $('#lat-'+cf7GoogleMap.field, map_container);
-    let $location_lng = $('#lng-'+cf7GoogleMap.field, map_container);
-    let $location_clat = $('#clat-'+cf7GoogleMap.field, map_container);
-    let $location_clng = $('#clng-'+cf7GoogleMap.field, map_container);
-    let $location_zoom = $('#zoom-'+cf7GoogleMap.field, map_container);
-    let $location_address = $('#address-'+cf7GoogleMap.field, map_container);
-
-    let $location = $('input#'+cf7GoogleMap.field, map_container );
-    //address fields
-    let countryField = $('input#country-'+cf7GoogleMap.field, map_container );
-    let stateField = $('input#state-'+cf7GoogleMap.field, map_container );
-    let cityField = $('input#city-'+cf7GoogleMap.field, map_container );
-    let lineField = $('input#line-'+cf7GoogleMap.field, map_container );
-    //let link = ' https://www.google.com/maps/search/?api=1&query=';
+      googleMap, googleMarker,
+      map_container = et_map.closest('.cf7-google-map-container'),
+      show_address = map_container.data('show-address'),
+      has_address = $('div.cf7-googlemap-address-fields', map_container).length>0,
+      geocoder = (!cf7GoogleMap.plane_mode && cf7GoogleMap.geocode) ? new google.maps.Geocoder:null,
+      form = et_map.closest('form.wpcf7-form'),
+      search = $('input#search-'+cf7GoogleMap.field, map_container ),
+      manual = $('input#manual-address-'+cf7GoogleMap.field, map_container ),
+      autoLine ='', /*track automated values of line address*/
+      $location_lat = $('#lat-'+cf7GoogleMap.field, map_container),
+      $location_lng = $('#lng-'+cf7GoogleMap.field, map_container),
+      $location_clat = $('#clat-'+cf7GoogleMap.field, map_container),
+      $location_clng = $('#clng-'+cf7GoogleMap.field, map_container),
+      $location_zoom = $('#zoom-'+cf7GoogleMap.field, map_container),
+      $location_address = $('#address-'+cf7GoogleMap.field, map_container),
+      $location = $('input#'+cf7GoogleMap.field, map_container ),
+      countryField = $('input#country-'+cf7GoogleMap.field, map_container ),
+      stateField = $('input#state-'+cf7GoogleMap.field, map_container ),
+      cityField = $('input#city-'+cf7GoogleMap.field, map_container ),
+      lineField = $('input#line-'+cf7GoogleMap.field, map_container ),$map3;
 
     map_container.on('update.cf7-google-map', function(event){
       if(show_address) $location_address.val(JSON.stringify( Object.values(event.address) ));
@@ -56,6 +48,19 @@
             }
           });
         }
+        /** @since 1.6.0 trigger address event */
+        let event = $.Event("drag.cf7-google-map", {
+            'settings': {
+              'center': [$location_clat.val(), $location_clng.val()],
+              'zoom':$location_zoom.val(),
+              'type':cf7GoogleMap.map_type,
+              'marker':[$location_lat.val(), $location_lng.val()],
+            },
+            bubbles: true,
+            cancelable: true
+          }
+        );
+        map_container.trigger(event);
       }
       const map_settings = {
         center: [$location_clat.val(), $location_clng.val()],
@@ -65,9 +70,26 @@
       const marker_settings = {
         position : [$location_lat.val(), $location_lng.val()],
       }
-      let $map3 = et_map.gmap3({...map_settings, ...cf7GoogleMap.gmap3_settings}).marker({...marker_settings, ...cf7GoogleMap.marker_settings}).on('dragend', fireMarkerUpdate).then(function(result){
+      $map3 = et_map.gmap3({...map_settings, ...cf7GoogleMap.gmap3_settings});
+      $map3.marker({...marker_settings, ...cf7GoogleMap.marker_settings}).on('dragend', fireMarkerUpdate).then(function(map){
         googleMap = this.get(0);
         googleMarker = this.get(1);
+        /** @since 1.6.0 trigger address event */
+        let event = $.Event("init.cf7-google-map", {
+            'gm3':$map3,
+            'gmap':googleMap,
+            'marker':googleMarker,
+            'settings': {
+              'center': [$location_clat.val(), $location_clng.val()],
+              'zoom':$location_zoom.val(),
+              'type':cf7GoogleMap.map_type,
+              'marker':[$location_lat.val(), $location_lng.val()],
+            },
+            bubbles: true,
+            cancelable: true
+          }
+        );
+        map_container.trigger(event);
       });
       let markers = [googleMarker];
       //locate the searched address
@@ -107,7 +129,7 @@
             };
 
             // Create a marker for each place.
-            let marker = $map3.marker( {//new google.maps.Marker({
+            googleMarker = $map3.marker( {//new google.maps.Marker({
               draggable: cf7GoogleMap.marker_settings.draggable,
               icon: cf7GoogleMap.marker_settings.icon,
               title: place.name,
@@ -244,6 +266,9 @@
       }
       /** @since 1.4.0 trigger address event */
       let event = $.Event("update.cf7-google-map", {
+          'gm3':$map3,
+          'gmap':googleMap,
+          'marker':googleMarker,
           'address': {
             'line': line,
             'city':city,
@@ -276,16 +301,18 @@
         manual.val(true);
       }
       let event = $.Event("update.cf7-google-map", {
-          'address': {
-            'line': lineField.val(),
-            'city':cityField.val(),
-            'state':stateField.val(),
-            'country':countryField.val()
-          },
-          bubbles: true,
-          cancelable: true
-        }
-      );
+        'gm3':$map3,
+        'gmap':googleMap,
+        'marker':googleMarker,
+        'address': {
+          'line': lineField.val(),
+          'city':cityField.val(),
+          'state':stateField.val(),
+          'country':countryField.val()
+        },
+        bubbles: true,
+        cancelable: true
+      });
       map_container.trigger(event);
     }
     //if the form contains jquery tabs, let's refresh the map

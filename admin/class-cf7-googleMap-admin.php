@@ -110,7 +110,17 @@ class Cf7_GoogleMap_Admin {
       break;
     }
 	}
-
+  /**
+  * Enqeue CF7 Smart Grid helper script.
+  * Hooked on action 'cf7sg_enqueue_admin_editor_scripts'.
+  *@since 1.5.1
+  */
+  public function enqueue_grid_helper(){
+    wp_enqueue_script( 'cf7sg-grid-js', plugin_dir_url( __FILE__ ) . 'js/ui-custom-helper.js', array( 'jquery' ), $this->version, true );
+    wp_localize_script('cf7sg-grid-js', 'cf7sgHelper', array(
+        'geocode' => get_option('cf7_googleMap_enable_geocode', 0)
+    ));
+  }
 
 	/**
 	 * Add to the wpcf7 tag generator.
@@ -270,5 +280,21 @@ class Cf7_GoogleMap_Admin {
                 break;
         }
     }
+  }
+  /**
+  * Add grid helper hooks for individual tags.
+  * Hooked to action 'cf7sg_ui_grid_helper_hooks'.
+  *@since 3.2.2
+  */
+  public function print_helper_hooks(){
+    require_once plugin_dir_path( __FILE__ ) .'partials/cf7-sgui-helper-hooks.php';
+  }
+  /**
+  * Add grid helper hooks for individual tags.
+  * Hooked to action 'cf7sg_ui_grid_js_helper_hooks'.
+  *@since 3.2.2
+  */
+  public function print_js_helper_hooks(){
+    require_once plugin_dir_path( __FILE__ ) .'partials/cf7-sgui-js-helper-hooks.php';
   }
 }

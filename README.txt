@@ -3,7 +3,7 @@ Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UZ9CQN6KYBMQ8
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
-Tested up to: 5.4.0
+Tested up to: 5.4.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -201,6 +201,24 @@ function change_country_label($label, $field_name){
   return $label;
 }
 `
+= 10. Is it possible to interact with the Map and bind event changes ? =
+As of v1.6 it is possible to interact with the gmap3 library object once initialised, each time a user drags the marker, or if you enable geocode API, to bind address updates when a new search result is selected.
+
+You can get example snipet javascript code examples if you use the [Smart Grid extension](https://wordpress.org/plugins/cf7-grid-layout/) which has a grid UI editor with code shortcuts to save time in development (see [Screenshot](https://wordpress.org/plugins/cf7-grid-layout/#screenshots) #17 on the plugin's page), else you can bind the following events,
+
+`
+$('.cf7-google-map-container').on('init.cf7-google-map drag.cf7-google-map update.cf7-google-map', function(e){
+  //event e contains various object references. e.gm3 for the gmap3 object, e.marker, e.gmap are the google marker and map respectively.
+  //so to set a circle around the marker...
+  e.gm3.circle({
+    center: [e.marker.position.lat(),e.marker.position.lng()],
+    radius : 750,
+    fillColor : '#b0b14eb1',
+    strokeColor : '#fff100ff'
+  });
+
+});
+`
 == Screenshots ==
 1. Save your Google API key in the settings, else your map will not function
 2. Insert a Google Map tag into your cf7 form
@@ -211,6 +229,9 @@ function change_country_label($label, $field_name){
 
 
 == Changelog ==
+= 1.6.0 =
+* expose js map objects on the client side with events.
+* better integration with CF7 Smart Grid UI editor plugin.
 =1.5.0=
 * move main google js script into separate file.
 * upgrade js to ES6.

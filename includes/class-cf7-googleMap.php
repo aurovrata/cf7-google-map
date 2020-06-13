@@ -169,8 +169,12 @@ class Cf7_GoogleMap {
 		//CF7 Hooks
     $this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_cf7_tag_generator_googleMap' );
     $this->loader->add_filter( 'wpcf7_collect_mail_tags', $plugin_admin, 'email_tags');
-    /** @since 1.3.1 */
+    /** @since 1.3.1 for displaying admin notices*/
     $this->loader->add_action( 'admin_init',  'PAnD', 'init' );
+    /** @since 1.5.1 add CF7 Smart Grid helper hooks */
+    $this->loader->add_action( 'cf7sg_ui_grid_helper_hooks', $plugin_admin, 'print_helper_hooks');
+    $this->loader->add_action( 'cf7sg_ui_grid_js_helper_hooks', $plugin_admin, 'print_js_helper_hooks');
+    $this->loader->add_action( 'cf7sg_enqueue_admin_editor_scripts', $plugin_admin, 'enqueue_grid_helper');
 	}
   /**
 	 * Register all of the hooks related to the public-facing functionality
