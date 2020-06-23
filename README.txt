@@ -21,7 +21,7 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 * if a user changes manually the first line of the (optional) address field, the reverse-geocode is frozen.  This allows for address corrections.
 * google map is disabled for [Airplane Mode plugin](https://github.com/norcross/airplane-mode/releases) activation to allow you to develop without an Internet connection.
 * the plugin makes use of [JQuery Google Maps (gmap3) plugin](https://gmap3.net/).
-
+* as of v1.7 multiple map fields can be added in a single form.
 = Checkout our other CF7 plugin extensions =
 
 * [CF7 Polylang Module](https://wordpress.org/plugins/cf7-polylang/) - this plugin allows you to create forms in different languages for a multi-language website.  The plugin requires the [Polylang](https://wordpress.org/plugins/polylang/) plugin to be installed in order to manage translations.
@@ -229,6 +229,9 @@ $('.cf7-google-map-container').on('init.cf7-google-map drag.cf7-google-map updat
 
 
 == Changelog ==
+= 1.7.0 =
+* fix map required display message.
+* enable multiple map fields in a page/form.
 = 1.6.0 =
 * expose js map objects on the client side with events.
 * better integration with CF7 Smart Grid UI editor plugin.

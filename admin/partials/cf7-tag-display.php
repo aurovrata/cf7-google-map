@@ -47,10 +47,10 @@
           <tr>
             <th>
               <p><?php esc_html_e( 'Map Zoom', 'cf7-google-map' ); ?>: </p>
-              <input type="text" readonly name="cf7_zoom" id="cf7_zoom" class="regular-text cf7-googleMap-values" value="3" /><br/>
+              <input type="text" readonly name="cf7_zoom" id="cf7_zoom" class="regular-text cf7-googleMap-values" value="1" /><br/>
               <label for="cf7_centre_lat" ><?php esc_html_e( 'Map Centre', 'cf7-google-map' ); ?>: <br />
-              <input type="text" readonly name="cf7_centre_lat" id="cf7_centre_lat" class="regular-text cf7-googleMap-values" value="0" /><br />
-              <input type="text" readonly name="cf7_centre_lng" id="cf7_centre_lng" class="regular-text cf7-googleMap-values" value="79.810600" />
+              <input type="text" readonly name="cf7_centre_lat" id="cf7_centre_lat" class="regular-text cf7-googleMap-values" value="28.156269" /><br />
+              <input type="text" readonly name="cf7_centre_lng" id="cf7_centre_lng" class="regular-text cf7-googleMap-values" value="63.323149" />
             </th>
             <td>
               <div id="cf7_admin_map"></div>

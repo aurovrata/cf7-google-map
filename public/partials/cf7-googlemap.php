@@ -37,7 +37,6 @@ if ( 'map*' === $tag->type ) {
 $value = (string) reset( $tag->values );
 $map_values = explode( ';',$value );
 
-//error_log("GoogleMap: ".$value."\n".print_r($slide_values,true));
 $zoom = explode(':',$map_values[0]); //zoom:
 $clat = explode(':',$map_values[1]); //lat:
 $clng = explode(':',$map_values[2]); //lng:
@@ -65,22 +64,23 @@ if (!$exists && function_exists('get_headers')) {
 
 //HTML cf7 form
 ?>
-<div <?=$id?>class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?>" data-show-address="<?= $show_address ?>">
+<div <?=$id?>class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?>" data-show-address="<?= $show_address ?>" data-zoom="<?= $zoom[1]?>" data-clat="<?= $clat[1]?>" data-clng="<?= $clng[1]?>" data-lat="<?= $lat[1]?>" data-lng="<?= $lng[1]?>">
   <div id="cf7-googlemap-<?= $tag->name?>" class="cf7-googlemap <?= $class?>"></div>
   <div class="cf7-google-map-search">
     <?php if( get_option('cf7_googleMap_enable_places',0)):?>
       <span class="dashicons dashicons-search"></span><span class="dashicons dashicons-no-alt"></span>
     <?php endif;?>
     <input name="search-<?= $tag->name?>" id="search-<?= $tag->name?>" value="" class="cf7marker-address" type="text">
-    <input name="zoom-<?= $tag->name?>" id="zoom-<?= $tag->name?>" value="<?= $zoom[1]?>" type="hidden">
-    <input name="clat-<?= $tag->name?>" id="clat-<?= $tag->name?>" value="<?= $clat[1]?>" type="hidden">
-    <input name="clng-<?= $tag->name?>" id="clng-<?= $tag->name?>" value="<?= $clng[1]?>" type="hidden">
-    <input name="lat-<?= $tag->name?>" id="lat-<?= $tag->name?>" value="<?= $lat[1]?>" type="hidden">
-    <input name="lng-<?= $tag->name?>" id="lng-<?= $tag->name?>" value="<?= $lng[1]?>" type="hidden">
+    <input name="zoom-<?= $tag->name?>" id="zoom-<?= $tag->name?>" value="" type="hidden">
+    <input name="clat-<?= $tag->name?>" id="clat-<?= $tag->name?>" value="" type="hidden">
+    <input name="clng-<?= $tag->name?>" id="clng-<?= $tag->name?>" value="" type="hidden">
+    <input name="lat-<?= $tag->name?>" id="lat-<?= $tag->name?>" value="" type="hidden">
+    <input name="lng-<?= $tag->name?>" id="lng-<?= $tag->name?>" value="" type="hidden">
     <input name="address-<?= $tag->name?>" id="address-<?= $tag->name?>" value="" type="hidden">
     <input name="<?= $tag->name?>" id="<?= $tag->name?>" value="" type="hidden">
     <input name="manual-address-<?= $tag->name?>" id="manual-address-<?= $tag->name?>" value="false" type="hidden">
   </div>
+  <span class="wpcf7-form-control-wrap <?= $tag->name?>"></span>
 <?php if($set_address):?>
   <div class="cf7-googlemap-address-fields">
     <label for="line-<?= $tag->name?>">
@@ -92,7 +92,7 @@ if (!$exists && function_exists('get_headers')) {
         echo $label;
         ?>
       </span><br />
-      <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+      <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-line" type="text">
     </label>
     <label for="city-<?= $tag->name?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-city">
@@ -103,7 +103,7 @@ if (!$exists && function_exists('get_headers')) {
         echo $label;
          ?>
       </span><br />
-      <input name="city-<?= $tag->name?>" id="city-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+      <input name="city-<?= $tag->name?>" id="city-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-city" type="text">
     </label>
     <label for="state-<?= $tag->name?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-pin">
@@ -114,7 +114,7 @@ if (!$exists && function_exists('get_headers')) {
         echo $label;
         ?>
       </span><br />
-      <input name="state-<?= $tag->name?>" id="state-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+      <input name="state-<?= $tag->name?>" id="state-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-state" type="text">
     </label>
     <label for="country-<?= $tag->name?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-country">
@@ -125,7 +125,7 @@ if (!$exists && function_exists('get_headers')) {
         echo $label;
         ?>
       </span><br />
-      <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address" type="text">
+      <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-country" type="text">
     </label>
   </div>
 <?php endif;?>

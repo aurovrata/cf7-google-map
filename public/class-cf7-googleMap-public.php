@@ -204,7 +204,13 @@ class Cf7_GoogleMap_Public {
     //$posted_lat = isset( $_POST['lat-'.$name] ) ? (string) $_POST['lat-'.$name] : '';
     /*TODO better validation for address checkbox fields*/
     if ($tag->is_required() && isset( $_POST[$name] ) && empty($_POST[$name]) ) {
-        $result->invalidate( $tag, __('Please select a location on the map','cf7-google-map') );
+      $form = wpcf7_get_current_contact_form();
+      $required = __('The location is required.','cf7-google-map');
+      if(!empty($form)){
+        $messages=$form->prop('messages');
+        $required = isset( $messages['map_required'] ) ? $messages['map_required'] : $required;
+      }
+        $result->invalidate( $tag, $required );
     }
     return $result;
   }

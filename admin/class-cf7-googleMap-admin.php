@@ -297,4 +297,18 @@ class Cf7_GoogleMap_Admin {
   public function print_js_helper_hooks(){
     require_once plugin_dir_path( __FILE__ ) .'partials/cf7-sgui-js-helper-hooks.php';
   }
+  /**
+  * Add save draft message to cf7 messages.
+  * Hooked to 'wpcf7_messages', see file contact-form-7/includes/contact-form-template.php fn messages().
+  *@since 1.7.0
+  *@param array $messages array of messages to filter.
+  *@return array array of cf7 messages.
+  */
+  public function required_message($messages){
+    $messages['map_required'] = array(
+	  'description'=> __( 'Required maps error message', 'cf7-google-map' ),
+	  'default'=> __( 'The location is required.', 'cf7-google-map' ),
+	);
+    return $messages;
+  }
 }

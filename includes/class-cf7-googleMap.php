@@ -175,6 +175,8 @@ class Cf7_GoogleMap {
     $this->loader->add_action( 'cf7sg_ui_grid_helper_hooks', $plugin_admin, 'print_helper_hooks');
     $this->loader->add_action( 'cf7sg_ui_grid_js_helper_hooks', $plugin_admin, 'print_js_helper_hooks');
     $this->loader->add_action( 'cf7sg_enqueue_admin_editor_scripts', $plugin_admin, 'enqueue_grid_helper');
+    /** @since 1.7.0 include required message in admin messages */
+    $this->loader->add_filter( 'wpcf7_messages', $plugin_admin, 'required_message');
 	}
   /**
 	 * Register all of the hooks related to the public-facing functionality
