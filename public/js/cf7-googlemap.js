@@ -52,7 +52,7 @@
                   let event = $.Event("update.cf7-google-map", {
                       'gm3':$map3,
                       'gmap':googleMap,
-                      'marker':googleMarker,
+                      'marker':marker,
                       'address': addObj,
                       bubbles: true,
                       cancelable: true
@@ -179,7 +179,7 @@
                 let event = $.Event("update.cf7-google-map", {
                     'gm3':$map3,
                     'gmap':googleMap,
-                    'marker':googleMarker,
+                    'marker':markers[0],
                     'address': addObj,
                     bubbles: true,
                     cancelable: true
@@ -190,7 +190,7 @@
                 if(has_address){
                   let state = addObj.state;
                   if(''!=addObj.pin){
-                    state = addObj.state + " " + pin;
+                    state = addObj.state + " " + addObj.pin;
                   }
                   //set address fields
                   autoLine = addObj.line;

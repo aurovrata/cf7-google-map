@@ -229,6 +229,8 @@ $('.cf7-google-map-container').on('init.cf7-google-map drag.cf7-google-map updat
 
 
 == Changelog ==
+= 1.7.1 =
+* fix marker bug in js udpate event.
 = 1.7.0 =
 * fix map required display message.
 * enable multiple map fields in a page/form.
