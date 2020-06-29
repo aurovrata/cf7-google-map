@@ -4,14 +4,14 @@ $validation_error = wpcf7_get_validation_error( $tag->name );
 $classes=array();
 $id='';
 $show_address = 'false';
-$set_address = 'false';
+$set_address = false;
 if(!empty($tag->options)){
   foreach($tag->options as $option){
     // $class = str_replace('class:', '', $option);
     switch(true){
       case ('show_address'==$option):
         $show_address = 'true';
-        $set_address = 'true';
+        $set_address = true;
         break;
       case ('custom_address'==$option):
         $show_address = 'true';
@@ -25,6 +25,7 @@ if(!empty($tag->options)){
     }
   }
 }
+
 $class = wpcf7_form_controls_class( $tag->type, 'cf7-googleMap' );
 if( !empty( $classes ) ) $class .= ' '.implode(' ', $classes);
 if ( $validation_error ) {
