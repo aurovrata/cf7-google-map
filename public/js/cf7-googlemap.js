@@ -2,9 +2,10 @@
 //init funciton for maps.
   const $map_forms = $('.cf7-google-map-container').closest('form.wpcf7-form');
 
-  function init_cf7_google_maps(){
-    let $map_container = $(this),
-      $et_map = $( '.cf7-googlemap', $map_container),
+  $.fn.initCF7googleMap = function(){
+    let $map_container = $(this);
+    if(!$map_container.is('.cf7-google-map-container')) return false;
+    let $et_map = $( '.cf7-googlemap', $map_container),
       field = $et_map.attr('id').replace('cf7-googlemap-',''),
       googleMap, googleMarker,
       show_address = $map_container.data('show-address'),
@@ -91,6 +92,7 @@
         }
       );
       $map_container.trigger(event);
+      return $map_container;
     }
     const iclat = $location_clat.val(),
       iclng = $location_clng.val(),
@@ -399,12 +401,23 @@
       let $form=$(this),
         id = $form.closest('.cf7_2_post').attr('id');
       $form.on(id, function(e){
-        $('.cf7-google-map-container', $form).each(init_cf7_google_maps);
+        $('.cf7-google-map-container', $form).initCF7googleMap();
       });
     });
     $(document).ready( function(){
-      $('.cf7-google-map-container', $map_forms.not('.cf7_2_post form.wpcf7-form')).each( init_cf7_google_maps);
-    }); //end document ready.
+      $map_forms.not('.cf7_2_post form.wpcf7-form').each(function(){
+        let $form = $(this);
+        $('.cf7-google-map-container', $form).initCF7googleMap();
+        if( $form.is('div.cf7-smart-grid.has-table form.wpcf7-form') ||
+            $form.is('div.cf7-smart-grid.has-tabs form.wpcf7-form') ){
+          $form.on('sgTabAdded sgRowAdded', function(e){
+            let $newElm = $(e.target);
+            if('sgRowAdded'==e.type) $newElm = $('.row.cf7-sg-table[data-row='+e.row+']',$newElm);
+            $('.cf7-google-map-container', $newElm).initCF7googleMap();
+          })
+        }
+      })
+    }) //end document ready.
   }else{
     $et_map.append('<p style="text-align: center;padding: 93px 0;border: solid 1px;"><em>airplane mode</em></p>');
   }
