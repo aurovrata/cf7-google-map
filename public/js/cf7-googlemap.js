@@ -404,18 +404,16 @@
         $('.cf7-google-map-container', $form).initCF7googleMap();
       });
     });
+    /** @since 1.7.4 Smart grid new tab/row field init. */
+    $map_forms.on('sgTabAdded sgRowAdded', function(e){
+      let $newElm = $(e.target);
+      if('sgRowAdded'==e.type) $newElm = $('.row.cf7-sg-table[data-row='+e.row+']',$newElm);
+      $('.cf7-google-map-container', $newElm).initCF7googleMap();
+    });
     $(document).ready( function(){
       $map_forms.not('.cf7_2_post form.wpcf7-form').each(function(){
         let $form = $(this);
         $('.cf7-google-map-container', $form).initCF7googleMap();
-        if( $form.is('div.cf7-smart-grid.has-table form.wpcf7-form') ||
-            $form.is('div.cf7-smart-grid.has-tabs form.wpcf7-form') ){
-          $form.on('sgTabAdded sgRowAdded', function(e){
-            let $newElm = $(e.target);
-            if('sgRowAdded'==e.type) $newElm = $('.row.cf7-sg-table[data-row='+e.row+']',$newElm);
-            $('.cf7-google-map-container', $newElm).initCF7googleMap();
-          })
-        }
       })
     }) //end document ready.
   }else{
