@@ -404,7 +404,7 @@
         $('.cf7-google-map-container', $form).initCF7googleMap();
       });
     });
-    /** @since 1.7.4 Smart grid new tab/row field init. */
+    /** @since 1.7.3 Smart grid new tab/row field init. */
     $map_forms.on('sgTabAdded sgRowAdded', function(e){
       let $newElm = $(e.target);
       if('sgRowAdded'==e.type) $newElm = $('.row.cf7-sg-table[data-row='+e.row+']',$newElm);

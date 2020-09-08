@@ -231,10 +231,9 @@ $('.cf7-google-map-container').on('init.cf7-google-map drag.cf7-google-map updat
 
 
 == Changelog ==
-= 1.7.4 =
-* enable repetitive map fields in Smart Grid.
 = 1.7.3 =
 * fix multi-map fields/multi-forms in single page/Post My CF7 Form compatibility.
+* enable repetitive map fields in Smart Grid.
 = 1.7.2 =
 * fix address fields.
 = 1.7.1 =
