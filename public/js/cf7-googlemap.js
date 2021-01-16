@@ -35,7 +35,7 @@ const autoline = {}; /*track automated values of line address*/
     const map_settings = {
       center: [( ''!=iclat ? iclat:$map_container.data('clat') ),  ( ''!=iclng ? iclng : $map_container.data('clng') )],
       zoom: (''!= izoom ? parseInt(izoom) : parseInt($map_container.data('zoom')) ),
-      mapTypeId: google.maps.MapTypeId[cf7GoogleMap.map_type]
+      mapTypeId: google.maps.MapTypeId[cf7GoogleMap.fields[field].map_type]
     }
     const marker_settings = {
       position : [( ''!=ilat ? ilat:$map_container.data('lat') ),  ( ''!=ilng ? ilng : $map_container.data('lng') )],
@@ -48,7 +48,7 @@ const autoline = {}; /*track automated values of line address*/
       if($(this).val() != autoline[field]){
         $manual.val(true);
       }
-      let event = $.Event("update.cf7-google-map", {
+      let event =  {
         'gm3':$map3,
         'gmap': googleMap,
         'marker':googleMarker,
@@ -60,8 +60,10 @@ const autoline = {}; /*track automated values of line address*/
         },
         bubbles: true,
         cancelable: true
-      });
-      $map_container.trigger(event);
+      };
+      $map_container.trigger($.Event("update.cf7-google-map",event));
+      event = new CustomEvent("update/cf7-google-map", {"detail":event});
+      $map_container.get(0).dispatchEvent(event);
     });
 
     //if the $form contains jquery tabs, let's refresh the map
@@ -84,8 +86,8 @@ const autoline = {}; /*track automated values of line address*/
       })
     }
     //initiate the map
-    $map3 = $et_map.gmap3({...map_settings, ...cf7GoogleMap.gmap3_settings});
-    $map3.marker({...marker_settings, ...cf7GoogleMap.marker_settings}).on('dragend', fireMarkerUpdate).then(function(map){
+    $map3 = $et_map.gmap3({...map_settings, ...cf7GoogleMap.fields[field].gmap3_settings});
+    $map3.marker({...marker_settings, ...cf7GoogleMap.fields[field].marker_settings}).on('dragend', fireMarkerUpdate).then(function(map){
       googleMap = this.get(0);
       googleMarker = this.get(1);
       /** @since 1.6.0 trigger address event */
@@ -96,7 +98,7 @@ const autoline = {}; /*track automated values of line address*/
           'settings': {
             'center': [$location_clat.val(), $location_clng.val()],
             'zoom':$location_zoom.val(),
-            'type':cf7GoogleMap.map_type,
+            'type':cf7GoogleMap.fields[field].map_type,
             'marker':[$location_lat.val(), $location_lng.val()],
           },
           bubbles: true,
@@ -151,12 +153,19 @@ const autoline = {}; /*track automated values of line address*/
       if('sgRowAdded'==e.type) $newElm = $('.row.cf7-sg-table[data-row='+e.row+']',$newElm);
       $('.cf7-google-map-container', $newElm).initCF7googleMap();
     });
+    /** @since 1.8.0 enable event based initialisation */
+    let $containers = $('.cf7-google-map-container', $map_forms.not('.cf7_2_post form.wpcf7-form'));
     $(document).ready( function(){
-      $map_forms.not('.cf7_2_post form.wpcf7-form').each(function(){
-        let $form = $(this);
-        $('.cf7-google-map-container', $form).initCF7googleMap();
+      $containers.each(function(){
+        let $mc = $(this), field =  $('.cf7-googlemap',$mc).attr('id').replace('cf7-googlemap-','');
+        if(cf7GoogleMap.fields[field].init) $mc.initCF7googleMap();
+
       })
-    }) //end document ready.
+
+    }); //end document ready.
+    $containers.on('initialise-cf7-gmap', function(){
+      $(this).initCF7googleMap()
+    });
   }else{
     $et_map.append('<p style="text-align: center;padding: 93px 0;border: solid 1px;"><em>airplane mode</em></p>');
   }
@@ -212,7 +221,7 @@ function fireMarkerUpdate(marker, e){
             //set address fields
             autoline[field] = addObj.line;
             mc.querySelector('#country-'+field).value=addObj.country;
-            mc.querySelector('#line-'+field).value=state;
+            mc.querySelector('#state-'+field).value=state;
             mc.querySelector('#city-'+field).value=addObj.city;
             mc.querySelector('#line-'+field).value=addObj.line;
           }
@@ -227,7 +236,7 @@ function fireMarkerUpdate(marker, e){
       'settings': {
         'center': [clat.value, clng.value],
         'zoom':zoom.value,
-        'type':cf7GoogleMap.map_type,
+        'type':cf7GoogleMap.fields[field].map_type,
         'marker':[llat.value, llng.value],
       },
       bubbles: true,
@@ -391,13 +400,13 @@ if(cf7GoogleMap.places){
             return;
           }
           let icon = {
-            url: cf7GoogleMap.marker_settings.icon,
+            url: cf7GoogleMap.fields[field].marker_settings.icon,
           };
 
           // Create a marker for each place.
           googleMarker = gm3[field].marker( {//new google.maps.Marker({
-            draggable: cf7GoogleMap.marker_settings.draggable,
-            icon: cf7GoogleMap.marker_settings.icon,
+            draggable: cf7GoogleMap.fields[field].marker_settings.draggable,
+            icon: cf7GoogleMap.fields[field].marker_settings.icon,
             title: place.name,
             position: place.geometry.location
           }).on('dragend', fireMarkerUpdate).then(function(result){
@@ -427,7 +436,7 @@ if(cf7GoogleMap.places){
                 //set address fields
                 autoline[field] = addObj.line;
                 mapc.querySelector('#country-'+field).value=addObj.country;
-                mapc.querySelector('#line-'+field).value=state;
+                mapc.querySelector('#state-'+field).value=state;
                 mapc.querySelector('#city-'+field).value=addObj.city;
                 mapc.querySelector('#line-'+field).value=addObj.line;
               }

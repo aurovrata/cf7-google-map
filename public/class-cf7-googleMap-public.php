@@ -47,6 +47,14 @@ class Cf7_GoogleMap_Public {
    * @var      array    $maps    an array of google map field names associated with this instance.
    */
   protected $maps;
+
+  /**
+   * local script for configuring maps.
+   * @since 1.8.0
+   * @access protected
+   * @var array $local_script an array of parameters for each map field.
+   */
+  protected $local_script ;
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -59,6 +67,12 @@ class Cf7_GoogleMap_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
     $this->maps=array();
+    $this->local_script = array(
+      'plane_mode'=> (class_exists( 'Airplane_Mode_Core' ) && Airplane_Mode_Core::getInstance()->enabled()),
+      'geocode'=>get_option('cf7_googleMap_enable_geocode')?'1':'0',
+      'places'=>get_option('cf7_googleMap_enable_places')?'1':'0',
+      'fields'=>array()
+    );
 	}
 
 	/**
@@ -155,16 +169,13 @@ class Cf7_GoogleMap_Public {
       'rotateControl'=>false,
     );
     $gmap3_settings = apply_filters('cf7_google_map_settings', $gmap3_settings, $tag->name);
-
-    wp_localize_script('cf7-googlemap', 'cf7GoogleMap', array(
-      'plane_mode'=> (class_exists( 'Airplane_Mode_Core' ) && Airplane_Mode_Core::getInstance()->enabled()),
-      'geocode'=>get_option('cf7_googleMap_enable_geocode')?'1':'0',
-      'places'=>get_option('cf7_googleMap_enable_places')?'1':'0',
-      'field'=>$tag->name,
+    $this->local_script['fields'][$tag->name]= array(
       'gmap3_settings'=>$gmap3_settings,
       'map_type'=>$map_type,
-      'marker_settings'=>$marker_settings
-    ));
+      'marker_settings'=>$marker_settings,
+      'init'=>apply_filters('cf7_google_map_initialise_on_document_ready', true, $tag->name)
+    );
+    wp_localize_script('cf7-googlemap', 'cf7GoogleMap', $this->local_script);
 
     $tag = new WPCF7_FormTag( $tag );
     if ( empty( $tag->name ) ) {

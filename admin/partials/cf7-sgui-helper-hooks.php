@@ -58,7 +58,7 @@ function {$field_name_slug}_map_settings($settings, $field){
 * @param string $field the field name being populated.
 */
 function {$field_name_slug}_address_labels($label, $type, $field){
-  if( '{$field_name}' !== $field){
+  if( '{$field_name}' == $field){
     switch($type){
       case 'adresse':
         $label = 'Address'; //change the address field label.
@@ -76,4 +76,17 @@ function {$field_name_slug}_address_labels($label, $type, $field){
   }
   return $label;
 }" href="javascript:void(0);"><?=__('Filter','cf7-grid-layout')?></a> <?=__('address field labels.','cf7-google-map')?>
+</li>
+<li class="cf7sg-tag-map">
+  <a class="helper" data-cf72post="add_filter( 'cf7_google_map_initialise_on_document_ready','{$field_name_slug}_stop_initialise',10,2);
+/**
+* Filter initialisation on document ready event.
+* You can stop the automatic intialisation should you want to control the process on a separate popup.
+* @param Boolean $do_init weather to initialise or not, true by default.
+* @param String $field the field name being populated.
+*/
+function {$field_name_slug}_stop_initialise($do_init, $field){
+  if( '{$field_name}' !== $field) return $do_init;
+  return false;
+}" href="javascript:void(0);"><?=__('Filter','cf7-grid-layout')?></a> <?=__('auto map initialisation.','cf7-google-map')?>
 </li>

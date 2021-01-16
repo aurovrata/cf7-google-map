@@ -3,7 +3,7 @@ Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UZ9CQN6KYBMQ8
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
-Tested up to: 5.5.1
+Tested up to: 5.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,15 +13,14 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 == Description ==
 
 This plugin enables the insertion of google maps into contact form 7 as an input field, functionality available with this plugin include
-* the zoom and default location to be configured in the form edit page itself, thus different forms can have different default map zoom levels and pin location
-* the front end form displays the configured map and registers the location change of the pin which can be included in the email notification.
-* play nice with the [Post My CF7 Form](https://wordpress.org/plugins/post-my-contact-form-7/) plugin
-* a search field is available to lookup addresses
-* an optional set of address fields can be enabled from the cf7 tag to display reverse-geocode text address
-* if a user changes manually the first line of the (optional) address field, the reverse-geocode is frozen.  This allows for address corrections.
+* **Multi-map per form** - the zoom and default location to be configured in the form edit page itself, thus different maps/forms can have different default map zoom levels and pin location. The front end form displays the configured map and registers the location change of the pin which can be included in the email notification.
+* **Compatible with Post My CF7 Form** - play nice with the [Post My CF7 Form](https://wordpress.org/plugins/post-my-contact-form-7/) plugin
+* **Address lookup search bar** - a search field is available to lookup addresses, if a user changes manually the first line of the (optional) address field, the reverse-geocode is frozen.  This allows for address corrections.
+* **Reverse Geocode** - an optional set of address fields can be enabled from the cf7 tag to display reverse-geocode text address
+* **Totally customisable** - a set of filters are provided to control all configuration parameters on each map.
+* **Popup compatible** - this plugin allows users to control defferred map initialisation on popups.
+* **Customise map actions** - the plugin exposes the map object with events (on initialisation/updates), allowing users to add additional features to their maps.  The plugin makes use of [JQuery Google Maps (gmap3) plugin](https://gmap3.net/), and exposes both the Gmap3 as well as the Google map objects.
 * google map is disabled for [Airplane Mode plugin](https://github.com/norcross/airplane-mode/releases) activation to allow you to develop without an Internet connection.
-* the plugin makes use of [JQuery Google Maps (gmap3) plugin](https://gmap3.net/).
-* as of v1.7 multiple map fields can be added in a single form.
 * plays nice with repetitive fields constructs from the [Smart Grid-Layout extension for CF7](https://wordpress.org/plugins/cf7-grid-layout/) plugin.
 = Checkout our other CF7 plugin extensions =
 
@@ -220,7 +219,49 @@ $('.cf7-google-map-container').on('init.cf7-google-map drag.cf7-google-map updat
 
 });
 `
+= 11. What are the JavaScript Events exposed ? =
 
+As of v1.8 in addition of jQuery Event objects being triggered, plain vanilla JavaScript events are also fired,
+All the events are fired on the map containter `.cf7-google-map-container`
+
+**jQuery events:**
+`
+init.cf7-google-map
+drag.cf7-google-map
+update.cf7-google-map
+`
+
+**JavaScript equivalent events **
+`
+init/cf7-google-map
+drag/cf7-google-map
+update/cf7-google-map
+`
+
+However note that in JavaScript events, map objects are found in the `event.detail` property, while in the jQuery event object these are exposed directly in the root of the event object.
+
+= 12. How can I defer the initialisation of a map ? =
+To programmatically trigger a map intialisation you need to first turn off the automatic initialisation using the filter,
+`
+add_filter( 'cf7_google_map_initialise_on_document_ready','your_location_stop_initialise',10,2);
+/**
+* Filter initialisation on document ready event.
+* You can stop the automatic intialisation should you want to control the process on a separate popup.
+* @param Boolean $do_init weather to initialise or not, true by default.
+* @param String $field the field name being populated.
+*/
+function your_location_stop_initialise($do_init, $field){
+  if( 'your-location' !== $field) return $do_init; //check if this is the right map field.
+  return false;
+}
+`
+on the front-end you need to fire the `initialise-cf7-gmap` event on the map container,
+`
+$(document).ready(function(){
+  //assuming your field is 'your-location'
+  $('.cf7-google-map-container.your-location').trigger('initialise-cf7-gmap');
+})
+`
 == Screenshots ==
 1. Save your Google API key in the settings, else your map will not function
 2. Insert a Google Map tag into your cf7 form
@@ -231,6 +272,10 @@ $('.cf7-google-map-container').on('init.cf7-google-map drag.cf7-google-map updat
 
 
 == Changelog ==
+= 1.8.0 =
+* fixed jquery 3 issues with search bar.
+* added filter 'cf7_google_map_initialise_on_document_ready'
+* enable event-based control of map initialisation for popup forms.
 = 1.7.3 =
 * fix multi-map fields/multi-forms in single page/Post My CF7 Form compatibility.
 * enable repetitive map fields in Smart Grid.

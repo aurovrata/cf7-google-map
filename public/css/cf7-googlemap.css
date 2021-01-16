@@ -41,10 +41,10 @@ input.cf7-googlemap-address {
     width: 100%;
 }
 .cf7-google-map-search {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    width: calc(60% - 10px);
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: calc(60% - 10px);
 }
 .wpcf7-form-control-wrap.cf7-google-map-container{
   display: inline-block;
@@ -60,7 +60,7 @@ input.cf7-googlemap-address {
 .cf7-google-map-search .dashicons.dashicons-search,
 .cf7-google-map-search .dashicons.dashicons-no-alt {
     position: absolute;
-    right:52px;
+    right:0;
     top: 10px;
     background-color: white;
     width: 30px;
