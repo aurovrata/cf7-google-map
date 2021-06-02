@@ -1,4 +1,4 @@
-const autoline = {}; /*track automated values of line address*/
+const autoline_add = {}; /*track automated values of line address*/
 (function($){
 //init funciton for maps.
   const $map_forms = $('.cf7-google-map-container').closest('form.wpcf7-form');
@@ -21,7 +21,7 @@ const autoline = {}; /*track automated values of line address*/
       $location_address = $('#address-'+field, $map_container),
       $location = $('input#'+field, $map_container );
 
-    autoline[field]=''; /*track automated values of line address*/
+    autoline_add[field]=''; /*track automated values of line address*/
 
     $map_container.on('update.cf7-google-map', function(event){
       if(show_address) $location_address.val(JSON.stringify( Object.values(event.address) ));
@@ -45,7 +45,7 @@ const autoline = {}; /*track automated values of line address*/
 
     //if address line is manually changed, freeze the automated address
     $('.cf7-googlemap-address-line', $map_container).on('change', function(e){
-      if($(this).val() != autoline[field]){
+      if($(this).val() != autoline_add[field]){
         $manual.val(true);
       }
       let event =  {
@@ -173,7 +173,7 @@ const autoline = {}; /*track automated values of line address*/
 })(jQuery)
 /** @since 1.8.0 move google geocoder and search in vanilla js dur to issue with jquery */
 
-const geocoder = (!cf7GoogleMap.plane_mode && cf7GoogleMap.geocode) ? new google.maps.Geocoder:null;
+const cf7_geocoder = (!cf7GoogleMap.plane_mode && cf7GoogleMap.geocode) ? new google.maps.Geocoder:null;
 const gm3 = {}, gmap = {}; //track map objects to enable multiple maps on single page.
 
 function fireMarkerUpdate(marker, e){
@@ -196,7 +196,7 @@ function fireMarkerUpdate(marker, e){
   }
   let latlng = {lat: marker.getPosition().lat(), lng: marker.getPosition().lng()};
   if(cf7GoogleMap.geocode){
-    geocoder.geocode({'location': latlng}, function(results, status) {
+    cf7_geocoder.geocode({'location': latlng}, function(results, status) {
       if (status === 'OK') {
         if (results[1] && mc.getAttribute('data-show-address')){
           let addObj = parseGeolocationAddress('', results[1].address_components);
@@ -219,7 +219,7 @@ function fireMarkerUpdate(marker, e){
               state = addObj.state + " " + addObj.pin;
             }
             //set address fields
-            autoline[field] = addObj.line;
+            autoline_add[field] = addObj.line;
             mc.querySelector('#country-'+field).value=addObj.country;
             mc.querySelector('#state-'+field).value=state;
             mc.querySelector('#city-'+field).value=addObj.city;
@@ -434,7 +434,7 @@ if(cf7GoogleMap.places){
                   state = addObj.state + " " + addObj.pin;
                 }
                 //set address fields
-                autoline[field] = addObj.line;
+                autoline_add[field] = addObj.line;
                 mapc.querySelector('#country-'+field).value=addObj.country;
                 mapc.querySelector('#state-'+field).value=state;
                 mapc.querySelector('#city-'+field).value=addObj.city;

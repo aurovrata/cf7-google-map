@@ -3,7 +3,8 @@ Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UZ9CQN6KYBMQ8
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
-Tested up to: 5.6
+Requires PHP: 5.6
+Tested up to: 5.7.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,15 +14,25 @@ This plugin enables the insertion of google maps into contact form 7 as an input
 == Description ==
 
 This plugin enables the insertion of google maps into contact form 7 as an input field, functionality available with this plugin include
+
 * **Multi-map per form** - the zoom and default location to be configured in the form edit page itself, thus different maps/forms can have different default map zoom levels and pin location. The front end form displays the configured map and registers the location change of the pin which can be included in the email notification.
+
 * **Compatible with Post My CF7 Form** - play nice with the [Post My CF7 Form](https://wordpress.org/plugins/post-my-contact-form-7/) plugin
+
 * **Address lookup search bar** - a search field is available to lookup addresses, if a user changes manually the first line of the (optional) address field, the reverse-geocode is frozen.  This allows for address corrections.
+
 * **Reverse Geocode** - an optional set of address fields can be enabled from the cf7 tag to display reverse-geocode text address
+
 * **Totally customisable** - a set of filters are provided to control all configuration parameters on each map.
+
 * **Popup compatible** - this plugin allows users to control defferred map initialisation on popups.
+
 * **Customise map actions** - the plugin exposes the map object with events (on initialisation/updates), allowing users to add additional features to their maps.  The plugin makes use of [JQuery Google Maps (gmap3) plugin](https://gmap3.net/), and exposes both the Gmap3 as well as the Google map objects.
-* google map is disabled for [Airplane Mode plugin](https://github.com/norcross/airplane-mode/releases) activation to allow you to develop without an Internet connection.
-* plays nice with repetitive fields constructs from the [Smart Grid-Layout extension for CF7](https://wordpress.org/plugins/cf7-grid-layout/) plugin.
+
+Google map is disabled for [Airplane Mode plugin](https://github.com/norcross/airplane-mode/releases) activation to allow you to develop without an Internet connection.
+
+Plays nice with repetitive fields constructs from the [Smart Grid-Layout extension for CF7](https://wordpress.org/plugins/cf7-grid-layout/) plugin.
+
 = Checkout our other CF7 plugin extensions =
 
 * [CF7 Polylang Module](https://wordpress.org/plugins/cf7-polylang/) - this plugin allows you to create forms in different languages for a multi-language website.  The plugin requires the [Polylang](https://wordpress.org/plugins/polylang/) plugin to be installed in order to manage translations.
@@ -272,6 +283,8 @@ $(document).ready(function(){
 
 
 == Changelog ==
+= 1.8.1 =
+* fix geocoder name clash.
 = 1.8.0 =
 * fixed jquery 3 issues with search bar.
 * added filter 'cf7_google_map_initialise_on_document_ready'
