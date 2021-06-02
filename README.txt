@@ -241,6 +241,29 @@ init.cf7-google-map
 drag.cf7-google-map
 update.cf7-google-map
 `
+the init event is fired on initialisation of a map and exposes
+
+* `gm3` gmap3 object,
+* `gmap` Google map object,
+* `marker` the Google marker object that has been updated.
+* `settings.center` the coodrinates of the center of the map as an array with [lat,lng]
+* `settings.zoom` the zoom level of the map.
+* `settings.type` the map type used,
+* `settings.marker` the current marker's coordiates as an array [lat,lng]
+
+the drag event is fired when a marker is dragged on the map, it exposes,
+
+* `settings.center` the coodrinates of the center of the map as an array with [lat,lng]
+* `settings.zoom` the zoom level of the map.
+* `settings.type` the map type used,
+* `settings.marker` the current marker's coordiates as an array [lat,lng]
+
+the update event is fired with then the marker on the map is changed (when the search field is used to automatically located an result), it exposes,
+
+* `gm3` gmap3 object,
+* `gmap` Google map object,
+* `marker` the Google marker object that has been updated.
+* `address` the address of the marker location,
 
 **JavaScript equivalent events **
 `
