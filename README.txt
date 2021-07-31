@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 4.4
 Requires PHP: 5.6
-Tested up to: 5.7.2
+Tested up to: 5.8.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -306,6 +306,9 @@ $(document).ready(function(){
 
 
 == Changelog ==
+= 1.8.2 =
+* fix multi-map init search bar.
+* fix search bar resize.
 = 1.8.1 =
 * fix geocoder name clash.
 = 1.8.0 =
