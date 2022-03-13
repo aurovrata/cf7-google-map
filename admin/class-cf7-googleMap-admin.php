@@ -271,7 +271,7 @@ class Cf7_GoogleMap_Admin {
                 $dismiss = $notice['nonce'].'-forever';
                 if ( ! PAnD::is_admin_notice_active( $dismiss ) ) {
                     unset($notices[$pagenow]);
-                    update_option('cf7-polylang-admin-notices', $notices);
+                    update_option('cf7-google-map-notices', $notices);
                     break;
                 }
                 ?>
