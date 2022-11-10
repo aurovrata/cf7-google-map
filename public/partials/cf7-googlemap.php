@@ -55,7 +55,7 @@ if ( in_array('curl', get_loaded_extensions()) ) {
 	curl_close($ch);
 }
 if (!$exists && function_exists('get_headers')) {
-	$headers = @get_headers($robots);
+	$headers = @get_headers($marker_settings['icon']);
 	if ($headers) {
 		if (strpos($headers[0], '404') !== false) {
 			$exists = true;
@@ -65,7 +65,7 @@ if (!$exists && function_exists('get_headers')) {
 
 //HTML cf7 form
 ?>
-<div <?=$id?>class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?>" data-show-address="<?= $show_address ?>" data-zoom="<?= $zoom[1]?>" data-clat="<?= $clat[1]?>" data-clng="<?= $clng[1]?>" data-lat="<?= $lat[1]?>" data-lng="<?= $lng[1]?>">
+<div <?=$id?>class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?>" data-name="<?=$tag->name?>" data-show-address="<?= $show_address ?>" data-zoom="<?= $zoom[1]?>" data-clat="<?= $clat[1]?>" data-clng="<?= $clng[1]?>" data-lat="<?= $lat[1]?>" data-lng="<?= $lng[1]?>">
   <div id="cf7-googlemap-<?= $tag->name?>" class="cf7-googlemap <?= $class?>"></div>
   <div class="cf7-google-map-search">
     <?php if( get_option('cf7_googleMap_enable_places',0)):?>
@@ -78,7 +78,7 @@ if (!$exists && function_exists('get_headers')) {
     <input name="lat-<?= $tag->name?>" id="lat-<?= $tag->name?>" value="" type="hidden">
     <input name="lng-<?= $tag->name?>" id="lng-<?= $tag->name?>" value="" type="hidden">
     <input name="address-<?= $tag->name?>" id="address-<?= $tag->name?>" value="" type="hidden">
-    <input name="<?= $tag->name?>" id="<?= $tag->name?>" value="" type="hidden">
+    <input name="<?= $tag->name?>" id="<?= $tag->name?>"  class="cf7-googlemap-field" value="" type="hidden">
     <input name="manual-address-<?= $tag->name?>" id="manual-address-<?= $tag->name?>" value="false" type="hidden">
   </div>
   <span class="wpcf7-form-control-wrap <?= $tag->name?>"></span>

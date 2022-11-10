@@ -2,6 +2,17 @@ const autoline_add = {}; /*track automated values of line address*/
 (function($){
 //init funciton for maps.
   const $map_forms = $('.cf7-google-map-container').closest('form.wpcf7-form');
+  //search button event delegation
+  $map_forms.on('click', '.cf7-google-map-search .dashicons', function(e){
+    let $search = $(this);
+    if($search.is('.dashicons-search')){
+      $search.siblings('.cf7marker-address').show().val('').focus();
+      $search.hide();
+      $search.siblings('.dashicons-no-alt').show();
+    }else if($search.is('.dashicons-no-alt')){
+      $(this).closeCF7gmapSearchField();
+    }
+  });
 
   $.fn.initCF7googleMap = function(){
     let mapsObj = $(this);
@@ -10,11 +21,12 @@ const autoline_add = {}; /*track automated values of line address*/
       let $map_container = $(item);
       if(!$map_container.is('.cf7-google-map-container')) return false;
       let $et_map = $( '.cf7-googlemap', $map_container),
-        field = $et_map.attr('id').replace('cf7-googlemap-',''),
+        origin = $et_map.attr('id').replace('cf7-googlemap-',''),
+        field = $('.cf7-googlemap-field', $map_container).attr('id'), //for repetitive fields.
         googleMarker,googleMap, $map3,
         show_address = $map_container.data('show-address'),
         $form = $et_map.closest('form.wpcf7-form'),
-        search = $('input#search-'+field, $map_container ),
+        $search = $('input#search-'+field, $map_container ),
         $manual = $('input#manual-address-'+field, $map_container ),
         $location_lat = $('#lat-'+field, $map_container),
         $location_lng = $('#lng-'+field, $map_container),
@@ -38,7 +50,7 @@ const autoline_add = {}; /*track automated values of line address*/
       let map_settings = {
         center: [( ''!=iclat ? iclat:$map_container.data('clat') ),  ( ''!=iclng ? iclng : $map_container.data('clng') )],
         zoom: (''!= izoom ? parseInt(izoom) : parseInt($map_container.data('zoom')) ),
-        mapTypeId: google.maps.MapTypeId[cf7GoogleMap.fields[field].map_type]
+        mapTypeId: google.maps.MapTypeId[cf7GoogleMap.fields[origin].map_type]
       }
       let marker_settings = {
         position : [( ''!=ilat ? ilat:$map_container.data('lat') ),  ( ''!=ilng ? ilng : $map_container.data('lng') )],
@@ -89,8 +101,8 @@ const autoline_add = {}; /*track automated values of line address*/
         })
       }
       //initiate the map
-      $map3 = $et_map.gmap3({...map_settings, ...cf7GoogleMap.fields[field].gmap3_settings});
-      $map3.marker({...marker_settings, ...cf7GoogleMap.fields[field].marker_settings}).on('dragend', fireMarkerUpdate).then(function(map){
+      $map3 = $et_map.gmap3({...map_settings, ...cf7GoogleMap.fields[origin].gmap3_settings});
+      $map3.marker({...marker_settings, ...cf7GoogleMap.fields[origin].marker_settings}).on('dragend', fireMarkerUpdate).then(function(map){
         googleMap = this.get(0);
         googleMarker = this.get(1);
         /** @since 1.6.0 trigger address event */
@@ -101,7 +113,7 @@ const autoline_add = {}; /*track automated values of line address*/
             'settings': {
               'center': [$location_clat.val(), $location_clng.val()],
               'zoom':$location_zoom.val(),
-              'type':cf7GoogleMap.fields[field].map_type,
+              'type':cf7GoogleMap.fields[origin].map_type,
               'marker':[$location_lat.val(), $location_lng.val()],
             },
             bubbles: true,
@@ -115,24 +127,123 @@ const autoline_add = {}; /*track automated values of line address*/
 
       //set the width of the search field
       let map_width =  $et_map.css('width');
-      $('div.cf7-google-map-search', $map_container).css('width','calc(' + map_width + ' - 10px)');
+      $search.css('width','calc(' + map_width + ' - 10px)');
       let resizeSearch = function(){
         map_width =  $et_map.css('width');
-        $('div.cf7-google-map-search', $map_container).css('width','calc(' + map_width + ' - 10px)');
+        $search.css('width','calc(' + map_width + ' - 10px)');
         google.maps.event.trigger(googleMap, 'resize');
       }
       //on map resize
       $et_map.resize(resizeSearch);
       $(window).resize(resizeSearch);
-      //search button
-      $('.cf7-google-map-search .dashicons-search', $map_container).on('click', function(){
-        $(this).siblings('.cf7marker-address').show().val('').focus();
-        $(this).hide();
-        $(this).siblings('.dashicons-no-alt').show();
-      });
-      $('.cf7-google-map-search .dashicons-no-alt', $map_container).on('click', function(){
-        $(this).closeCF7gmapSearchField();
-      })
+      //search functionality
+      if(cf7GoogleMap.places){
+
+        // const containers = document.querySelectorAll('.cf7-google-map-container');
+      
+        // for(let mc of containers){
+          $map_container.on('init/cf7-google-map', function(e){
+            let mapc = this, searchBox = null, markers, gmarker = e.detail.marker;
+            markers=[gmarker];
+            let origin = mapc.querySelector( '.cf7-googlemap').getAttribute('id').replace('cf7-googlemap-',''),
+            field = mapc.querySelector('.cf7-googlemap-field').getAttribute('id'); //for repetitive fields.
+             
+            //setup map objects.
+            gm3[field] = e.detail.gm3;
+            gmap[field] = e.detail.gmap;
+      
+            let input = mapc.querySelector('#search-'+field);
+            searchBox = new google.maps.places.SearchBox(input);
+            // Bias the SearchBox results towards current map's viewport.
+            gmap[field].addListener('bounds_changed', function(e) {
+              searchBox.setBounds(gmap[field].getBounds());
+            });
+      
+            // Listen for the event fired when the user selects a prediction and retrieve
+            // more details for that place.
+            searchBox.addListener('places_changed', function(e) {
+              let places = searchBox.getPlaces();
+      
+              if (places.length == 0) {
+                return;
+              }
+      
+              // Clear out the old markers.
+              markers.forEach(function(marker) {
+                marker.setMap(null);
+                marker = null;
+              });
+              markers = [];
+      
+              // For each place, get the icon, name and location.
+              let bounds = new google.maps.LatLngBounds();
+              places.forEach(function(place) {
+                if (!place.geometry) {
+                  console.log("Returned place contains no geometry");
+                  return;
+                }
+                let icon = {
+                  url: cf7GoogleMap.fields[origin].marker_settings.icon,
+                };
+      
+                // Create a marker for each place.
+                googleMarker = gm3[field].marker( {//new google.maps.Marker({
+                  draggable: cf7GoogleMap.fields[origin].marker_settings.draggable,
+                  icon: cf7GoogleMap.fields[origin].marker_settings.icon,
+                  title: place.name,
+                  position: place.geometry.location
+                }).on('dragend', fireMarkerUpdate).then(function(result){
+                  markers.push(result);
+                  /** @since 1.3.2 fix search box results. */
+                  mapc.querySelector('#'+field).value = place.geometry.location.lat() + "," + place.geometry.location.lng();
+                  if(mapc.getAttribute('data-show-address')){
+                    let addObj = parseGeolocationAddress('', place.address_components);
+                    /** @since 1.4.0 trigger address event */
+                    let event =  {
+                      'gm3':gm3[field],
+                      'gmap': gmap[field],
+                      'marker':markers[0],
+                      'address': addObj,
+                      bubbles: true,
+                      cancelable: true
+                    };
+                    jQuery(mapc).trigger(jQuery.Event("update.cf7-google-map", event));
+                    event = new CustomEvent("update/cf7-google-map",{'detail':event});
+                    mapc.dispatchEvent(event);
+      
+                    if(mc.querySelector('div.cf7-googlemap-address-fields') !== null){
+                      let state = addObj.state;
+                      if(''!=addObj.pin){
+                        state = addObj.state + " " + addObj.pin;
+                      }
+                      //set address fields
+                      autoline_add[field] = addObj.line;
+                      mapc.querySelector('#country-'+field).value=addObj.country;
+                      mapc.querySelector('#state-'+field).value=state;
+                      mapc.querySelector('#city-'+field).value=addObj.city;
+                      mapc.querySelector('#line-'+field).value=addObj.line;
+                    }
+                  }
+                });
+      
+                /** @since 1.4.3 set mail tags bug fix */
+                mapc.querySelector('#lat-'+field).value=place.geometry.location.lat();
+                mapc.querySelector('#lng-'+field).value=place.geometry.location.lng();
+                //google.maps.event.addListener(marker, 'dragend', fireMarkerUpdate);
+                //markers.push(marker);
+      
+                if (place.geometry.viewport) {
+                  // Only geocodes have viewport.
+                  bounds.union(place.geometry.viewport);
+                } else {
+                  bounds.extend(place.geometry.location);
+                }
+              });
+              gmap[field].fitBounds(bounds);
+            })
+          })
+        // }//for loop
+      }//if places.
     })
   }//end init_cf7_google_maps().
 
@@ -174,7 +285,6 @@ const autoline_add = {}; /*track automated values of line address*/
   }else{
     $et_map.append('<p style="text-align: center;padding: 93px 0;border: solid 1px;"><em>airplane mode</em></p>');
   }
-
 })(jQuery)
 /** @since 1.8.0 move google geocoder and search in vanilla js due to issue with jquery */
 
@@ -361,108 +471,4 @@ function parseGeolocationAddress(name, addressComponents) {
   };
 }
 
-if(cf7GoogleMap.places){
 
-  const containers = document.querySelectorAll('.cf7-google-map-container');
-
-  for(let mc of containers){
-    mc.addEventListener('init/cf7-google-map', function(e){
-      let mapc = this, searchBox = null, markers, gmarker = e.detail.marker;
-      markers=[gmarker];
-      let field = mapc.querySelector( '.cf7-googlemap').getAttribute('id').replace('cf7-googlemap-','');
-      //setup map objects.
-      gm3[field] = e.detail.gm3;
-      gmap[field] = e.detail.gmap;
-
-      let input = document.querySelector('#search-'+field);
-      searchBox = new google.maps.places.SearchBox(input);
-      // Bias the SearchBox results towards current map's viewport.
-      gmap[field].addListener('bounds_changed', function(e) {
-        searchBox.setBounds(gmap[field].getBounds());
-      });
-
-      // Listen for the event fired when the user selects a prediction and retrieve
-      // more details for that place.
-      searchBox.addListener('places_changed', function(e) {
-        let places = searchBox.getPlaces();
-
-        if (places.length == 0) {
-          return;
-        }
-
-        // Clear out the old markers.
-        markers.forEach(function(marker) {
-          marker.setMap(null);
-          marker = null;
-        });
-        markers = [];
-
-        // For each place, get the icon, name and location.
-        let bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-          if (!place.geometry) {
-            console.log("Returned place contains no geometry");
-            return;
-          }
-          let icon = {
-            url: cf7GoogleMap.fields[field].marker_settings.icon,
-          };
-
-          // Create a marker for each place.
-          googleMarker = gm3[field].marker( {//new google.maps.Marker({
-            draggable: cf7GoogleMap.fields[field].marker_settings.draggable,
-            icon: cf7GoogleMap.fields[field].marker_settings.icon,
-            title: place.name,
-            position: place.geometry.location
-          }).on('dragend', fireMarkerUpdate).then(function(result){
-            markers.push(result);
-            /** @since 1.3.2 fix search box results. */
-            mapc.querySelector('#'+field).value = place.geometry.location.lat() + "," + place.geometry.location.lng();
-            if(mapc.getAttribute('data-show-address')){
-              let addObj = parseGeolocationAddress('', place.address_components);
-              /** @since 1.4.0 trigger address event */
-              let event =  {
-                'gm3':gm3[field],
-                'gmap': gmap[field],
-                'marker':markers[0],
-                'address': addObj,
-                bubbles: true,
-                cancelable: true
-              };
-              jQuery(mapc).trigger(jQuery.Event("update.cf7-google-map", event));
-              event = new CustomEvent("update/cf7-google-map",{'detail':event});
-              mapc.dispatchEvent(event);
-
-              if(mc.querySelector('div.cf7-googlemap-address-fields') !== null){
-                let state = addObj.state;
-                if(''!=addObj.pin){
-                  state = addObj.state + " " + addObj.pin;
-                }
-                //set address fields
-                autoline_add[field] = addObj.line;
-                mapc.querySelector('#country-'+field).value=addObj.country;
-                mapc.querySelector('#state-'+field).value=state;
-                mapc.querySelector('#city-'+field).value=addObj.city;
-                mapc.querySelector('#line-'+field).value=addObj.line;
-              }
-            }
-          });
-
-          /** @since 1.4.3 set mail tags bug fix */
-          mapc.querySelector('#lat-'+field).value=place.geometry.location.lat();
-          mapc.querySelector('#lng-'+field).value=place.geometry.location.lng();
-          //google.maps.event.addListener(marker, 'dragend', fireMarkerUpdate);
-          //markers.push(marker);
-
-          if (place.geometry.viewport) {
-            // Only geocodes have viewport.
-            bounds.union(place.geometry.viewport);
-          } else {
-            bounds.extend(place.geometry.location);
-          }
-        });
-        gmap[field].fitBounds(bounds);
-      })
-    })
-  }//for loop
-}//if places.

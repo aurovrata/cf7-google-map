@@ -1,0 +1,6 @@
+-add auto-close on address bar selection.
+https://wordpress.org/support/topic/removing-the-address-bar-once-an-address-has-been-added/
+
+- patch @get_headers custom icon code
+cf7-google-map/public/partials/cf7-googlemap.php(58)
+https://wordpress.org/support/topic/it-doesnt-work-with-php-8-1/
