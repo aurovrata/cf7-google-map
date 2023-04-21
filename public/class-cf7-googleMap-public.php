@@ -243,7 +243,8 @@ class Cf7_GoogleMap_Public {
     if( !isset($_POST['_wpcf7'])){
       return $posted_data;
     }
-    $contact_form = WPCF7_ContactForm::get_instance($_POST['_wpcf7']);
+    $fid = sanitize_text_field($_POST['_wpcf7']);
+    $contact_form = WPCF7_ContactForm::get_instance($fid);
     $tags = $contact_form->scan_form_tags();
 
 		foreach ( (array) $tags as $tag ) {
@@ -284,11 +285,11 @@ class Cf7_GoogleMap_Public {
   public function save_map($submitted_value, $field_name){
     if( isset($_POST['zoom-'.$field_name]) ){
       $submitted_value = array(
-        'zoom'=>(int) $_POST['zoom-'.$field_name],
-        'clat'=>$_POST['clat-'.$field_name]*1.0,
-        'lat'=>$_POST['lat-'.$field_name]*1.0,
-        'clng'=>$_POST['clng-'.$field_name]*1.0,
-        'lng'=>$_POST['lng-'.$field_name]*1.0
+        'zoom'=>(int) sanitize_text_field($_POST['zoom-'.$field_name]),
+        'clat'=>sanitize_text_field($_POST['clat-'.$field_name])*1.0,
+        'lat'=>sanitize_text_field($_POST['lat-'.$field_name])*1.0,
+        'clng'=>sanitize_text_field($_POST['clng-'.$field_name])*1.0,
+        'lng'=>sanitize_text_field($_POST['lng-'.$field_name])*1.0
       );
       if(isset($_POST['line-'.$field_name])) {
         $submitted_value['line'] = sanitize_text_field($_POST['line-'.$field_name]);
