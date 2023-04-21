@@ -303,8 +303,6 @@ $(document).ready(function(){
 4. The map is by default set to take up 100% width in the form, and a height of 120px.  Override this in your child css stylesheet to size up your map.
 5. Optional address fields get auto-filled by the reverse-geocode lookup.  The map as contains a search field to locate an address (you will need to enable the appropriate Google APIs).
 
-
-
 == Changelog ==
 = 1.8.4 =
 * fix repetitive fields.
