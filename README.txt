@@ -1,10 +1,10 @@
-=== Google Map for Contact Form 7 ===
+=== Contact Form 7 extension for Google Map fields ===
 Contributors: aurovrata
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UZ9CQN6KYBMQ8
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
-Requires at least: 4.4
-Requires PHP: 5.6
-Tested up to: 6.1.0
+Requires at least: 5.6
+Requires PHP: 7.4
+Tested up to: 6.2.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

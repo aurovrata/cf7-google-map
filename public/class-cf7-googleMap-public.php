@@ -150,15 +150,21 @@ class Cf7_GoogleMap_Public {
         $map_type = 'ROADMAP';
         break;
     }
+    $default_marker = $plugin_url .'assets/red-marker.png';
     $marker_settings = array(
-      'icon'=> apply_filters('cf7_google_map_marker_icon_url_path', $plugin_url .'assets/red-marker.png', $tag->name),
+      'icon'=> apply_filters('cf7_google_map_marker_icon_url_path', $default_marker, $tag->name),
       'draggable' => true
     );
     $marker_settings = apply_filters('cf7_google_map_marker_settings', $marker_settings, $tag->name);
-    if(!isset($marker_settings['icon']) || ($plugin_url .'assets/red-marker.png' !== $marker_settings['icon'] && !@getimagesize( $marker_settings['icon'] )) ){ //reset the marker
-      debug_msg("unable to locate marker icon url: ".$marker_settings['icon']);
-      $marker_settings['icon'] = $plugin_url .'assets/red-marker.png';
+    switch(true){
+      case !isset($marker_settings['icon']):
+      case empty($marker_settings['icon']):
+      case $default_marker !== $marker_settings['icon'] && !@getimagesize( $marker_settings['icon'] ):
+        debug_msg("unable to locate marker icon url: ".$marker_settings['icon']);
+        $marker_settings['icon'] = $default_marker;
+        break;
     }
+    
     $gmap3_settings = array(
       'mapTypeControl'=> true,
       'navigationControl'=> true,
