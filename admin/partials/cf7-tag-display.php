@@ -18,7 +18,7 @@
 
 <div class="control-box cf7-googleMap">
   <fieldset>
-    <legend><?= __('Google Map field for contact form 7','cf7-google-map');?></legend>
+    <legend><?php esc_html_e('Google Map field for contact form 7','cf7-google-map');?></legend>
     <table id="googleMap-tag-generator" class="form-table">
       <tbody>
         <?php
@@ -30,19 +30,19 @@
         if(empty($google_map_api_key)){
           ?>
           <tr style="background:#ffc9c9;border: 3px solid red;">
-          <th scope="row" style="padding:3px;"><?= __('WARNING','cf7-google-map')?></th>
-          <td><?= sprintf(__('You need to <a href="%s">set an API key</a> from Google to use and display maps on your site.','cf7-google-map'), admin_url('options-general.php?page=cf7-googleMap-settings'))?></td>
+          <th scope="row" style="padding:3px;"><?php esc_html_e('WARNING','cf7-google-map')?></th>
+          <td><?php echo wp_kses_post( sprintf(__('You need to <a href="%s">set an API key</a> from Google to use and display maps on your site.','cf7-google-map'), admin_url('options-general.php?page=cf7-googleMap-settings')))?></td>
           </tr>
           <?php
         }
         ?>
         <tr>
-      	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
+      	<th scope="row"><label for="<?php echo esc_attr( $args['content'] ); ?>-name"><?php esc_html_e( 'Name', 'contact-form-7' ); ?></label></th>
       	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
       	</tr>
         <tr>
-        	<th scope="row"><?=__( 'Field type', 'contact-form-7' )?></th>
-        	<td><input name="required" type="checkbox"><?= __( 'Required field', 'contact-form-7' ) ?><br /></td>
+        	<th scope="row"><?php esc_html_e( 'Field type', 'contact-form-7' )?></th>
+        	<td><input name="required" type="checkbox"><?php esc_html_e( 'Required field', 'contact-form-7' ) ?><br /></td>
       	</tr>
           <tr>
             <th>
@@ -71,7 +71,7 @@
           </tr>
           <tr>
             <th>
-              <label for="tag-generator-panel-number-id"><?=__( 'Id attribute', 'contact-form-7' )?></label>
+              <label for="tag-generator-panel-number-id"><?php esc_html_e( 'Id attribute', 'contact-form-7' )?></label>
             </th>
             <td>
               <input name="id" class="idvalue oneline option" id="tag-generator-panel-map-id" type="text">
@@ -79,7 +79,7 @@
           </tr>
           <tr>
             <th>
-              <label for="tag-generator-panel-number-class"><?=__( 'Class attribute', 'contact-form-7' )?></label>
+              <label for="tag-generator-panel-number-class"><?php esc_html_e( 'Class attribute', 'contact-form-7' )?></label>
             </th>
             <td>
               <input name="class" class="classvalue oneline option" id="tag-generator-panel-map-class" type="text">
@@ -95,7 +95,7 @@
                 <input type="radio" name="address_fields" value="show" checked="true"/> <span><?php esc_html_e( 'show 4 fields (address line/city/state &amp; pin/country)', 'cf7-google-map' ); ?></span>
               </div>
               <div>
-                <input type="radio" name="address_fields" value="custom" /> <span><?= __( 'Custom (populate your own fields with a javascript event, read <a href="https://wordpress.org/plugins/cf7-google-map/#faq" target="_blank">FAQ</a> #5 for more info)', 'cf7-google-map' ); ?></span>
+                <input type="radio" name="address_fields" value="custom" /> <span><?php wp_kses_post(__( 'Custom (populate your own fields with a javascript event, read <a href="https://wordpress.org/plugins/cf7-google-map/#faq" target="_blank">FAQ</a> #5 for more info)', 'cf7-google-map' )); ?></span>
               </div>
             </div>
           </td>
@@ -110,7 +110,7 @@
   <input type="text" name="map" class="tag code" readonly="readonly" onfocus="this.select()" />
 
   <div class="submitbox">
-      <input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
+      <input type="button" class="button button-primary insert-tag" value="<?php esc_html_e( 'Insert Tag', 'contact-form-7' ); ?>" />
   </div>
 
   <br class="clear" />

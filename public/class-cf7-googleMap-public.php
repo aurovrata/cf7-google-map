@@ -263,7 +263,8 @@ class Cf7_GoogleMap_Public {
         $field = 'address-'.$tag['name'];
         if(isset($_POST[$field])){
           /** @since 1.4.3 fix address*/
-          $address = json_decode(stripslashes($_POST[$field]));
+          $address = sanitize_text_field($_POST[$field]);
+          $address = json_decode(stripslashes($address));
           if(empty($address)) $address = array();
           if(!is_array($address)) $address = array($address);
           $address_text = implode(",".PHP_EOL, $address);

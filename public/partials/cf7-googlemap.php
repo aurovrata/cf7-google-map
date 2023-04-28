@@ -17,7 +17,7 @@ if(!empty($tag->options)){
         $show_address = 'true';
         break;
       case strpos($option, 'id:')!==false:
-        $id = 'id="'.str_replace('id:', '', $option).'" ';
+        $id = str_replace('id:', '', $option);
         break;
       case strpos($option, 'class:')!==false:
         $classes[]= str_replace('class:', '', $option);
@@ -65,73 +65,78 @@ if (!$exists && function_exists('get_headers')) {
 
 //HTML cf7 form
 ?>
-<div <?=$id?>class="wpcf7-form-control-wrap cf7-google-map-container <?= $tag->name?>" data-name="<?=$tag->name?>" data-show-address="<?= $show_address ?>" data-zoom="<?= $zoom[1]?>" data-clat="<?= $clat[1]?>" data-clng="<?= $clng[1]?>" data-lat="<?= $lat[1]?>" data-lng="<?= $lng[1]?>">
-  <div id="cf7-googlemap-<?= $tag->name?>" class="cf7-googlemap <?= $class?>"></div>
+<div id="<?php echo esc_attr($id);?>" class="wpcf7-form-control-wrap cf7-google-map-container <?php echo esc_attr($tag->name);?>" 
+  data-name="<?php echo esc_attr($tag->name);?>" 
+  data-show-address="<?php echo esc_attr($show_address); ?>" 
+  data-zoom="<?php echo esc_attr($zoom[1]);?>" 
+  data-clat="<?php echo esc_attr($clat[1]);?>" 
+  data-clng="<?php echo esc_attr($clng[1]);?>" 
+  data-lat="<?php echo esc_attr($lat[1]);?>" 
+  data-lng="<?php echo esc_attr($lng[1]);?>">
+  <div id="cf7-googlemap-<?php echo esc_attr($tag->name);?>" class="cf7-googlemap <?php echo esc_attr($class);?>"></div>
   <div class="cf7-google-map-search">
     <?php if( get_option('cf7_googleMap_enable_places',0)):?>
       <span class="dashicons dashicons-search"></span><span class="dashicons dashicons-no-alt"></span>
     <?php endif;?>
-    <input name="search-<?= $tag->name?>" id="search-<?= $tag->name?>" value="" class="cf7marker-address" type="text">
-    <input name="zoom-<?= $tag->name?>" id="zoom-<?= $tag->name?>" value="" type="hidden">
-    <input name="clat-<?= $tag->name?>" id="clat-<?= $tag->name?>" value="" type="hidden">
-    <input name="clng-<?= $tag->name?>" id="clng-<?= $tag->name?>" value="" type="hidden">
-    <input name="lat-<?= $tag->name?>" id="lat-<?= $tag->name?>" value="" type="hidden">
-    <input name="lng-<?= $tag->name?>" id="lng-<?= $tag->name?>" value="" type="hidden">
-    <input name="address-<?= $tag->name?>" id="address-<?= $tag->name?>" value="" type="hidden">
-    <input name="<?= $tag->name?>" id="<?= $tag->name?>"  class="cf7-googlemap-field" value="" type="hidden">
-    <input name="manual-address-<?= $tag->name?>" id="manual-address-<?= $tag->name?>" value="false" type="hidden">
+    <input name="search-<?php echo esc_attr($tag->name);?>" id="search-<?php echo esc_attr($tag->name);?>" value="" class="cf7marker-address" type="text">
+    <input name="zoom-<?php echo esc_attr($tag->name);?>" id="zoom-<?php echo esc_attr($tag->name);?>" value="" type="hidden">
+    <input name="clat-<?php echo esc_attr($tag->name);?>" id="clat-<?php echo esc_attr($tag->name);?>" value="" type="hidden">
+    <input name="clng-<?php echo esc_attr($tag->name);?>" id="clng-<?php echo esc_attr($tag->name);?>" value="" type="hidden">
+    <input name="lat-<?php echo esc_attr($tag->name);?>" id="lat-<?php echo esc_attr($tag->name);?>" value="" type="hidden">
+    <input name="lng-<?php echo esc_attr($tag->name);?>" id="lng-<?php echo esc_attr($tag->name);?>" value="" type="hidden">
+    <input name="address-<?php echo esc_attr($tag->name);?>" id="address-<?php echo esc_attr($tag->name);?>" value="" type="hidden">
+    <input name="<?php echo esc_attr($tag->name);?>" id="<?php echo esc_attr($tag->name);?>"  class="cf7-googlemap-field" value="" type="hidden">
+    <input name="manual-address-<?php echo esc_attr($tag->name);?>" id="manual-address-<?php echo esc_attr($tag->name);?>" value="false" type="hidden">
   </div>
-  <span class="wpcf7-form-control-wrap <?= $tag->name?>"></span>
+  <span class="wpcf7-form-control-wrap <?php echo esc_attr($tag->name);?>"></span>
 <?php if($set_address):?>
   <div class="cf7-googlemap-address-fields">
-    <label for="line-<?= $tag->name?>">
+    <label for="line-<?php echo esc_attr($tag->name);?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-address">
         <?php
         $label = 'Address';
         $label = apply_filters('cf7_google_map_address_label', $label, $tag->name);
         $label = apply_filters('cf7_google_map_address_field_label', $label, 'adresse', $tag->name);
-        echo $label;
+        echo wp_kses_post($label);
         ?>
       </span><br />
-      <input name="line-<?= $tag->name?>" id="line-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-line" type="text">
+      <input name="line-<?php echo esc_attr($tag->name);?>" id="line-<?php echo esc_attr($tag->name);?>" value="" class="cf7-googlemap-address cf7-googlemap-address-line" type="text">
     </label>
-    <label for="city-<?= $tag->name?>">
+    <label for="city-<?php echo esc_attr($tag->name);?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-city">
         <?php
         $label = 'City';
         $label =  apply_filters('cf7_google_map_city_label',$label,$tag->name);
         $label = apply_filters('cf7_google_map_address_field_label', $label, 'ville', $tag->name);
-        echo $label;
+        echo wp_kses_post($label);
          ?>
       </span><br />
-      <input name="city-<?= $tag->name?>" id="city-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-city" type="text">
+      <input name="city-<?php echo esc_attr($tag->name);?>" id="city-<?php echo esc_attr($tag->name);?>" value="" class="cf7-googlemap-address cf7-googlemap-address-city" type="text">
     </label>
-    <label for="state-<?= $tag->name?>">
+    <label for="state-<?php echo esc_attr($tag->name);?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-pin">
         <?php
         $label= 'State &amp; Pincode';
         $label= apply_filters('cf7_google_map_pincode_label',$label,$tag->name);
         $label = apply_filters('cf7_google_map_address_field_label', $label, 'code', $tag->name);
-        echo $label;
+        echo wp_kses_post($label);
         ?>
       </span><br />
-      <input name="state-<?= $tag->name?>" id="state-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-state" type="text">
+      <input name="state-<?php echo esc_attr($tag->name);?>" id="state-<?php echo esc_attr($tag->name);?>" value="" class="cf7-googlemap-address cf7-googlemap-address-state" type="text">
     </label>
-    <label for="country-<?= $tag->name?>">
+    <label for="country-<?php echo esc_attr($tag->name);?>">
       <span class="cf7-googlemap-address-field cf7-googlemap-country">
         <?php
         $label= 'Country';
         $label= apply_filters('cf7_google_map_country_label',$label ,$tag->name);
         $label = apply_filters('cf7_google_map_address_field_label', $label, 'pays', $tag->name);
-        echo $label;
+        echo wp_kses_post($label);
         ?>
       </span><br />
-      <input name="country-<?= $tag->name?>" id="country-<?= $tag->name?>" value="" class="cf7-googlemap-address cf7-googlemap-address-country" type="text">
+      <input name="country-<?php echo esc_attr($tag->name);?>" id="country-<?php echo esc_attr($tag->name);?>" value="" class="cf7-googlemap-address cf7-googlemap-address-country" type="text">
     </label>
   </div>
 <?php endif;?>
-<?= $validation_error;?>
-  <script type="text/javascript">
-
-  </script>
+<?php echo wp_kses_post($validation_error);?>
+  <script type="text/javascript"></script>
 </div>

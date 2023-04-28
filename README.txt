@@ -5,7 +5,7 @@ Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7
 Requires at least: 5.6
 Requires PHP: 7.4
 Tested up to: 6.2.0
-Stable tag: trunk
+Stable tag: 1.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -306,6 +306,7 @@ $(document).ready(function(){
 == Changelog ==
 = 1.8.4 =
 * fix repetitive fields.
+* fix code security.
 = 1.8.3 =
 * fix admin notice options tracking.
 = 1.8.2 =

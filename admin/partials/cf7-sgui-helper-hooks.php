@@ -9,7 +9,7 @@ function {$field_name_slug}_change_map_type($type, $field){
   //type must be either ROADMAP/SATELLITE/TERRAIN/HYBRID.
   if( '{$field_name}' !== $field) $type = 'SATELLITE';
   return $type;
-}" href="javascript:void(0);"><?=__('Filter','cf7-grid-layout')?></a> <?=__('map type.','cf7-google-map')?>
+}" href="javascript:void(0);"><?php esc_html_e('Filter','cf7-grid-layout')?></a> <?php esc_html_e('map type.','cf7-google-map')?>
 </li>
 <li class="cf7sg-tag-map">
   <a class="helper" data-cf72post="add_filter( 'cf7_google_map_settings','{$field_name_slug}_map_settings',10,2);
@@ -31,7 +31,7 @@ function {$field_name_slug}_map_settings($settings, $field){
     $settings['center'] = array('11.936825', '79.834278'); //set by default to the value initialised at the time of creating the form tag.
   }
   return $settings;
-}" href="javascript:void(0);"><?=__('Filter','cf7-grid-layout')?></a> <?=__('map settings.','cf7-google-map')?>
+}" href="javascript:void(0);"><?php esc_html_e('Filter','cf7-grid-layout')?></a> <?php esc_html_e('map settings.','cf7-google-map')?>
 </li>
 <li class="cf7sg-tag-map">
   <a class="helper" data-cf72post="add_filter( 'cf7_google_map_marker_settings','{$field_name_slug}_marker_settings',10,2);
@@ -47,7 +47,7 @@ function {$field_name_slug}_map_settings($settings, $field){
     $settings['position'] = array('11.936825', '79.834278'); //set by default to the value initialised at the time of creating the form tag.
   }
   return $settings;
-}" href="javascript:void(0);"><?=__('Filter','cf7-grid-layout')?></a> <?=__('marker settings.','cf7-google-map')?>
+}" href="javascript:void(0);"><?php esc_html_e('Filter','cf7-grid-layout')?></a> <?php esc_html_e('marker settings.','cf7-google-map')?>
 </li>
 <li class="map-show_address">
   <a class="helper" data-cf72post="add_filter( 'cf7_google_map_address_field_label','{$field_name_slug}_address_labels',10,3);
@@ -75,7 +75,7 @@ function {$field_name_slug}_address_labels($label, $type, $field){
     }
   }
   return $label;
-}" href="javascript:void(0);"><?=__('Filter','cf7-grid-layout')?></a> <?=__('address field labels.','cf7-google-map')?>
+}" href="javascript:void(0);"><?php esc_html_e('Filter','cf7-grid-layout')?></a> <?php esc_html_e('address field labels.','cf7-google-map')?>
 </li>
 <li class="cf7sg-tag-map">
   <a class="helper" data-cf72post="add_filter( 'cf7_google_map_initialise_on_document_ready','{$field_name_slug}_stop_initialise',10,2);
@@ -88,5 +88,5 @@ function {$field_name_slug}_address_labels($label, $type, $field){
 function {$field_name_slug}_stop_initialise($do_init, $field){
   if( '{$field_name}' !== $field) return $do_init;
   return false;
-}" href="javascript:void(0);"><?=__('Filter','cf7-grid-layout')?></a> <?=__('auto map initialisation.','cf7-google-map')?>
+}" href="javascript:void(0);"><?php esc_html_e('Filter','cf7-grid-layout')?></a> <?php esc_html_e('auto map initialisation.','cf7-google-map')?>
 </li>
