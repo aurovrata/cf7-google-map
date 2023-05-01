@@ -4,53 +4,53 @@
  */
  /* small fix to not show scrollbars, make insert section taller */
  #TB_ajaxContent {
-    min-height: 550px;
+	min-height: 550px;
 }
 .cf7-gmap-address-fields > div {
-    margin: 5px 0 0 10px;
+	margin: 5px 0 0 10px;
 }
  form.tag-generator-panel {
-    height: 100%;
-    min-height: 500px;
+	height: 100%;
+	min-height: 500px;
 }
  .tag-generator-panel .control-box.cf7-googleMap + .insert-box {
-     padding-left: 15px;
-     padding-right: 15px;
-     height: 45px;
+	 padding-left: 15px;
+	 padding-right: 15px;
+	 height: 45px;
  }
  .tag-generator-panel .control-box.cf7-googleMap {
-    height: calc(100% - 45px);
+	height: calc(100% - 45px);
 }
  #cf7_admin_map {
-    width: 90%;
-    height: 210px;
-    margin-left: 0;
-    display: block;
+	width: 90%;
+	height: 210px;
+	margin-left: 0;
+	display: block;
 }
 
 #cf7_zoom {
-    max-width: 30px;
+	max-width: 30px;
 }
 #cf7_centre_lng,#cf7_centre_lat {
-    max-width: 100%;
-    width: 100px;
+	max-width: 100%;
+	width: 100px;
 }
 #googleMap-tag-generator p {
-    margin: 0;
-    padding-top: 0;
+	margin: 0;
+	padding-top: 0;
 }
 .tag-generator-panel table#googleMap-tag-generator th {
-    width: 100px;
-    padding-right: 3px;
+	width: 100px;
+	padding-right: 3px;
   }
 .tag-generator-panel table#googleMap-tag-generator td{
   padding:4px 0 0 3px
 }
 div.listings {
-    display: inline-block;
-    max-width: 50%;
+	display: inline-block;
+	max-width: 50%;
 }
 div.listings input {
-    max-width: 130px;
+	max-width: 130px;
 }
 .cf7-gmap-address-fields{display: none;} #cf7-google-map-show-address:checked + .cf7-gmap-address-fields{display: block;}

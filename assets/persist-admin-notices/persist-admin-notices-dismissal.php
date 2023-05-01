@@ -52,7 +52,9 @@ if ( ! class_exists( 'PAnD' ) ) {
 		 */
 		public static function load_script() {
 
-		    if(is_customize_preview()) return;
+			if ( is_customize_preview() ) {
+				return;
+			}
 
 			wp_enqueue_script(
 				'dismissible-notices',
@@ -78,8 +80,8 @@ if ( ! class_exists( 'PAnD' ) ) {
 		public static function dismiss_admin_notice() {
 			$option_name        = sanitize_text_field( $_POST['option_name'] );
 			$dismissible_length = sanitize_text_field( $_POST['dismissible_length'] );
-			debug_msg($option_name, ' length:'.$dismissible_length.' dismising ');
-			$transient          = 0;
+			debug_msg( $option_name, ' length:' . $dismissible_length . ' dismising ' );
+			$transient = 0;
 
 			if ( 'forever' != $dismissible_length ) {
 				// If $dismissible_length is not an integer default to 1

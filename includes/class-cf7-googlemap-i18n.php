@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Define the internationalization functionality
  *
@@ -24,7 +23,7 @@
  * @subpackage Cf7_GoogleMap/includes
  * @author     Aurovrata V. <vrata@syllogic.in>
  */
-class Cf7_GoogleMap_i18n {
+class Cf7_GoogleMap_I18n {
 
 
 	/**

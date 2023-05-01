@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -8,7 +7,6 @@
  *
  * @link       http://syllogic.in
  * @since      1.0.0
- *
  * @package    Cf7_GoogleMap
  * @subpackage Cf7_GoogleMap/includes
  */
@@ -66,16 +64,17 @@ class Cf7_GoogleMap {
 	 * the public-facing side of the site.
 	 *
 	 * @since    1.0.0
+	 * @param String $version plugin version number.
 	 */
-	public function __construct($version) {
+	public function __construct( $version ) {
 
 		$this->plugin_name = 'cf7-googlemap';
-		$this->version = $version;
+		$this->version     = $version;
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-    $this->define_public_hooks();
+		$this->define_public_hooks();
 
 	}
 
@@ -101,30 +100,31 @@ class Cf7_GoogleMap {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cf7-googleMap-loader.php';
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wordpress-gurus-debug-api.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cf7-googlemap-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wordpress-gurus-debug-api.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cf7-googleMap-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cf7-googlemap-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-cf7-googleMap-admin.php';
-    /**
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-cf7-googlemap-admin.php';
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cf7-googleMap-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cf7-googlemap-public.php';
 
 		/**
-    * Persist admin notices:
-		* @since 1.3.0.
-    */
-    require_once  plugin_dir_path( dirname( __FILE__ ) ) . '/assets/persist-admin-notices/persist-admin-notices-dismissal.php';
+		* Persist admin notices:0
+
+		* @since 1.3.0
+		*/
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/assets/persist-admin-notices/persist-admin-notices-dismissal.php';
 
 		$this->loader = new Cf7_GoogleMap_Loader();
 
@@ -133,7 +133,7 @@ class Cf7_GoogleMap {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Cf7_GoogleMap_i18n class in order to set the domain and to register the hook
+	 * Uses the Cf7_GoogleMap_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -141,7 +141,7 @@ class Cf7_GoogleMap {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Cf7_GoogleMap_i18n();
+		$plugin_i18n = new Cf7_GoogleMap_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -160,25 +160,25 @@ class Cf7_GoogleMap {
 		/* WP Hooks */
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-    $this->loader->add_action('admin_menu', $plugin_admin, 'add_settings_submenu');
-    $this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
-    /** @since 1.3.0 update and notices */
-    $this->loader->add_action( 'admin_notices', $plugin_admin, 'admin_notices' );
-    $this->loader->add_action( 'upgrader_process_complete', $plugin_admin,'upgrade_completed', 10, 2 );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_settings_submenu' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+		/** @since 1.3.0 update and notices */
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'admin_notices' );
+		$this->loader->add_action( 'upgrader_process_complete', $plugin_admin, 'upgrade_completed', 10, 2 );
 
-		//CF7 Hooks
-    $this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_cf7_tag_generator_googleMap' );
-    $this->loader->add_filter( 'wpcf7_collect_mail_tags', $plugin_admin, 'email_tags');
-    /** @since 1.3.1 for displaying admin notices*/
-    $this->loader->add_action( 'admin_init',  'PAnD', 'init' );
-    /** @since 1.5.1 add CF7 Smart Grid helper hooks */
-    $this->loader->add_action( 'cf7sg_ui_grid_helper_hooks', $plugin_admin, 'print_helper_hooks');
-    $this->loader->add_action( 'cf7sg_ui_grid_js_helper_hooks', $plugin_admin, 'print_js_helper_hooks');
-    $this->loader->add_action( 'cf7sg_enqueue_admin_editor_scripts', $plugin_admin, 'enqueue_grid_helper');
-    /** @since 1.7.0 include required message in admin messages */
-    $this->loader->add_filter( 'wpcf7_messages', $plugin_admin, 'required_message');
+		// CF7 Hooks.
+		$this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_cf7_tag_generator_googleMap' );
+		$this->loader->add_filter( 'wpcf7_collect_mail_tags', $plugin_admin, 'email_tags' );
+		/** @since 1.3.1 for displaying admin notices */
+		$this->loader->add_action( 'admin_init', 'PAnD', 'init' );
+		/** @since 1.5.1 add CF7 Smart Grid helper hooks */
+		$this->loader->add_action( 'cf7sg_ui_grid_helper_hooks', $plugin_admin, 'print_helper_hooks' );
+		$this->loader->add_action( 'cf7sg_ui_grid_js_helper_hooks', $plugin_admin, 'print_js_helper_hooks' );
+		$this->loader->add_action( 'cf7sg_enqueue_admin_editor_scripts', $plugin_admin, 'enqueue_grid_helper' );
+		/** @since 1.7.0 include required message in admin messages */
+		$this->loader->add_filter( 'wpcf7_messages', $plugin_admin, 'required_message' );
 	}
-  /**
+	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
@@ -191,23 +191,23 @@ class Cf7_GoogleMap {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-    //CF7 Hooks
-    //handles the display of the google map on front-end forms
+		// CF7 Hooks.
+		// handles the display of the google map on front-end forms.
 		$this->loader->add_action( 'wpcf7_init', $plugin_public, 'add_cf7_shortcode_googleMap' );
-    //validate the data
-    $this->loader->add_filter( 'wpcf7_validate_map', $plugin_public, 'validate_data',10,2 );
-    $this->loader->add_filter( 'wpcf7_validate_map*', $plugin_public, 'validate_data',10,2 );
-    $this->loader->add_filter( 'wpcf7_posted_data', $plugin_public, 'setup_data',5,1 );
-    //mail tag
-    //$this->loader->add_filter('wpcf7_mail_tag_replaced', $plugin_public, 'setup_mailtag',10,3 );
-    /*cf72post hooks*/
-		//save submission to db.
-    $this->loader->add_action( 'cf7_2_post_saving_tag_map', $plugin_public, 'save_map',10,2 );
-		//echo script for mapping values to form.
-		$this->loader->add_filter( 'cf7_2_post_field_mapping_tag_map', $plugin_public, 'load_map', 10, 5);
+		// validate the data.
+		$this->loader->add_filter( 'wpcf7_validate_map', $plugin_public, 'validate_data', 10, 2 );
+		$this->loader->add_filter( 'wpcf7_validate_map*', $plugin_public, 'validate_data', 10, 2 );
+		$this->loader->add_filter( 'wpcf7_posted_data', $plugin_public, 'setup_data', 5, 1 );
+		// mail tag.
+		// $this->loader->add_filter('wpcf7_mail_tag_replaced', $plugin_public, 'setup_mailtag',10,3 );
+		// cf72post hooks.
+		// save submission to db.
+		$this->loader->add_action( 'cf7_2_post_saving_tag_map', $plugin_public, 'save_map', 10, 2 );
+		// echo script for mapping values to form.
+		$this->loader->add_filter( 'cf7_2_post_field_mapping_tag_map', $plugin_public, 'load_map', 10, 5 );
 
 	}
-		/**
+	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
 	 * @since    1.0.0
