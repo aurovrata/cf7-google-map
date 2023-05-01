@@ -38,8 +38,8 @@
 		}
 		?>
 		<tr>
-		  <th scope="row"><label for="<?php echo esc_attr( $args['content'] ); ?>-name"><?php esc_html_e( 'Name', 'contact-form-7' ); ?></label></th>
-		  <td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
+		  <th scope="row"><label for="<?php esc_attr_e( $args['content'] ); ?>-name"><?php esc_html_e( 'Name', 'contact-form-7' ); ?></label></th>
+		  <td><input type="text" name="name" class="tg-name oneline" id="<?php esc_attr_e( $args['content'] . '-name' ); ?>" /></td>
 		  </tr>
 		<tr>
 			<th scope="row"><?php esc_html_e( 'Field type', 'contact-form-7' ); ?></th>
