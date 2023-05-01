@@ -13,7 +13,7 @@
  * @package           Cf7_GoogleMap
  *
  * @wordpress-plugin
- * Plugin Name:       Google Map for Contact Form 7
+ * Plugin Name:       CF7 Google Map Fields
  * Plugin URI:        https://github.com/aurovrata/cf7-google-map
  * Description:       Allows a map field to be included in a Contact Form 7 for use to drag and drop their location
  * Version:           1.8.4

@@ -68,33 +68,33 @@ $exists   = isset( $response['headers']['status'] ) && 200 == $response['headers
 
 // HTML cf7 form.
 ?>
-<div id="<?php echo esc_attr( $html_id ); ?>" class="wpcf7-form-control-wrap cf7-google-map-container <?php echo esc_attr( $tag->name ); ?>" 
-  data-name="<?php echo esc_attr( $tag->name ); ?>" 
-  data-show-address="<?php echo esc_attr( $show_address ); ?>" 
-  data-zoom="<?php echo esc_attr( $zoom[1] ); ?>" 
-  data-clat="<?php echo esc_attr( $clat[1] ); ?>" 
-  data-clng="<?php echo esc_attr( $clng[1] ); ?>" 
-  data-lat="<?php echo esc_attr( $lat[1] ); ?>" 
-  data-lng="<?php echo esc_attr( $lng[1] ); ?>">
-  <div id="cf7-googlemap-<?php echo esc_attr( $tag->name ); ?>" class="cf7-googlemap <?php echo esc_attr( $class ); ?>"></div>
+<div id="<?php esc_attr_e( $html_id ); ?>" class="wpcf7-form-control-wrap cf7-google-map-container <?php esc_attr_e( $tag->name ); ?>" 
+  data-name="<?php esc_attr_e( $tag->name ); ?>" 
+  data-show-address="<?php esc_attr_e( $show_address ); ?>" 
+  data-zoom="<?php esc_attr_e( $zoom[1] ); ?>" 
+  data-clat="<?php esc_attr_e( $clat[1] ); ?>" 
+  data-clng="<?php esc_attr_e( $clng[1] ); ?>" 
+  data-lat="<?php esc_attr_e( $lat[1] ); ?>" 
+  data-lng="<?php esc_attr_e( $lng[1] ); ?>">
+  <div id="cf7-googlemap-<?php esc_attr_e( $tag->name ); ?>" class="cf7-googlemap <?php esc_attr_e( $class ); ?>"></div>
   <div class="cf7-google-map-search">
 	<?php if ( get_option( 'cf7_googleMap_enable_places', 0 ) ) : ?>
 	  <span class="dashicons dashicons-search"></span><span class="dashicons dashicons-no-alt"></span>
 	<?php endif; ?>
-	<input name="search-<?php echo esc_attr( $tag->name ); ?>" id="search-<?php echo esc_attr( $tag->name ); ?>" value="" class="cf7marker-address" type="text">
-	<input name="zoom-<?php echo esc_attr( $tag->name ); ?>" id="zoom-<?php echo esc_attr( $tag->name ); ?>" value="" type="hidden">
-	<input name="clat-<?php echo esc_attr( $tag->name ); ?>" id="clat-<?php echo esc_attr( $tag->name ); ?>" value="" type="hidden">
-	<input name="clng-<?php echo esc_attr( $tag->name ); ?>" id="clng-<?php echo esc_attr( $tag->name ); ?>" value="" type="hidden">
-	<input name="lat-<?php echo esc_attr( $tag->name ); ?>" id="lat-<?php echo esc_attr( $tag->name ); ?>" value="" type="hidden">
-	<input name="lng-<?php echo esc_attr( $tag->name ); ?>" id="lng-<?php echo esc_attr( $tag->name ); ?>" value="" type="hidden">
-	<input name="address-<?php echo esc_attr( $tag->name ); ?>" id="address-<?php echo esc_attr( $tag->name ); ?>" value="" type="hidden">
-	<input name="<?php echo esc_attr( $tag->name ); ?>" id="<?php echo esc_attr( $tag->name ); ?>"  class="cf7-googlemap-field" value="" type="hidden">
-	<input name="manual-address-<?php echo esc_attr( $tag->name ); ?>" id="manual-address-<?php echo esc_attr( $tag->name ); ?>" value="false" type="hidden">
+	<input name="search-<?php esc_attr_e( $tag->name ); ?>" id="search-<?php esc_attr_e( $tag->name ); ?>" value="" class="cf7marker-address" type="text">
+	<input name="zoom-<?php esc_attr_e( $tag->name ); ?>" id="zoom-<?php esc_attr_e( $tag->name ); ?>" value="" type="hidden">
+	<input name="clat-<?php esc_attr_e( $tag->name ); ?>" id="clat-<?php esc_attr_e( $tag->name ); ?>" value="" type="hidden">
+	<input name="clng-<?php esc_attr_e( $tag->name ); ?>" id="clng-<?php esc_attr_e( $tag->name ); ?>" value="" type="hidden">
+	<input name="lat-<?php esc_attr_e( $tag->name ); ?>" id="lat-<?php esc_attr_e( $tag->name ); ?>" value="" type="hidden">
+	<input name="lng-<?php esc_attr_e( $tag->name ); ?>" id="lng-<?php esc_attr_e( $tag->name ); ?>" value="" type="hidden">
+	<input name="address-<?php esc_attr_e( $tag->name ); ?>" id="address-<?php esc_attr_e( $tag->name ); ?>" value="" type="hidden">
+	<input name="<?php esc_attr_e( $tag->name ); ?>" id="<?php esc_attr_e( $tag->name ); ?>"  class="cf7-googlemap-field" value="" type="hidden">
+	<input name="manual-address-<?php esc_attr_e( $tag->name ); ?>" id="manual-address-<?php esc_attr_e( $tag->name ); ?>" value="false" type="hidden">
   </div>
-  <span class="wpcf7-form-control-wrap <?php echo esc_attr( $tag->name ); ?>"></span>
+  <span class="wpcf7-form-control-wrap <?php esc_attr_e( $tag->name ); ?>"></span>
 <?php if ( $set_address ) : ?>
   <div class="cf7-googlemap-address-fields">
-	<label for="line-<?php echo esc_attr( $tag->name ); ?>">
+	<label for="line-<?php esc_attr_e( $tag->name ); ?>">
 	  <span class="cf7-googlemap-address-field cf7-googlemap-address">
 		<?php
 		$label = 'Address';
@@ -103,9 +103,9 @@ $exists   = isset( $response['headers']['status'] ) && 200 == $response['headers
 		echo wp_kses_post( $label );
 		?>
 	  </span><br />
-	  <input name="line-<?php echo esc_attr( $tag->name ); ?>" id="line-<?php echo esc_attr( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-line" type="text">
+	  <input name="line-<?php esc_attr_e( $tag->name ); ?>" id="line-<?php esc_attr_e( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-line" type="text">
 	</label>
-	<label for="city-<?php echo esc_attr( $tag->name ); ?>">
+	<label for="city-<?php esc_attr_e( $tag->name ); ?>">
 	  <span class="cf7-googlemap-address-field cf7-googlemap-city">
 		<?php
 		$label = 'City';
@@ -114,9 +114,9 @@ $exists   = isset( $response['headers']['status'] ) && 200 == $response['headers
 		echo wp_kses_post( $label );
 		?>
 	  </span><br />
-	  <input name="city-<?php echo esc_attr( $tag->name ); ?>" id="city-<?php echo esc_attr( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-city" type="text">
+	  <input name="city-<?php esc_attr_e( $tag->name ); ?>" id="city-<?php esc_attr_e( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-city" type="text">
 	</label>
-	<label for="state-<?php echo esc_attr( $tag->name ); ?>">
+	<label for="state-<?php esc_attr_e( $tag->name ); ?>">
 	  <span class="cf7-googlemap-address-field cf7-googlemap-pin">
 		<?php
 		$label = 'State &amp; Pincode';
@@ -125,9 +125,9 @@ $exists   = isset( $response['headers']['status'] ) && 200 == $response['headers
 		echo wp_kses_post( $label );
 		?>
 	  </span><br />
-	  <input name="state-<?php echo esc_attr( $tag->name ); ?>" id="state-<?php echo esc_attr( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-state" type="text">
+	  <input name="state-<?php esc_attr_e( $tag->name ); ?>" id="state-<?php esc_attr_e( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-state" type="text">
 	</label>
-	<label for="country-<?php echo esc_attr( $tag->name ); ?>">
+	<label for="country-<?php esc_attr_e( $tag->name ); ?>">
 	  <span class="cf7-googlemap-address-field cf7-googlemap-country">
 		<?php
 		$label = 'Country';
@@ -136,7 +136,7 @@ $exists   = isset( $response['headers']['status'] ) && 200 == $response['headers
 		echo wp_kses_post( $label );
 		?>
 	  </span><br />
-	  <input name="country-<?php echo esc_attr( $tag->name ); ?>" id="country-<?php echo esc_attr( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-country" type="text">
+	  <input name="country-<?php esc_attr_e( $tag->name ); ?>" id="country-<?php esc_attr_e( $tag->name ); ?>" value="" class="cf7-googlemap-address cf7-googlemap-address-country" type="text">
 	</label>
   </div>
 <?php endif; ?>

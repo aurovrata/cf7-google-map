@@ -96,7 +96,7 @@
 				<input type="radio" name="address_fields" value="show" checked="true"/> <span><?php esc_html_e( 'show 4 fields (address line/city/state &amp; pin/country)', 'cf7-google-map' ); ?></span>
 			  </div>
 			  <div>
-				<input type="radio" name="address_fields" value="custom" /> <span><?php wp_kses_post( __( 'Custom (populate your own fields with a javascript event, read <a href="https://wordpress.org/plugins/cf7-google-map/#faq" target="_blank">FAQ</a> #5 for more info)', 'cf7-google-map' ) ); ?></span>
+				<input type="radio" name="address_fields" value="custom" /> <span><?php echo wp_kses_post( __( 'Custom (populate your own fields with a javascript event, read <a href="https://wordpress.org/plugins/cf7-google-map/#faq" target="_blank">FAQ</a> #5 for more info)', 'cf7-google-map' ) ); ?></span>
 			  </div>
 			</div>
 		  </td>
