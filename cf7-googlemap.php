@@ -16,7 +16,7 @@
  * Plugin Name:       CF7 Google Map Fields
  * Plugin URI:        https://github.com/aurovrata/cf7-google-map
  * Description:       Allows a map field to be included in a Contact Form 7 for use to drag and drop their location
- * Version:           1.8.4
+ * Version:           1.9.0
  * Author:            Aurovrata V.
  * Author URI:        http://syllogic.in
  * License:           GPL-2.0+
@@ -30,7 +30,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define( 'CF7_GOOGLE_MAP_VERSION', '1.8.4' );
+define( 'CF7_GOOGLE_MAP_VERSION', '1.9.0' );
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-cf7-googlemap-activator.php

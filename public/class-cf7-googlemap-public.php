@@ -81,8 +81,8 @@ class Cf7_GoogleMap_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		wp_register_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cf7-googlemap.css', array(), $this->version, 'all' );
+		$dbg = (defined('WP_DEBUG') && WP_DEBUG) ? '':'.min';
+		wp_register_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . "css/cf7-googlemap{$dbg}.css", array(), $this->version, 'all' );
 
 	}
 
@@ -103,7 +103,8 @@ class Cf7_GoogleMap_Public {
 		}
 		wp_register_script( 'gmap3-admin', plugin_dir_url( __DIR__ ) . '/assets/gmap3/gmap3.min.js', array( 'jquery', 'google-maps-api-admin' ), $this->version, true );
 		wp_register_script( 'js-resize', plugin_dir_url( __DIR__ ) . '/assets/js-resize/jquery.resize.js', array( 'jquery' ), $this->version, true );
-		wp_register_script( 'cf7-googlemap', plugin_dir_url( __DIR__ ) . 'public/js/cf7-googlemap.js', array( 'gmap3-admin' ), $this->version, true );
+		$dbg = (defined('WP_DEBUG') && WP_DEBUG) ? '':'.min';
+		wp_register_script( 'cf7-googlemap', plugin_dir_url( __DIR__ ) . "public/js/cf7-googlemap{$dbg}.js", array( 'gmap3-admin' ), $this->version, true );
 	}
 	/**
 	 * Register a [googleMap] shortcode with CF7.

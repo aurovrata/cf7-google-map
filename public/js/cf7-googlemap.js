@@ -10,19 +10,19 @@ const autoline_add = {}; // track automated values of line address.
 	// search button event delegation.
 	$map_forms.on(
 		'click',
-		'.cf7-google-map-search .dashicons',
+		'.cf7-google-map-search',
 		function(e){
-			let $search = $( this );
+			let $search = $( e.originalEvent.target );
 			if ($search.is( '.dashicons-search' )) {
-				$search.siblings( '.cf7marker-address' ).show().val( '' ).focus();
 				$search.hide();
 				$search.siblings( '.dashicons-no-alt' ).show();
+				$search.siblings( '.cf7marker-address' ).show().val( '' ).focus();
 			} else if ($search.is( '.dashicons-no-alt' )) {
-				$( this ).closeCF7gmapSearchField();
+				$search.closeCF7gmapSearchField();
 			}
 		}
 	);
-
+	
 	$.fn.initCF7googleMap = function(){
 		let mapsObj = $( this );
 		// if(!Array.isArray(this)) obj=[this];
@@ -215,8 +215,8 @@ const autoline_add = {}; // track automated values of line address.
 									);
 									  markers = [];
 
-									  // For each place, get the icon, name and location.
-									  let bounds = new google.maps.LatLngBounds();
+									// For each place, get the icon, name and location.
+									let bounds = new google.maps.LatLngBounds();
 									places.forEach(
 										function(place) {
 											if ( ! place.geometry) {
@@ -255,7 +255,7 @@ const autoline_add = {}; // track automated values of line address.
 														event = new CustomEvent( "update/cf7-google-map",{'detail':event} );
 														mapc.dispatchEvent( event );
 
-														if (mc.querySelector( 'div.cf7-googlemap-address-fields' ) !== null) {
+														if (mapc.querySelector( 'div.cf7-googlemap-address-fields' ) !== null) {
 																	let state = addObj.state;
 															if ('' != addObj.pin) {
 																state = addObj.state + " " + addObj.pin;
@@ -285,7 +285,9 @@ const autoline_add = {}; // track automated values of line address.
 											}
 										}
 									);
-									  gmap[field].fitBounds( bounds );
+									gmap[field].fitBounds( bounds ); //recenter the map.
+									//close the search field.
+									$(input).closeCF7gmapSearchField();
 								}
 							)
 						}
@@ -298,8 +300,9 @@ const autoline_add = {}; // track automated values of line address.
 
 	$.fn.closeCF7gmapSearchField = function(){
 		let $this = $( this );
-		$this.siblings( '.cf7marker-address' ).hide();
 		$this.hide();
+		$this.siblings( '.cf7marker-address' ).hide();
+		$this.siblings( '.dashicons-no-alt' ).hide();
 		$this.siblings( '.dashicons-search' ).show();
 	}
 
@@ -323,7 +326,7 @@ const autoline_add = {}; // track automated values of line address.
 			function(e){
 				let $newElm = $( e.target );
 				if ('sgRowAdded' == e.type) {
-					$newElm = $( '.row.cf7-sg-table[data-row=' + e.row + ']',$newElm );
+					$newElm = $( '.cf7-sg-table[data-row=' + e.row + ']',$newElm );
 				}
 				$( '.cf7-google-map-container', $newElm ).initCF7googleMap();
 			}
@@ -334,11 +337,10 @@ const autoline_add = {}; // track automated values of line address.
 			function(){
 				$containers.each(
 					function(){
-						let $mc = $( this ), field = $( '.cf7-googlemap',$mc ).attr( 'id' ).replace( 'cf7-googlemap-','' );
+						let $mc = $( this ), field = $( '.cf7-googlemap-field',$mc ).attr( 'id' );
 						if (cf7GoogleMap.fields[field].init) {
 							$mc.initCF7googleMap();
 						}
-
 					}
 				)
 
@@ -361,7 +363,8 @@ const gm3          = {}, gmap = {}; // track map objects to enable multiple maps
 
 function fireMarkerUpdate(marker, e){
 	let mc   = this.$.closest( '.cf7-google-map-container' ).get( 0 ),
-	field    = mc.getElementsByClassName( 'cf7-googlemap' )[0].getAttribute( 'id' ).replace( 'cf7-googlemap-','' ),
+	origin = mc.querySelector( '.cf7-googlemap' ).getAttribute( 'id' ).replace( 'cf7-googlemap-','' ),
+	field    = mc.getElementsByClassName( 'cf7-googlemap-field' )[0].getAttribute( 'id' ),
 	llat     = mc.querySelector( '#lat-' + field ), llng = mc.querySelector( '#lng-' + field ),
 	clat     = mc.querySelector( '#clat-' + field ), clng = mc.querySelector( '#clng-' + field ),
 	zoom     = mc.querySelector( '#zoom-' + field ),address = mc.querySelector( '#address-' + field ),
@@ -422,7 +425,7 @@ function fireMarkerUpdate(marker, e){
 		'settings': {
 			'center': [clat.value, clng.value],
 			'zoom':zoom.value,
-			'type':cf7GoogleMap.fields[field].map_type,
+			'type':cf7GoogleMap.fields[origin].map_type,
 			'marker':[llat.value, llng.value],
 		},
 		bubbles: true,

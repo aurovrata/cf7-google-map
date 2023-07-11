@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google map, maps, contact form 7, contact form 7 extension, contact form 7 module, location, geocode, reverse geocode, airplane mode
 Requires at least: 5.6
 Requires PHP: 7.4
-Tested up to: 6.2.0
-Stable tag: 1.8.4
+Tested up to: 6.2.2
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -304,6 +304,9 @@ $(document).ready(function(){
 5. Optional address fields get auto-filled by the reverse-geocode lookup.  The map as contains a search field to locate an address (you will need to enable the appropriate Google APIs).
 
 == Changelog ==
+= 1.9.0 =
+* minified js/css for live sites.
+* fixed issues with event for repetitive maps.
 = 1.8.4 =
 * fix repetitive fields.
 * fix code security.
